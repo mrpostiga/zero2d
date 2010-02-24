@@ -2,14 +2,14 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Zero2D (ubu64)" />
+		<Option title="Zero2D (win32)" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../zero2d-ubu64-debug" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="../.." />
-				<Option object_output="obj/Debug/" />
+				<Option output="..\..\zero2d-win32-debug" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\.." />
+				<Option object_output="obj\Debug\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -17,9 +17,9 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="../../zero2d-ubu64" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="../.." />
-				<Option object_output="obj/Release/" />
+				<Option output="..\..\zero2d-win32" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\.." />
+				<Option object_output="obj\Release\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -27,6 +27,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add option="-mwindows" />
 				</Linker>
 			</Target>
 		</Build>
@@ -34,28 +35,29 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Linker>
+			<Add library="mingw32" />
 			<Add library="SDLmain" />
 			<Add library="SDL_image" />
 			<Add library="SDL_ttf" />
 			<Add library="SDL_mixer" />
 			<Add library="SDL" />
-			<Add library="GL" />
-			<Add library="GLU" />
+			<Add library="opengl32" />
+			<Add library="glu32" />
 		</Linker>
-		<Unit filename="../Config.cpp" />
-		<Unit filename="../Config.h" />
-		<Unit filename="../DisplayEngine.cpp" />
-		<Unit filename="../DisplayEngine.h" />
-		<Unit filename="../IntroPowerModule.cpp" />
-		<Unit filename="../IntroPowerModule.h" />
-		<Unit filename="../Matrix.h" />
-		<Unit filename="../Module.cpp" />
-		<Unit filename="../Module.h" />
-		<Unit filename="../Point2D.h" />
-		<Unit filename="../SoundEngine.cpp" />
-		<Unit filename="../SoundEngine.h" />
-		<Unit filename="../Vector3D.h" />
-		<Unit filename="../main.cpp" />
+		<Unit filename="..\Config.cpp" />
+		<Unit filename="..\Config.h" />
+		<Unit filename="..\DisplayEngine.cpp" />
+		<Unit filename="..\DisplayEngine.h" />
+		<Unit filename="..\IntroPowerModule.cpp" />
+		<Unit filename="..\IntroPowerModule.h" />
+		<Unit filename="..\Matrix.h" />
+		<Unit filename="..\Module.cpp" />
+		<Unit filename="..\Module.h" />
+		<Unit filename="..\Point2D.h" />
+		<Unit filename="..\SoundEngine.cpp" />
+		<Unit filename="..\SoundEngine.h" />
+		<Unit filename="..\Vector3D.h" />
+		<Unit filename="..\main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
