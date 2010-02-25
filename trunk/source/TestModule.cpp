@@ -17,46 +17,30 @@
 
 #include "TestModule.h"
 #include "DisplayEngine.h"
-#include "Sprite.h"
+#include "Entity.h"
 
 #include <SDL_opengl.h>
 
 bool TestModule::onLoad()
 {
-    _sub = Sprite::load("data/fighters/subzero");
+    _sub = new Entity(Sprite::load("data/fighters/subzero"));
     return true;
 }
 
 void TestModule::onOpen()
 {
-    DisplayEngine::ortho(4.0);
+    DisplayEngine::ortho(75.0);
 }
 
 void TestModule::onRender()
 {
     glClear(GL_COLOR_BUFFER_BIT);
-
-    glEnable(GL_TEXTURE_2D);
-    _sub->bindTexture();
-    glBegin(GL_QUADS);
-    {
-        glColor3f(1.0f, 1.0f, 1.0f);
-        glNormal3f(0.0f, 0.0f, 1.0f);
-        glTexCoord2i(0, 1);
-        glVertex2f(-4.0f, -0.5f);
-        glTexCoord2i(0, 0);
-        glVertex2f(-4.0f, 0.5f);
-        glTexCoord2i(1, 0);
-        glVertex2f(4.0f, 0.5f);
-        glTexCoord2i(1, 1);
-        glVertex2f(4.0f, -0.5f);
-    }
-    glEnd();
-    glDisable(GL_TEXTURE_2D);
+    _sub->draw();
 }
 
-void TestModule::onFrame()
+void TestModule::onPulse()
 {
+    _sub->pulse();
 }
 
 void TestModule::onClose()
@@ -66,4 +50,5 @@ void TestModule::onClose()
 void TestModule::onUnload()
 {
     Sprite::unloadAll();
+    Entity::unloadAll();
 }

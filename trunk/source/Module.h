@@ -35,7 +35,7 @@ class Module
         virtual bool onLoad() = 0;
         virtual void onOpen();
         virtual void onRender();
-        virtual void onFrame();
+        virtual void onPulse();
         virtual void onClose();
         virtual void onUnload() = 0;
 

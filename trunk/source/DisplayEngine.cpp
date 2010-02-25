@@ -84,7 +84,7 @@ void DisplayEngine::start(Module* inModule)
 
             if (ticks > nextFrame)
             {
-                currentModule->onFrame();
+                currentModule->onPulse();
                 nextFrame += FRAME_LENGTH;
             }
 

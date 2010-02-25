@@ -27,7 +27,7 @@ class IntroPowerModule : public Module
     public:
         virtual bool onLoad();
         virtual void onOpen();
-        virtual void onFrame();
+        virtual void onPulse();
         virtual void onRender();
         virtual void onClose();
         virtual void onUnload();

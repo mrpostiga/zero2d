@@ -31,6 +31,7 @@ class Vector3D
     public:
         Vector3D<T>();
         Vector3D<T>(const Vector3D<T>& inVector);
+        Vector3D<T>(T inValue);
         Vector3D<T>(T inX, T inY, T inZ);
         Matrix<T> toMatrix() const;
         void set(T inValue);
@@ -55,7 +56,7 @@ class Vector3D
         const Vector3D<T> operator^(const Vector3D<T>& inVector) const;
         T& operator[](int inIndex);
         T operator[](int inIndex) const;
-        T* array();
+        const T* array() const;
 
     private:
         T _vector[4];
@@ -80,13 +81,21 @@ Vector3D<T>::Vector3D(const Vector3D<T>& inVector)
 }
 
 template<class T>
+Vector3D<T>::Vector3D(T inValue)
+{
+    _vector[0] = inValue;
+    _vector[1] = inValue;
+    _vector[2] = inValue;
+    _vector[3] = 1;
+}
+
+template<class T>
 Vector3D<T>::Vector3D(T inX, T inY, T inZ)
 {
     _vector[0] = inX;
     _vector[1] = inY;
     _vector[2] = inZ;
     _vector[3] = 1;
-
 }
 
 template<class T>
@@ -265,7 +274,7 @@ T Vector3D<T>::get(int inIndex) const
 }
 
 template<class T>
-inline T* Vector3D<T>::array()
+inline const T* Vector3D<T>::array() const
 {
     return _vector;
 }

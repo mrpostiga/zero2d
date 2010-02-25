@@ -33,7 +33,7 @@ void Module::onRender()
 {
 }
 
-void Module::onFrame()
+void Module::onPulse()
 {
 }
 

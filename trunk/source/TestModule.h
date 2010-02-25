@@ -19,7 +19,7 @@
 #define _TESTMODULE_H_
 
 #include "Module.h"
-#include "Sprite.h"
+#include "Entity.h"
 
 class TestModule : public Module
 {
@@ -27,12 +27,12 @@ class TestModule : public Module
         virtual bool onLoad();
         virtual void onOpen();
         virtual void onRender();
-        virtual void onFrame();
+        virtual void onPulse();
         virtual void onClose();
         virtual void onUnload();
 
     private:
-        Sprite* _sub;
+        Entity* _sub;
 };
 
 #endif

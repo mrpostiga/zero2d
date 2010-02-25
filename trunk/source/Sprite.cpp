@@ -50,7 +50,7 @@ Sprite::Sprite(const string& inPath) : _numFrames(0)
     {
         int index = 0;
         staticData >> index >> _frameData[i];
-        cerr << "loading frame " << index << endl;
+        //cerr << "loading frame " << index << endl;
     }
 
     staticData.close();
@@ -102,4 +102,52 @@ void Sprite::unloadAll()
     }
 
     _sprites.clear();
+}
+
+void Sprite::draw(const DrawArgs& inArgs)
+{
+    const FrameDatum& fd = _frameData[inArgs.index];
+
+    Point2D<float> QuadUL;
+    Point2D<float> QuadLR;
+
+    QuadUL.x = P2O(-fd.base.x);
+    QuadUL.y = P2O(fd.base.y);
+    QuadLR.x = P2O(-fd.base.x + fd.size.x);
+    QuadLR.y = P2O(fd.base.y - fd.size.y);
+
+    Point2D<float> TextureUL;
+    Point2D<float> TextureLR;
+
+    TextureUL.x = float(fd.location.x) / float(_sheetSize.x);
+    TextureLR.x = TextureUL.x + (float(fd.size.x) / float(_sheetSize.x));
+
+    TextureLR.y = float(_sheetSize.y - fd.location.y) / float(_sheetSize.y);
+    TextureUL.y = TextureLR.y - (float(fd.size.y) / float(_sheetSize.y));
+
+    glEnable(GL_TEXTURE_2D);
+
+    glPushMatrix();
+    glBindTexture(GL_TEXTURE_2D, _texture);
+    glBegin(GL_QUADS);
+    {
+        glColor4fv(inArgs.colorMod.array());
+        glNormal3f(0.0f, 0.0f, 1.0f);
+
+        glTexCoord2f(TextureUL.x, TextureUL.y);
+        glVertex2f(QuadUL.x, QuadUL.y);
+
+        glTexCoord2f(TextureLR.x, TextureUL.y);
+        glVertex2f(QuadLR.x, QuadUL.y);
+
+        glTexCoord2f(TextureLR.x, TextureLR.y);
+        glVertex2f(QuadLR.x, QuadLR.y);
+
+        glTexCoord2f(TextureUL.x, TextureLR.y);
+        glVertex2f(QuadUL.x, QuadLR.y);
+    }
+    glEnd();
+    glPopMatrix();
+
+    glDisable(GL_TEXTURE_2D);
 }

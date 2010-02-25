@@ -19,6 +19,7 @@
 #define _SPRITE_H_
 
 #include "Point2D.h"
+#include "Vector3D.h"
 
 #include <SDL_opengl.h>
 
@@ -39,6 +40,17 @@ struct FrameDatum
 
 istream& operator>>(istream& inStream, FrameDatum& inFD);
 
+struct DrawArgs
+{
+    int index;
+    Point2D<int> location;
+    float rotation;
+    bool facingRight;
+    Vector3D<float> colorMod;
+
+    DrawArgs() : index(0), rotation(0.0f), facingRight(false), colorMod(1) {}
+};
+
 class Sprite
 {
     public:
@@ -46,6 +58,10 @@ class Sprite
 
         static Sprite* load(string inPath);
         static void unloadAll();
+
+        void draw(const DrawArgs& inArgs);
+        int getDuration(int inIndex);
+        int getNumFrames();
 
         void bindTexture();
 
@@ -64,6 +80,16 @@ class Sprite
 inline void Sprite::bindTexture()
 {
     glBindTexture(GL_TEXTURE_2D, _texture);
+}
+
+inline int Sprite::getNumFrames()
+{
+    return _numFrames;
+}
+
+inline int Sprite::getDuration(int inIndex)
+{
+    return _frameData[inIndex].duration;
 }
 
 #endif

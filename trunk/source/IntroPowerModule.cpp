@@ -71,7 +71,7 @@ void IntroPowerModule::onUnload()
     glDeleteTextures(1, &_logoID);
 }
 
-void IntroPowerModule::onFrame()
+void IntroPowerModule::onPulse()
 {
     switch (_phase)
     {
