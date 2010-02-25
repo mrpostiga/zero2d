@@ -289,7 +289,8 @@ void DisplayEngine::logErrors(ostream& inStream)
     }
 }
 
-bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
+bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
+    bool inDelete)
 {
     bool outSuccess = true;
     if (inSurface == NULL)
@@ -353,17 +354,14 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
     glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, inSurface->w, inSurface->h,
         0, tFormat, GL_UNSIGNED_BYTE, inSurface->pixels);
 
-    if (!outSuccess) SDL_FreeSurface(inSurface);
+    if (inDelete || !outSuccess) SDL_FreeSurface(inSurface);
     return outSuccess;
 }
 
 bool DisplayEngine::loadTexture(const char* inFile, GLuint inTexture)
 {
     Surface t = loadImage(inFile);
-    if (t == NULL) return false;
-    loadTexture(t, inTexture);
-    SDL_FreeSurface(t);
-    return true;
+    return loadTexture(t, inTexture, true);
 }
 
 void DisplayEngine::logOpenGL(ostream& inStream)

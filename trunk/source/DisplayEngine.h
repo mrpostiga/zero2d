@@ -51,7 +51,8 @@ class DisplayEngine
         /// OpenGL/SDL functionality wrappers
         static void ortho(double inRange);
         static Surface loadImage(const char* inFile);
-        static bool loadTexture(Surface inSurface, GLuint inTexture);
+        static bool loadTexture(Surface inSurface, GLuint inTexture,
+            bool inDelete = true);
         static bool loadTexture(const char* inFile, GLuint inTexture);
 
         static void logOpenGL(ostream& inStream);

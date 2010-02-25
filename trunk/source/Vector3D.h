@@ -40,7 +40,7 @@ class Vector3D
         const Vector3D<T> normalized() const;
         bool isZero() const;
         void negate();
-        inline float length() const;
+        float length() const;
         const Vector3D<T> negated() const;
         void processMatrix(const Matrix<T>& inMatrix);
 

@@ -19,6 +19,7 @@
 #define _TESTMODULE_H_
 
 #include "Module.h"
+#include "Sprite.h"
 
 class TestModule : public Module
 {
@@ -30,8 +31,8 @@ class TestModule : public Module
         virtual void onClose();
         virtual void onUnload();
 
-    protected:
     private:
+        Sprite* _sub;
 };
 
 #endif

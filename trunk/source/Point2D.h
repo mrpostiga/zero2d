@@ -15,8 +15,11 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef POINT2D_H
-#define POINT2D_H
+#ifndef _POINT2D_H_
+#define _POINT2D_H_
+
+#include <iostream>
+using namespace std;
 
 template<class T>
 struct Point2D
@@ -41,6 +44,20 @@ Point2D<T>::Point2D(T inValue) : x(inValue), y(inValue)
 template<class T>
 Point2D<T>::Point2D(T inX, T inY) : x(inX), y(inY)
 {
+}
+
+template<class T>
+istream& operator>>(istream& inStream, Point2D<T>& inPoint)
+{
+    inStream >> inPoint.x >> inPoint.y;
+    return inStream;
+}
+
+template<class T>
+ostream& operator<<(ostream& inStream, const Point2D<T>& inPoint)
+{
+    inStream << inPoint.x << ' ' << inPoint.y;
+    return inStream;
 }
 
 #endif

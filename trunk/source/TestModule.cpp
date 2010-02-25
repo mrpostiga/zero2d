@@ -16,21 +16,42 @@
  */
 
 #include "TestModule.h"
+#include "DisplayEngine.h"
+#include "Sprite.h"
 
 #include <SDL_opengl.h>
 
 bool TestModule::onLoad()
 {
+    _sub = Sprite::load("data/fighters/subzero");
     return true;
 }
 
 void TestModule::onOpen()
 {
+    DisplayEngine::ortho(4.0);
+    glEnable(GL_TEXTURE_2D);
 }
 
 void TestModule::onRender()
 {
     glClear(GL_COLOR_BUFFER_BIT);
+
+    _sub->bindTexture();
+    glBegin(GL_QUADS);
+    {
+        glColor3f(1.0f, 1.0f, 1.0f);
+        glNormal3f(0.0f, 0.0f, 1.0f);
+        glTexCoord2i(0, 1);
+        glVertex2f(-4.0f, -0.5f);
+        glTexCoord2i(0, 0);
+        glVertex2f(-4.0f, 0.5f);
+        glTexCoord2i(1, 0);
+        glVertex2f(4.0f, 0.5f);
+        glTexCoord2i(1, 1);
+        glVertex2f(4.0f, -0.5f);
+    }
+    glEnd();
 }
 
 void TestModule::onFrame()
@@ -39,8 +60,10 @@ void TestModule::onFrame()
 
 void TestModule::onClose()
 {
+    glDisable(GL_TEXTURE_2D);
 }
 
 void TestModule::onUnload()
 {
+    Sprite::unloadAll();
 }

@@ -18,14 +18,52 @@
 #ifndef _SPRITE_H_
 #define _SPRITE_H_
 
+#include "Point2D.h"
+
+#include <SDL_opengl.h>
+
+#include <iostream>
+#include <map>
+#include <string>
+using namespace std;
+
+struct FrameDatum
+{
+    Point2D<int> location;
+    Point2D<int> size;
+    Point2D<int> base;
+    int duration;
+
+    FrameDatum() : duration(0) {}
+};
+
+istream& operator>>(istream& inStream, FrameDatum& inFD);
 
 class Sprite
 {
     public:
-        Sprite();
         virtual ~Sprite();
-    protected:
+
+        static Sprite* load(string inPath);
+        static void unloadAll();
+
+        void bindTexture();
+
     private:
+        Sprite(const string& inPath);
+
+        static map<string, Sprite*> _sprites;
+
+        string _title;
+        int _numFrames;
+        GLuint _texture; // entire sprite sheet
+        Point2D<int> _sheetSize;
+        FrameDatum* _frameData;
 };
 
-#endif // _SPRITE_H_
+inline void Sprite::bindTexture()
+{
+    glBindTexture(GL_TEXTURE_2D, _texture);
+}
+
+#endif
