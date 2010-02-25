@@ -93,19 +93,18 @@ void DisplayEngine::start(Module* inModule)
 
         currentModule->onClose();
 
-        Module* deadModule = currentModule;
+        Module* oldModule = currentModule;
         currentModule = currentModule->next();
 
-        if (deadModule->isDead())
+        if (oldModule->isDead())
         {
-            // LOL @ "if dead module is dead..."
-            deadModule->onUnload();
-            delete deadModule;
+            oldModule->onUnload();
+            delete oldModule;
         }
         else
         {
-            moduleStack.push_back(deadModule);
-            deadModule = NULL;
+            moduleStack.push_back(oldModule);
+            oldModule = NULL;
         }
 
     }
@@ -245,40 +244,46 @@ void DisplayEngine::logErrors(ostream& inStream)
         {
             case GL_INVALID_ENUM:
             {
-                inStream << "Invalid enum." << endl;
+                inStream << "invalid enum";
                 break;
             }
             case GL_INVALID_VALUE:
             {
-                inStream << "Invalid value." << endl;
+                inStream << "invalid value";
                 break;
             }
             case GL_INVALID_OPERATION:
             {
-                inStream << "Invalid operation." << endl;
+                inStream << "invalid operation";
                 break;
             }
             case GL_STACK_OVERFLOW:
             {
-                inStream << "Stack Overflow" << endl;
+                inStream << "stack overflow";
                 break;
             }
             case GL_STACK_UNDERFLOW:
             {
-                inStream << "Stack Underflow" << endl;
+                inStream << "stack underflow";
                 break;
             }
             case GL_OUT_OF_MEMORY:
             {
-                inStream << "Out of memory." << endl;
+                inStream << "out of memory";
                 break;
             }
             case GL_TABLE_TOO_LARGE:
             {
-                inStream << "Table too large." << endl;
+                inStream << "table too large";
+                break;
+            }
+            default:
+            {
                 break;
             }
         }
+
+        inStream << endl;
 
         error = glGetError();
     }
@@ -307,10 +312,7 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
         glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
         //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
         //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
-    }
 
-    if (_mipmapping)
-    {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     }
     else
@@ -378,4 +380,28 @@ void DisplayEngine::logOpenGL(ostream& inStream)
 
         if (j > i) i = j;
     }
+}
+
+void DisplayEngine::ortho(double inRange)
+{
+    int width = _display->w;
+    int height = _display->h;
+
+    double aspect = double(width) / double(height);
+
+    glMatrixMode(GL_PROJECTION);
+    glViewport(0, 0, width, height);
+
+    if (width < height)
+    {
+        glOrtho(-inRange, inRange, -inRange / aspect, inRange / aspect,
+            -inRange, inRange);
+    }
+    else
+    {
+        glOrtho(-inRange * aspect, inRange * aspect, -inRange, inRange,
+            -inRange, inRange);
+    }
+
+    glMatrixMode(GL_MODELVIEW);
 }

@@ -48,6 +48,8 @@ class DisplayEngine
         static void start(Module* inModule);
         static void initialize();
 
+        /// OpenGL/SDL functionality wrappers
+        static void ortho(double inRange);
         static Surface loadImage(const char* inFile);
         static bool loadTexture(Surface inSurface, GLuint inTexture);
         static bool loadTexture(const char* inFile, GLuint inTexture);

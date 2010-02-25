@@ -16,13 +16,14 @@
  */
 
 #include "IntroPowerModule.h"
-
+#include "TestModule.h"
 #include "DisplayEngine.h"
 
 bool IntroPowerModule::onLoad()
 {
     _phase = 0;
     _freezeFrames = 0;
+    _next = new TestModule;
 
     glGenTextures(1, &_logoID);
     DisplayEngine::loadTexture("data/images/sdl-powered.png", _logoID);
@@ -32,10 +33,6 @@ bool IntroPowerModule::onLoad()
 
 void IntroPowerModule::onOpen()
 {
-    int w = SDL_GetVideoSurface()->w;
-    int h = SDL_GetVideoSurface()->h;
-    double ratio = double(w) / double(h);
-
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL);
@@ -55,14 +52,8 @@ void IntroPowerModule::onOpen()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glViewport(0, 0, w, h);
+    DisplayEngine::ortho(1.0);
 
-    double range = 1.0;
-    glOrtho(-range * ratio, range * ratio, -range, range, -range, range);
-
-    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
 
@@ -90,7 +81,7 @@ void IntroPowerModule::onFrame()
             if (_freezeFrames > 30)
             {
                 _freezeFrames = 0;
-                 ++_phase;
+                ++_phase;
             }
             break;
         }
@@ -114,7 +105,7 @@ void IntroPowerModule::onFrame()
             if (_freezeFrames > 120)
             {
                 _freezeFrames = 0;
-                 ++_phase;
+                ++_phase;
             }
             break;
         }
