@@ -48,6 +48,8 @@
 		<Unit filename="..\Config.h" />
 		<Unit filename="..\DisplayEngine.cpp" />
 		<Unit filename="..\DisplayEngine.h" />
+		<Unit filename="..\Entity.cpp" />
+		<Unit filename="..\Entity.h" />
 		<Unit filename="..\IntroPowerModule.cpp" />
 		<Unit filename="..\IntroPowerModule.h" />
 		<Unit filename="..\Matrix.h" />
@@ -56,6 +58,10 @@
 		<Unit filename="..\Point2D.h" />
 		<Unit filename="..\SoundEngine.cpp" />
 		<Unit filename="..\SoundEngine.h" />
+		<Unit filename="..\Sprite.cpp" />
+		<Unit filename="..\Sprite.h" />
+		<Unit filename="..\TestModule.cpp" />
+		<Unit filename="..\TestModule.h" />
 		<Unit filename="..\Vector3D.h" />
 		<Unit filename="..\main.cpp" />
 		<Extensions>
