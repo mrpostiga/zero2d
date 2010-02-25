@@ -97,7 +97,9 @@ void Sprite::unloadAll()
 {
     for (map<string, Sprite*>::iterator i = _sprites.begin();
         i != _sprites.end(); ++i)
+    {
         delete i->second;
+    }
 
     _sprites.clear();
 }

@@ -185,6 +185,9 @@ void DisplayEngine::initialize()
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
     SDL_WM_SetCaption("Zero2D version 0.0.1", "Zero2D");
 
     ofstream logFile;
@@ -387,8 +390,10 @@ void DisplayEngine::ortho(double inRange)
 
     double aspect = double(width) / double(height);
 
-    glMatrixMode(GL_PROJECTION);
     glViewport(0, 0, width, height);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
 
     if (width < height)
     {

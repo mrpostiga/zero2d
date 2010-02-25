@@ -28,6 +28,12 @@ typedef SDL_Surface* Surface;
 #include <iostream>
 using namespace std;
 
+// conversion from object space to pixel space
+#define O2P(n) static_cast<int>((n) * 4.0f)
+
+// conversion from pixel space to object space
+#define P2O(n) (static_cast<float>(n) / 4.0f)
+
 #define ENGINE_FPS 60
 #define FRAME_LENGTH (1000 / ENGINE_FPS)
 #define FIELD_OF_VIEW 30.0

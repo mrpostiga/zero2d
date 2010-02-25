@@ -30,13 +30,13 @@ bool TestModule::onLoad()
 void TestModule::onOpen()
 {
     DisplayEngine::ortho(4.0);
-    glEnable(GL_TEXTURE_2D);
 }
 
 void TestModule::onRender()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
+    glEnable(GL_TEXTURE_2D);
     _sub->bindTexture();
     glBegin(GL_QUADS);
     {
@@ -52,6 +52,7 @@ void TestModule::onRender()
         glVertex2f(4.0f, -0.5f);
     }
     glEnd();
+    glDisable(GL_TEXTURE_2D);
 }
 
 void TestModule::onFrame()
@@ -60,7 +61,6 @@ void TestModule::onFrame()
 
 void TestModule::onClose()
 {
-    glDisable(GL_TEXTURE_2D);
 }
 
 void TestModule::onUnload()
