@@ -26,11 +26,13 @@ class IntroPowerModule : public Module
 {
     public:
         virtual bool onLoad();
-        virtual void onInit();
+        virtual void onOpen();
         virtual void onFrame();
+        virtual void onRender();
+        virtual void onClose();
         virtual void onUnload();
-        virtual Module* next();
 
+    protected:
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         virtual void onLButtonDown(int inX, int inY);
         virtual void onRButtonDown(int inX, int inY);

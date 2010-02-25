@@ -19,7 +19,6 @@
 #include "Module.h"
 #include "Config.h"
 
-#include <SDL_opengl.h>
 #include <SDL_image.h>
 
 #if SDL_IMAGE_PATCHLEVEL == 9
@@ -61,8 +60,7 @@ void DisplayEngine::start(Module* inModule)
             break;
         }
 
-        currentModule->onInit();
-
+        currentModule->onOpen();
 
         unsigned int nextSecond = SDL_GetTicks() + 1000u;
         int framesPerSecond = 0;
@@ -71,7 +69,7 @@ void DisplayEngine::start(Module* inModule)
         {
             while (SDL_PollEvent(&event)) currentModule->onEvent(&event);
 
-            currentModule->onLoop();
+            currentModule->onRender();
             SDL_GL_SwapBuffers();
             ++framesPerSecond;
 
@@ -92,6 +90,8 @@ void DisplayEngine::start(Module* inModule)
 
             SDL_Delay(1); // prevent CPU abuse
         }
+
+        currentModule->onClose();
 
         Module* deadModule = currentModule;
         currentModule = currentModule->next();
@@ -115,8 +115,6 @@ void DisplayEngine::start(Module* inModule)
 
 void DisplayEngine::initialize()
 {
-    putenv((char*)"SDL_VIDEO_CENTERED=1");
-
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
         cerr << "error on SDL_Init" << endl;
@@ -171,7 +169,6 @@ void DisplayEngine::initialize()
         _mask.blue  = 0x00ff0000;
         _mask.alpha = 0xff000000;
     }
-
 
     Uint32 flags = SDL_OPENGL;
 
@@ -231,7 +228,7 @@ Surface DisplayEngine::loadImage(const char* inFile)
     return outSurface;
 }
 
-void DisplayEngine::printErrors()
+void DisplayEngine::logErrors(ostream& inStream)
 {
     GLenum error;
 
@@ -239,7 +236,7 @@ void DisplayEngine::printErrors()
 
     if (error != GL_NO_ERROR)
     {
-        cerr << "Opengl Error: ";
+        inStream << "OpenGL Error: ";
     }
 
     while (error != GL_NO_ERROR)
@@ -248,37 +245,37 @@ void DisplayEngine::printErrors()
         {
             case GL_INVALID_ENUM:
             {
-                cerr << "Invalid enum." << endl;
+                inStream << "Invalid enum." << endl;
                 break;
             }
             case GL_INVALID_VALUE:
             {
-                cerr << "Invalid value." << endl;
+                inStream << "Invalid value." << endl;
                 break;
             }
             case GL_INVALID_OPERATION:
             {
-                cerr << "Invalid operation." << endl;
+                inStream << "Invalid operation." << endl;
                 break;
             }
             case GL_STACK_OVERFLOW:
             {
-                cerr << "Stack Overflow" << endl;
+                inStream << "Stack Overflow" << endl;
                 break;
             }
             case GL_STACK_UNDERFLOW:
             {
-                cerr << "Stack Underflow" << endl;
+                inStream << "Stack Underflow" << endl;
                 break;
             }
             case GL_OUT_OF_MEMORY:
             {
-                cerr << "Out of memory." << endl;
+                inStream << "Out of memory." << endl;
                 break;
             }
             case GL_TABLE_TOO_LARGE:
             {
-                cerr << "Table too large." << endl;
+                inStream << "Table too large." << endl;
                 break;
             }
         }
@@ -289,10 +286,6 @@ void DisplayEngine::printErrors()
 
 bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
 {
-    /*
-    cerr << "Pre-texture errors:\n";
-    printErrors();
-*/
     bool outSuccess = true;
     if (inSurface == NULL)
     {
@@ -324,6 +317,7 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
     {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     }
+
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
@@ -356,11 +350,6 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
 
     glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, inSurface->w, inSurface->h,
         0, tFormat, GL_UNSIGNED_BYTE, inSurface->pixels);
-
-/*
-    cerr << "Post-texture errors:\n";
-    printErrors();
-*/
 
     if (!outSuccess) SDL_FreeSurface(inSurface);
     return outSuccess;

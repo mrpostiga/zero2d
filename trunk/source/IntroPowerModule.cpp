@@ -30,7 +30,7 @@ bool IntroPowerModule::onLoad()
     return true;
 }
 
-void IntroPowerModule::onInit()
+void IntroPowerModule::onOpen()
 {
     int w = SDL_GetVideoSurface()->w;
     int h = SDL_GetVideoSurface()->h;
@@ -66,21 +66,22 @@ void IntroPowerModule::onInit()
     glLoadIdentity();
 }
 
-void IntroPowerModule::onUnload()
+void IntroPowerModule::onClose()
 {
     glDisable(GL_BLEND);
     glDisable(GL_COLOR_MATERIAL);
     glDisable(GL_LIGHT0);
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
+}
+
+void IntroPowerModule::onUnload()
+{
     glDeleteTextures(1, &_logoID);
 }
 
 void IntroPowerModule::onFrame()
 {
-    glLightfv(GL_LIGHT0, GL_AMBIENT, _ambient);
-    glLightfv(GL_LIGHT0, GL_POSITION, _pos);
-
     switch (_phase)
     {
         case 0:
@@ -147,6 +148,12 @@ void IntroPowerModule::onFrame()
             break;
         }
     }
+}
+
+void IntroPowerModule::onRender()
+{
+    glLightfv(GL_LIGHT0, GL_AMBIENT, _ambient);
+    glLightfv(GL_LIGHT0, GL_POSITION, _pos);
 
     glBindTexture(GL_TEXTURE_2D, _logoID);
     glColor3f(1.0f, 1.0f, 1.0f);
@@ -164,11 +171,6 @@ void IntroPowerModule::onFrame()
         glVertex2f(2.0f, -1.0f);
     }
     glEnd();
-}
-
-Module* IntroPowerModule::next()
-{
-    return NULL;
 }
 
 void IntroPowerModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)

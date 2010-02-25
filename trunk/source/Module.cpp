@@ -20,15 +20,34 @@
 #include <iostream>
 using namespace std;
 
-Module::Module()
+Module::Module() : _running(true), _dead(true), _next(NULL)
 {
-    _running = true;
 }
 
 Module::~Module()
 {
     // here to prevent compiler warnings in Windows :P
 }
+
+void Module::onRender()
+{
+}
+
+void Module::onFrame()
+{
+}
+
+void Module::onOpen()
+{
+}
+
+void Module::onClose()
+{
+}
+
+
+
+///---------[ SDL event handling ]---------///
 
 void Module::onEvent(SDL_Event* inEvent)
 {
@@ -131,12 +150,12 @@ void Module::onEvent(SDL_Event* inEvent)
                 }
                 case SDL_BUTTON_WHEELUP:
                 {
-                    onMouseWheel(true, false);
+                    onMouseWheelUp();
                     break;
                 }
                 case SDL_BUTTON_WHEELDOWN:
                 {
-                    onMouseWheel(false, true);
+                    onMouseWheelDown();
                     break;
                 }
             }
@@ -238,7 +257,11 @@ void Module::onMouseMove(int inX, int inY, int inRelX, int inRelY,
 {
 }
 
-void Module::onMouseWheel(bool inUp, bool inDown)
+void Module::onMouseWheelUp()
+{
+}
+
+void Module::onMouseWheelDown()
 {
 }
 
@@ -309,27 +332,5 @@ void Module::onExit()
 }
 
 void Module::onUser(Uint8 inType, int inCode, void* inData1, void* inData2)
-{
-}
-
-Module* Module::next()
-{
-    return NULL;
-}
-
-bool Module::isDead()
-{
-    return true;
-}
-
-void Module::onLoop()
-{
-}
-
-void Module::onFrame()
-{
-}
-
-void Module::onButtonPress(int inID)
 {
 }

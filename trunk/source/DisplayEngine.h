@@ -18,6 +18,7 @@
 #ifndef _DISPLAYENGINE_H_
 #define _DISPLAYENGINE_H_
 
+#include "Module.h"
 #include "Point2D.h"
 
 #include <SDL.h>
@@ -41,22 +42,21 @@ struct Mask
     Uint32 alpha;
 };
 
-class Module;
-
 class DisplayEngine
 {
     public:
         static void start(Module* inModule);
         static void initialize();
-        static void logOpenGL(ostream& inStream);
+
         static Surface loadImage(const char* inFile);
         static bool loadTexture(Surface inSurface, GLuint inTexture);
         static bool loadTexture(const char* inFile, GLuint inTexture);
 
+        static void logOpenGL(ostream& inStream);
+        static void logErrors(ostream& inStream);
+
     private:
         static void cleanup();
-
-        static void printErrors();
 
         static Surface _display;
         static Surface _windowIcon;

@@ -28,18 +28,19 @@ class Module
 
         void onEvent(SDL_Event* inEvent);
         bool isRunning();
+        bool isDead();
+        Module* next();
 
         /// module operation
         virtual bool onLoad() = 0;
-        virtual void onInit() = 0;
-        virtual void onLoop();
+        virtual void onOpen();
+        virtual void onRender();
         virtual void onFrame();
+        virtual void onClose();
         virtual void onUnload() = 0;
-        virtual bool isDead();
-        virtual Module* next();
 
     protected:
-        /// input events
+        /// event handlers
         virtual void onInputFocus();
         virtual void onInputBlur();
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
@@ -48,7 +49,8 @@ class Module
         virtual void onMouseBlur();
         virtual void onMouseMove(int inX, int inY, int inRelX, int inRelY,
             bool inLeft, bool inRight, bool inMiddle);
-        virtual void onMouseWheel(bool inUp, bool inDown);
+        virtual void onMouseWheelUp();
+        virtual void onMouseWheelDown();
         virtual void onLButtonDown(int inX, int inY);
         virtual void onLButtonUp(int inX, int inY);
         virtual void onRButtonDown(int inX, int inY);
@@ -69,14 +71,24 @@ class Module
         virtual void onUser(Uint8 inType, int inCode, void* inData1,
             void* inData2);
 
-        virtual void onButtonPress(int inID);
-
         bool _running;
+        bool _dead;
+        Module* _next;
 };
 
 inline bool Module::isRunning()
 {
     return _running;
+}
+
+inline Module* Module::next()
+{
+    return _next;
+}
+
+inline bool Module::isDead()
+{
+    return _dead;
 }
 
 #endif
