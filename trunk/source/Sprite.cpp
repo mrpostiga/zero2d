@@ -20,22 +20,24 @@
 
 #include <cstdlib>
 #include <fstream>
+#include <sstream>
 
 istream& operator>>(istream& inStream, FrameDatum& inFD)
 {
-    inStream >> inFD.location >> inFD.size >> inFD.base >> inFD.duration;
+    inStream >> inFD.sheet >> inFD.location >> inFD.size >> inFD.base
+        >> inFD.duration;
     return inStream;
 }
 
 map<string, Sprite*> Sprite::_sprites;
 
-Sprite::Sprite(const string& inPath) : _numFrames(0)
+Sprite::Sprite(const string& inPath) : _numFrames(0), _numSheets(0)
 {
-    string filename(inPath);
-    filename += "/static.02d";
+    stringstream filename;
+    filename << inPath << "/static.02d";
 
     ifstream staticData;
-    staticData.open(filename.c_str());
+    staticData.open(filename.str().c_str());
 
     if (staticData.fail())
     {
@@ -43,7 +45,8 @@ Sprite::Sprite(const string& inPath) : _numFrames(0)
         exit(1);
     }
 
-    getline(staticData, _title) >> _numFrames;
+    getline(staticData, _title) >> _numSheets >> _numFrames;
+    _sheets = new Sheet[_numSheets];
     _frameData = new FrameDatum[_numFrames];
 
     for (int i = 0; i < _numFrames; ++i)
@@ -55,27 +58,35 @@ Sprite::Sprite(const string& inPath) : _numFrames(0)
 
     staticData.close();
 
-    filename = inPath;
-    filename += "/sheet.png";
-    glGenTextures(1, &_texture);
-    Surface s = DisplayEngine::loadImage(filename.c_str());
-    if (s == NULL)
+    for (int i = 0; i < _numSheets; ++i)
     {
-        cerr << "failed to load sprite sheet: " << filename << endl;
-        exit(1);
-    }
+        filename.str(string());
+        filename << inPath << "/sheet-" << i << ".png";
+        glGenTextures(1, &_sheets[i].texture);
+        Surface s = DisplayEngine::loadImage(filename.str().c_str());
 
-    _sheetSize.x = s->w;
-    _sheetSize.y = s->h;
-    DisplayEngine::loadTexture(s, _texture);
+        if (s == NULL)
+        {
+            cerr << "failed to load sprite sheet: " << filename << endl;
+            exit(1);
+        }
+
+        _sheets[i].size.x = s->w;
+        _sheets[i].size.y = s->h;
+
+        DisplayEngine::loadTexture(s, _sheets[i].texture);
+    }
 }
 
 Sprite::~Sprite()
 {
     if (_numFrames > 0)
     {
-        glDeleteTextures(1, &_texture);
+        for (int i = 0; i < _numSheets; ++i)
+            glDeleteTextures(1, &_sheets[i].texture);
+
         delete [] _frameData;
+        delete [] _sheets;
     }
 }
 
@@ -119,16 +130,20 @@ void Sprite::draw(const DrawArgs& inArgs)
     Point2D<float> TextureUL;
     Point2D<float> TextureLR;
 
-    TextureUL.x = float(fd.location.x) / float(_sheetSize.x);
-    TextureLR.x = TextureUL.x + (float(fd.size.x) / float(_sheetSize.x));
+    TextureUL.x = float(fd.location.x) / float(_sheets[fd.sheet].size.x);
+    float width = float(fd.size.x) / float(_sheets[fd.sheet].size.x);
+    if (inArgs.facingRight) TextureUL.x += width;
+    TextureLR.x = TextureUL.x + width;
 
-    TextureLR.y = float(_sheetSize.y - fd.location.y) / float(_sheetSize.y);
-    TextureUL.y = TextureLR.y - (float(fd.size.y) / float(_sheetSize.y));
+    TextureLR.y = float(_sheets[fd.sheet].size.y - fd.location.y)
+        / float(_sheets[fd.sheet].size.y);
+    TextureUL.y = TextureLR.y - (float(fd.size.y)
+        / float(_sheets[fd.sheet].size.y));
 
     glEnable(GL_TEXTURE_2D);
 
     glPushMatrix();
-    glBindTexture(GL_TEXTURE_2D, _texture);
+    glBindTexture(GL_TEXTURE_2D, _sheets[fd.sheet].texture);
     glBegin(GL_QUADS);
     {
         glColor4fv(inArgs.colorMod.array());

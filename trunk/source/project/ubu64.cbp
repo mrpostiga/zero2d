@@ -46,6 +46,8 @@
 		<Unit filename="../Config.h" />
 		<Unit filename="../DisplayEngine.cpp" />
 		<Unit filename="../DisplayEngine.h" />
+		<Unit filename="../Entity.cpp" />
+		<Unit filename="../Entity.h" />
 		<Unit filename="../IntroPowerModule.cpp" />
 		<Unit filename="../IntroPowerModule.h" />
 		<Unit filename="../Matrix.h" />

@@ -43,7 +43,7 @@ void DisplayEngine::start(Module* inModule)
 
     list<Module*> moduleStack;
 
-    unsigned nextFrame = SDL_GetTicks() + FRAME_LENGTH;
+    unsigned nextPulse = SDL_GetTicks() + FRAME_LENGTH;
     SDL_Event event;
 
     while (currentModule != NULL || moduleStack.size() > 0)
@@ -82,10 +82,10 @@ void DisplayEngine::start(Module* inModule)
                 framesPerSecond = 0;
             }
 
-            if (ticks > nextFrame)
+            if (ticks > nextPulse)
             {
                 currentModule->onPulse();
-                nextFrame += FRAME_LENGTH;
+                nextPulse += FRAME_LENGTH;
             }
 
             SDL_Delay(1); // prevent CPU abuse
@@ -106,7 +106,6 @@ void DisplayEngine::start(Module* inModule)
             moduleStack.push_back(oldModule);
             oldModule = NULL;
         }
-
     }
 
     cleanup();

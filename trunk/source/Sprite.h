@@ -33,6 +33,7 @@ struct FrameDatum
     Point2D<int> location;
     Point2D<int> size;
     Point2D<int> base;
+    int sheet;
     int duration;
 
     FrameDatum() : duration(0) {}
@@ -51,6 +52,12 @@ struct DrawArgs
     DrawArgs() : index(0), rotation(0.0f), facingRight(false), colorMod(1) {}
 };
 
+struct Sheet
+{
+    GLuint texture;
+    Point2D<int> size;
+};
+
 class Sprite
 {
     public:
@@ -63,8 +70,6 @@ class Sprite
         int getDuration(int inIndex);
         int getNumFrames();
 
-        void bindTexture();
-
     private:
         Sprite(const string& inPath);
 
@@ -72,15 +77,10 @@ class Sprite
 
         string _title;
         int _numFrames;
-        GLuint _texture; // entire sprite sheet
-        Point2D<int> _sheetSize;
+        int _numSheets;
+        Sheet* _sheets;
         FrameDatum* _frameData;
 };
-
-inline void Sprite::bindTexture()
-{
-    glBindTexture(GL_TEXTURE_2D, _texture);
-}
 
 inline int Sprite::getNumFrames()
 {

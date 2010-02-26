@@ -52,3 +52,24 @@ void TestModule::onUnload()
     Sprite::unloadAll();
     Entity::unloadAll();
 }
+
+void TestModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+{
+    switch (inSym)
+    {
+        case SDLK_ESCAPE:
+        {
+            _running = false;
+        }
+
+        case SDLK_SPACE:
+        {
+            _sub->flip();
+            break;
+        }
+
+        default:
+        {
+        }
+    }
+}

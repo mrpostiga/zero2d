@@ -31,6 +31,9 @@ class TestModule : public Module
         virtual void onClose();
         virtual void onUnload();
 
+    protected:
+        virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+
     private:
         Entity* _sub;
 };
