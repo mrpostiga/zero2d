@@ -35,6 +35,10 @@ class Entity
         void flip();
         void draw();
 
+        void setColorMod(const Vector3D<float>& inVector);
+        void setRotation(float inDegrees);
+        void rotate(float inDegrees);
+
     private:
         static list<Entity*> _entities;
 

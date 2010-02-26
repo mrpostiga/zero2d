@@ -60,6 +60,8 @@
 		<Unit filename="../Sprite.h" />
 		<Unit filename="../TestModule.cpp" />
 		<Unit filename="../TestModule.h" />
+		<Unit filename="../TextPic.cpp" />
+		<Unit filename="../TextPic.h" />
 		<Unit filename="../Vector3D.h" />
 		<Unit filename="../main.cpp" />
 		<Extensions>

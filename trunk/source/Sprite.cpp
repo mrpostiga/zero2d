@@ -140,9 +140,9 @@ void Sprite::draw(const DrawArgs& inArgs)
     TextureUL.y = TextureLR.y - (float(fd.size.y)
         / float(_sheets[fd.sheet].size.y));
 
-    glEnable(GL_TEXTURE_2D);
-
     glPushMatrix();
+    glRotatef(inArgs.rotation, 0.0f, 0.0f, -1.0f);
+    glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, _sheets[fd.sheet].texture);
     glBegin(GL_QUADS);
     {
@@ -162,7 +162,6 @@ void Sprite::draw(const DrawArgs& inArgs)
         glVertex2f(QuadUL.x, QuadLR.y);
     }
     glEnd();
-    glPopMatrix();
-
     glDisable(GL_TEXTURE_2D);
+    glPopMatrix();
 }

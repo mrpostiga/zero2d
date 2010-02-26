@@ -49,3 +49,20 @@ void Entity::flip()
 {
     _args.facingRight = !_args.facingRight;
 }
+
+void Entity::setColorMod(const Vector3D<float>& inVector)
+{
+    _args.colorMod = inVector;
+}
+
+void Entity::setRotation(float inDegrees)
+{
+    _args.rotation = inDegrees;
+}
+
+void Entity::rotate(float inDegrees)
+{
+    _args.rotation += inDegrees;
+    if (_args.rotation > 180.0f) _args.rotation -= 360.0f;
+    if (_args.rotation < -180.0f) _args.rotation += 360.0f;
+}

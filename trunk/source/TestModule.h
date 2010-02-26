@@ -20,6 +20,7 @@
 
 #include "Module.h"
 #include "Entity.h"
+#include "TextPic.h"
 
 class TestModule : public Module
 {
@@ -33,9 +34,19 @@ class TestModule : public Module
 
     protected:
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+        virtual void onMouseWheelUp();
+        virtual void onMouseWheelDown();
 
     private:
+        void onConsoleKey(SDLKey inSym, SDLMod inMod);
+        void onOtherKey(SDLKey inSym, SDLMod inMod);
+        void updateConsole();
+
         Entity* _sub;
+        float _cameraZoom;
+        bool _consoleActive;
+        string _consoleInput;
+        TextPic _consoleOutput;
 };
 
 #endif

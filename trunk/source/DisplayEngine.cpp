@@ -20,6 +20,7 @@
 #include "Config.h"
 
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 
 #if SDL_IMAGE_PATCHLEVEL == 9
 // SDL_image 1.2.9 has a bug that prevents it from loading more than one image.
@@ -115,7 +116,13 @@ void DisplayEngine::initialize()
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
-        cerr << "error on SDL_Init" << endl;
+        cerr << "-- error on SDL_Init --" << endl;
+        exit(1);
+    }
+
+    if (TTF_Init() == -1)
+    {
+        cerr << "-- error on TTF_Init -- " << TTF_GetError() << endl;
         exit(1);
     }
 
@@ -209,6 +216,7 @@ void DisplayEngine::cleanup()
     SDL_FreeSurface(_windowIcon);
     #endif
 
+    TTF_Quit();
     SDL_Quit();
 }
 
