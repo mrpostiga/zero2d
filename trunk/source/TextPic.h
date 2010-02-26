@@ -27,6 +27,8 @@
 #include <string>
 using namespace std;
 
+enum TextQuality { TTF_SOLID, TTF_SHADED, TTF_BLENDED };
+
 class TextPic
 {
     public:
@@ -38,6 +40,7 @@ class TextPic
         void setText(const char* inText);
         void setText(const string& inText);
         void draw(float inX, float inY, float inScale);
+        void setQuality(TextQuality inQuality);
 
     private:
         void render();
@@ -48,11 +51,17 @@ class TextPic
         string _text;
         GLuint _texture;
         Point2D<float> _scales;
+        TextQuality _quality;
 };
 
 inline const string& TextPic::getText() const
 {
    return _text;
+}
+
+inline void TextPic::setQuality(TextQuality inQuality)
+{
+    _quality = inQuality;
 }
 
 #endif

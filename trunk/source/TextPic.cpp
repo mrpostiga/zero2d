@@ -18,7 +18,8 @@
 #include "TextPic.h"
 #include "DisplayEngine.h"
 
-TextPic::TextPic() : _font(NULL), _colorMod(1.0f), _texture(0)
+TextPic::TextPic() : _font(NULL), _colorMod(1.0f), _texture(0),
+    _quality(TTF_BLENDED)
 {
     _color.r = 255;
     _color.g = 255;
@@ -68,8 +69,26 @@ void TextPic::render()
 {
     Surface textSurface;
 
-    //textSurface = TTF_RenderText_Solid(_font, _text.c_str(), _color);
-    textSurface = TTF_RenderText_Blended(_font, _text.c_str(), _color);
+    switch (_quality)
+    {
+        case TTF_BLENDED:
+        {
+            textSurface = TTF_RenderText_Blended(_font, _text.c_str(), _color);
+            break;
+        }
+
+        case TTF_SHADED:
+        {
+            //textSurface = TTF_RenderText_Shaded(_font, _text.c_str(), _color);
+            break;
+        }
+
+        case TTF_SOLID:
+        default:
+        {
+            textSurface = TTF_RenderText_Solid(_font, _text.c_str(), _color);
+        }
+    }
 
     if (textSurface == NULL)
     {

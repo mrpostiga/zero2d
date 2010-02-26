@@ -23,12 +23,30 @@
 
 #define O_RANGE 40.0
 
+int my_function(lua_State *L)
+{
+    int argc = lua_gettop(L);
+
+    std::cerr << "-- my_function() called with " << argc
+    << " arguments:" << std::endl;
+
+    for ( int n=1; n<=argc; ++n )
+    {
+        std::cerr << "-- argument " << n << ": "
+        << lua_tostring(L, n) << std::endl;
+    }
+
+    lua_pushnumber(L, 123); // return value
+    return 1; // number of return values
+}
+
 bool TestModule::onLoad()
 {
     _sub = new Entity(Sprite::load("data/fighters/subzero"));
     _cameraZoom = 1.0f;
     _consoleActive = false;
     _consoleOutput.loadFont("data/fonts/DejaVuSans.ttf", 16);
+    _lua.regFunc("my_function", my_function);
     return true;
 }
 
@@ -100,16 +118,6 @@ void TestModule::onConsoleKey(SDLKey inSym, SDLMod inMod)
 {
     switch (inSym)
     {
-        case SDLK_LSHIFT:
-        case SDLK_RSHIFT:
-        case SDLK_LCTRL:
-        case SDLK_RCTRL:
-        case SDLK_LALT:
-        case SDLK_RALT:
-        {
-            break;
-        }
-
         case SDLK_BACKSPACE:
         {
             int l = _consoleInput.length();
@@ -119,6 +127,11 @@ void TestModule::onConsoleKey(SDLKey inSym, SDLMod inMod)
         }
 
         case SDLK_RETURN:
+        case SDLK_KP_ENTER:
+        {
+            if (_consoleInput.length() > 1)
+                _lua.runCommand(_consoleInput.c_str());
+        }
         case SDLK_ESCAPE:
         {
             _consoleActive = false;
@@ -127,20 +140,8 @@ void TestModule::onConsoleKey(SDLKey inSym, SDLMod inMod)
 
         default:
         {
-            int c = inSym;
-            //cout << "key " << c << endl;
-            if (inMod & (KMOD_LSHIFT | KMOD_RSHIFT))
-            {
-                if (c >= 'a' && c <= 'z')
-                {
-                    c -= 32;
-                }
-                else
-                {
-                    //switch
-                }
-            }
-            _consoleInput += c;
+            int c = processKey(inSym, inMod);
+            if (c > 0) _consoleInput += c;
             updateConsole();
         }
     }
@@ -151,6 +152,7 @@ void TestModule::onOtherKey(SDLKey inSym, SDLMod inMod)
     switch (inSym)
     {
         case SDLK_RETURN:
+        case SDLK_KP_ENTER:
         {
             _consoleInput = "";
             _consoleActive = true;
@@ -224,7 +226,7 @@ void TestModule::updateConsole()
 {
     if (!_consoleActive) return;
 
-    string s("LUA CONSOLE: ");
+    string s("LUA : ");
     s += _consoleInput;
     _consoleOutput.setText(s);
 }

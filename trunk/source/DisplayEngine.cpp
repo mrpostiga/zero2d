@@ -356,7 +356,8 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
     }
     else
     {
-        cerr << "failed to load texture -- not true color\n";
+        cerr << "failed to load texture -- not true color -- " << nOfColors
+            << endl;
         SDL_FreeSurface(inSurface);
         return false;
     }

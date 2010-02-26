@@ -39,6 +39,8 @@ class Module
         virtual void onClose();
         virtual void onUnload() = 0;
 
+        static int processKey(SDLKey inSym, SDLMod inMod);
+
     protected:
         /// event handlers
         virtual void onInputFocus();

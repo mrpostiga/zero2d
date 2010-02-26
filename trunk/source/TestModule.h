@@ -21,6 +21,7 @@
 #include "Module.h"
 #include "Entity.h"
 #include "TextPic.h"
+#include "LuaMachine.h"
 
 class TestModule : public Module
 {
@@ -47,6 +48,7 @@ class TestModule : public Module
         bool _consoleActive;
         string _consoleInput;
         TextPic _consoleOutput;
+        LuaMachine _lua;
 };
 
 #endif

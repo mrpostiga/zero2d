@@ -41,6 +41,7 @@
 			<Add library="SDL" />
 			<Add library="GL" />
 			<Add library="GLU" />
+			<Add library="lua5.1" />
 		</Linker>
 		<Unit filename="../Config.cpp" />
 		<Unit filename="../Config.h" />
@@ -50,6 +51,8 @@
 		<Unit filename="../Entity.h" />
 		<Unit filename="../IntroPowerModule.cpp" />
 		<Unit filename="../IntroPowerModule.h" />
+		<Unit filename="../LuaMachine.cpp" />
+		<Unit filename="../LuaMachine.h" />
 		<Unit filename="../Matrix.h" />
 		<Unit filename="../Module.cpp" />
 		<Unit filename="../Module.h" />
