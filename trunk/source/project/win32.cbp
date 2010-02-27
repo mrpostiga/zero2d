@@ -12,6 +12,7 @@
 				<Option object_output="obj\Debug\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -22,6 +23,7 @@
 				<Option object_output="obj\Release\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -43,6 +45,7 @@
 			<Add library="SDL" />
 			<Add library="opengl32" />
 			<Add library="glu32" />
+			<Add library="lua5.1" />
 		</Linker>
 		<Unit filename="..\Config.cpp" />
 		<Unit filename="..\Config.h" />
@@ -52,6 +55,8 @@
 		<Unit filename="..\Entity.h" />
 		<Unit filename="..\IntroPowerModule.cpp" />
 		<Unit filename="..\IntroPowerModule.h" />
+		<Unit filename="..\LuaMachine.cpp" />
+		<Unit filename="..\LuaMachine.h" />
 		<Unit filename="..\Matrix.h" />
 		<Unit filename="..\Module.cpp" />
 		<Unit filename="..\Module.h" />
@@ -62,6 +67,8 @@
 		<Unit filename="..\Sprite.h" />
 		<Unit filename="..\TestModule.cpp" />
 		<Unit filename="..\TestModule.h" />
+		<Unit filename="..\TextPic.cpp" />
+		<Unit filename="..\TextPic.h" />
 		<Unit filename="..\Vector3D.h" />
 		<Unit filename="..\main.cpp" />
 		<Extensions>
