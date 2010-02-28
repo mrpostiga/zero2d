@@ -60,6 +60,12 @@ void Entity::setRotation(float inDegrees)
     _args.rotation = inDegrees;
 }
 
+void Entity::setLocation(float inX, float inY)
+{
+    _args.location.x = inX;
+    _args.location.y = inY;
+}
+
 void Entity::rotate(float inDegrees)
 {
     _args.rotation += inDegrees;

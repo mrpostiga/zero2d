@@ -44,7 +44,7 @@ istream& operator>>(istream& inStream, FrameDatum& inFD);
 struct DrawArgs
 {
     int index;
-    Point2D<int> location;
+    Point2D<float> location;
     float rotation;
     bool facingRight;
     Vector3D<float> colorMod;

@@ -119,16 +119,16 @@ void Sprite::draw(const DrawArgs& inArgs)
 {
     const FrameDatum& fd = _frameData[inArgs.index];
 
-    Point2D<float> QuadUL;
-    Point2D<float> QuadLR;
+    static Point2D<float> QuadUL;
+    static Point2D<float> QuadLR;
 
     QuadUL.x = P2O(-fd.base.x);
     QuadUL.y = P2O(fd.base.y);
     QuadLR.x = P2O(-fd.base.x + fd.size.x);
     QuadLR.y = P2O(fd.base.y - fd.size.y);
 
-    Point2D<float> TextureUL;
-    Point2D<float> TextureLR;
+    static Point2D<float> TextureUL;
+    static Point2D<float> TextureLR;
 
     TextureUL.x = float(fd.location.x) / float(_sheets[fd.sheet].size.x);
     float width = float(fd.size.x) / float(_sheets[fd.sheet].size.x);
@@ -141,6 +141,7 @@ void Sprite::draw(const DrawArgs& inArgs)
         / float(_sheets[fd.sheet].size.y));
 
     glPushMatrix();
+    glTranslatef(inArgs.location.x, inArgs.location.y, 0.0f);
     glRotatef(inArgs.rotation, 0.0f, 0.0f, -1.0f);
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, _sheets[fd.sheet].texture);

@@ -37,6 +37,7 @@ class Entity
 
         void setColorMod(const Vector3D<float>& inVector);
         void setRotation(float inDegrees);
+        void setLocation(float inX, float inY);
         void rotate(float inDegrees);
 
     private:

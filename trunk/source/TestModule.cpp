@@ -23,21 +23,68 @@
 
 #define O_RANGE 40.0
 
-int my_function(lua_State *L)
+Entity* TestModule::luaEntity = NULL;
+
+int TestModule::luaShowArgs(lua_State* inState)
 {
-    int argc = lua_gettop(L);
+    int argc = lua_gettop(inState);
 
-    std::cerr << "-- my_function() called with " << argc
-    << " arguments:" << std::endl;
+    cerr << "showArgs() called with " << argc << " arguments:" << endl;
 
-    for ( int n=1; n<=argc; ++n )
+    for (int n = 1; n <= argc; ++n)
     {
-        std::cerr << "-- argument " << n << ": "
-        << lua_tostring(L, n) << std::endl;
+        cerr << "-- argument " << n << ": " << lua_tostring(inState, n) << endl;
     }
 
-    lua_pushnumber(L, 123); // return value
+    lua_pushnumber(inState, 123); // return value
     return 1; // number of return values
+}
+
+int TestModule::luaSetColor(lua_State* inState)
+{
+    int outSuccess = 1;
+
+    int argc = lua_gettop(inState);
+    if (argc == 1)
+    {
+        Vector3D<float> color(lua_tonumber(inState, 1));
+        luaEntity->setColorMod(color);
+    }
+    else if (argc >= 3)
+    {
+        Vector3D<float> color;
+        for (int n = 1; n <= argc; ++n)
+        {
+            color[n - 1] = lua_tonumber(inState, n);
+        }
+        luaEntity->setColorMod(color);
+    }
+    else
+    {
+        outSuccess = 0;
+    }
+
+    lua_pushnumber(inState, outSuccess);
+    return 1;
+}
+
+int TestModule::luaSetLocation(lua_State* inState)
+{
+    int outSuccess = 1;
+
+    int argc = lua_gettop(inState);
+    if (argc >= 2)
+    {
+        luaEntity->setLocation(lua_tonumber(inState, 1),
+            lua_tonumber(inState, 2));
+    }
+    else
+    {
+        outSuccess = 0;
+    }
+
+    lua_pushnumber(inState, outSuccess);
+    return 1;
 }
 
 bool TestModule::onLoad()
@@ -46,12 +93,17 @@ bool TestModule::onLoad()
     _cameraZoom = 1.0f;
     _consoleActive = false;
     _consoleOutput.loadFont("data/fonts/DejaVuSans.ttf", 16);
-    _lua.regFunc("my_function", my_function);
+
+    _lua.addFunction("showArgs", luaShowArgs);
+    _lua.addFunction("setColor", luaSetColor);
+    _lua.addFunction("setLocation", luaSetLocation);
     return true;
 }
 
 void TestModule::onOpen()
 {
+    luaEntity = _sub;
+
     DisplayEngine::ortho(O_RANGE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -140,7 +192,7 @@ void TestModule::onConsoleKey(SDLKey inSym, SDLMod inMod)
 
         default:
         {
-            int c = processKey(inSym, inMod);
+            int c = DisplayEngine::processKey(inSym, inMod);
             if (c > 0) _consoleInput += c;
             updateConsole();
         }
@@ -169,38 +221,6 @@ void TestModule::onOtherKey(SDLKey inSym, SDLMod inMod)
         case SDLK_SPACE:
         {
             _sub->flip();
-            break;
-        }
-
-        case SDLK_r:
-        {
-            _sub->setColorMod(Vector3D<float>(1.0f, 0.0f, 0.0f));
-            break;
-        }
-
-        case SDLK_g:
-        {
-            _sub->setColorMod(Vector3D<float>(0.0f, 1.0f, 0.0f));
-            break;
-        }
-
-        case SDLK_b:
-        {
-            _sub->setColorMod(Vector3D<float>(0.0f, 0.0f, 1.0f));
-            break;
-        }
-
-        case SDLK_w:
-        {
-            _sub->setColorMod(Vector3D<float>(1.0f, 1.0f, 1.0f));
-            break;
-        }
-
-        case SDLK_t:
-        {
-            Vector3D<float> v(1.0f, 1.0f, 1.0f);
-            v[3] = 0.5f;
-            _sub->setColorMod(v);
             break;
         }
 
