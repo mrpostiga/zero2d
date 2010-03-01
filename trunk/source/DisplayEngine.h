@@ -62,7 +62,6 @@ class DisplayEngine
         static bool loadTexture(const char* inFile, GLuint inTexture);
         static int processKey(SDLKey inSym, SDLMod inMod);
 
-        static const string& getTime();
         static void logOpenGL(ostream& inStream);
         static void logErrors(ostream& inStream);
 

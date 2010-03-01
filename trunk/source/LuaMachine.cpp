@@ -17,6 +17,8 @@
 
 #include "LuaMachine.h"
 
+#include <iostream>
+
 LuaMachine::LuaMachine() : _luaState(luaL_newstate())
 {
     luaL_openlibs(_luaState); // massive security hole
