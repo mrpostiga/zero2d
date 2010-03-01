@@ -21,6 +21,7 @@
 #include <lua.hpp>
 
 #include <iostream>
+#include <string>
 using namespace std;
 
 class LuaMachine
@@ -33,17 +34,32 @@ class LuaMachine
         void runCommand(const char* inCommand);
         void addFunction(const char* inName, lua_CFunction inFunction);
 
+        const string& getError();
+        void clearError();
+
     private:
         void execute();
-        void reportErrors(ostream& inStream);
+        void reportErrors();
 
         lua_State* _luaState;
         int _status;
+        string _error;
 };
 
-inline void LuaMachine::addFunction(const char* inName, lua_CFunction inFunction)
+inline void LuaMachine::addFunction(const char* inName,
+    lua_CFunction inFunction)
 {
     lua_register(_luaState, inName, inFunction);
+}
+
+inline const string& LuaMachine::getError()
+{
+    return _error;
+}
+
+inline void LuaMachine::clearError()
+{
+    _error.clear();
 }
 
 #endif

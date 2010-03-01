@@ -27,11 +27,12 @@ LuaMachine::~LuaMachine()
     lua_close(_luaState);
 }
 
-void LuaMachine::reportErrors(ostream& inStream)
+void LuaMachine::reportErrors()
 {
     if (_status != 0)
     {
-        inStream << "-- " << lua_tostring(_luaState, -1) << endl;
+        _error = "-- ";
+        _error += lua_tostring(_luaState, -1);
         lua_pop(_luaState, 1); // remove error message
     }
 }
@@ -40,7 +41,7 @@ void LuaMachine::execute()
 {
     _status = lua_pcall(_luaState, 0, LUA_MULTRET, 0);
     cout.flush();
-    reportErrors(cerr);
+    reportErrors();
 }
 
 void LuaMachine::loadFile(const char* inFile)

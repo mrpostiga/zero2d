@@ -18,6 +18,7 @@
 #include "DisplayEngine.h"
 #include "Module.h"
 #include "Config.h"
+#include "LogFile.h"
 
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -196,18 +197,8 @@ void DisplayEngine::initialize()
 
     SDL_WM_SetCaption("Zero2D version 0.0.1", "Zero2D");
 
-    ofstream logFile;
-    stringstream ss;
-    ss << "data/logs/ogl-" << time(NULL) << ".txt";
-    //cerr << "logging " << ss.str() << endl;
-    logFile.open(ss.str().c_str(), ios::trunc);
-    if (logFile.fail())
-    {
-        cerr << "failed to log: " << ss.str() << endl;
-        return;
-    }
-    logOpenGL(logFile);
-    logFile.close();
+    LogFile oglLog("ogl");
+    logOpenGL(oglLog);
 }
 
 void DisplayEngine::cleanup()
@@ -324,7 +315,8 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
         //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
         //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+            GL_LINEAR_MIPMAP_LINEAR);
     }
     else
     {
@@ -380,14 +372,21 @@ void DisplayEngine::logOpenGL(ostream& inStream)
     inStream << "Vendor: " << (char*)glGetString(GL_VENDOR) << endl;
     inStream << "Renderer: " << (char*)glGetString(GL_RENDERER) << endl;
     inStream << "OpenGL Version: " << (char*)glGetString(GL_VERSION) << endl;
-    string stuff = (char*)glGetString(GL_EXTENSIONS);
+    string stuff((char*)glGetString(GL_EXTENSIONS));
     inStream << "\nString size: " << stuff.size() << endl << endl;
-    for (unsigned int i = 0; i < stuff.size(); ++i)
+    for (unsigned int i = 0; i < stuff.length(); ++i)
     {
         unsigned int j = stuff.find_first_of(' ', i);
-        inStream << stuff.substr(i, j - i) << endl;
-
-        if (j > i) i = j;
+        if (j != string::npos)
+        {
+            inStream << stuff.substr(i, j - i) << endl;
+            i = j;
+        }
+        else
+        {
+            inStream << stuff.substr(i) << endl;
+            i = stuff.length();
+        }
     }
 }
 
