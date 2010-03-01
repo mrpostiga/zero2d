@@ -18,9 +18,17 @@
 #include "LuaMachine.h"
 
 #include <iostream>
+#include <sstream>
+
+LogFile LuaMachine::_logFile("lua");
 
 LuaMachine::LuaMachine() : _luaState(luaL_newstate())
 {
+    stringstream ss;
+
+    ss << (void*)this;
+    ss >> _name;
+
     luaL_openlibs(_luaState); // massive security hole
 }
 
@@ -31,29 +39,36 @@ LuaMachine::~LuaMachine()
 
 void LuaMachine::reportErrors()
 {
-    if (_status != 0)
-    {
-        _error = "-- ";
-        _error += lua_tostring(_luaState, -1);
-        lua_pop(_luaState, 1); // remove error message
-    }
+    _error += lua_tostring(_luaState, -1);
+
+    string s(_name);
+    s += " : ";
+    s += _error;
+    _logFile.addLine(s);
+
+    lua_pop(_luaState, 1); // remove error message
 }
 
 void LuaMachine::execute()
 {
     _status = lua_pcall(_luaState, 0, LUA_MULTRET, 0);
-    cout.flush();
-    reportErrors();
+    if (_status) reportErrors();
 }
 
 void LuaMachine::loadFile(const char* inFile)
 {
     _status = luaL_loadfile(_luaState, inFile);
-    if (_status == 0) execute();
+    if (_status)
+        reportErrors();
+    else
+        execute();
 }
 
 void LuaMachine::runCommand(const char* inCommand)
 {
     _status = luaL_loadstring(_luaState, inCommand);
-    if (_status == 0) execute();
+    if (_status)
+        reportErrors();
+    else
+        execute();
 }

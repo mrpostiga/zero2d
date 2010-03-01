@@ -31,12 +31,10 @@ class LogFile
         operator ofstream&();
 
         void addLine(const char* inText);
+        void addLine(const string& inText);
 
     protected:
         ofstream _stream;
-
-    private:
-        string _timestamp;
 };
 
 inline LogFile::operator ofstream&()

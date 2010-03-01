@@ -26,12 +26,11 @@ LogFile::LogFile(const char* inTitle)
     time(&rawtime);
     tm* timeinfo = localtime(&rawtime);
     strftime(buffer, 15, "%Y%m%d%H%M%S", timeinfo);
-    _timestamp = buffer;
 
     string s("data/logs/");
     s += inTitle;
     s += '-';
-    s += _timestamp;
+    s += buffer;
     s += ".txt";
 
     _stream.open(s.c_str());
@@ -43,6 +42,11 @@ LogFile::~LogFile()
 }
 
 void LogFile::addLine(const char* inText)
+{
+    _stream << inText << endl;
+}
+
+void LogFile::addLine(const string& inText)
 {
     _stream << inText << endl;
 }

@@ -18,6 +18,8 @@
 #ifndef _LUAMACHINE_H_
 #define _LUAMACHINE_H_
 
+#include "LogFile.h"
+
 #include <lua.hpp>
 
 #include <string>
@@ -33,6 +35,7 @@ class LuaMachine
         void runCommand(const char* inCommand);
         void addFunction(const char* inName, lua_CFunction inFunction);
 
+        bool hasError();
         const string& getError();
         void clearError();
 
@@ -40,9 +43,12 @@ class LuaMachine
         void execute();
         void reportErrors();
 
+        static LogFile _logFile;
+
         lua_State* _luaState;
         int _status;
         string _error;
+        string _name;
 };
 
 inline void LuaMachine::addFunction(const char* inName,
@@ -58,7 +64,13 @@ inline const string& LuaMachine::getError()
 
 inline void LuaMachine::clearError()
 {
+    _status = 0;
     _error.clear();
+}
+
+inline bool LuaMachine::hasError()
+{
+    return !!_status;
 }
 
 #endif
