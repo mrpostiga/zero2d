@@ -68,6 +68,27 @@ int TestModule::luaSetColor(lua_State* inState)
     return 1;
 }
 
+int TestModule::luaSetBlink(lua_State* inState)
+{
+    int outSuccess = 1;
+
+    int argc = lua_gettop(inState);
+    if (argc > 3)
+    {
+        int d = lua_tonumber(inState, 1);
+        Vector3D<float> c(lua_tonumber(inState, 2), lua_tonumber(inState, 3),
+            lua_tonumber(inState, 4));
+        luaEntity->setBlink(c, d);
+    }
+    else
+    {
+        luaEntity->stopBlink();
+    }
+
+    lua_pushnumber(inState, outSuccess);
+    return 1;
+}
+
 int TestModule::luaSetLocation(lua_State* inState)
 {
     int outSuccess = 1;
@@ -96,6 +117,7 @@ bool TestModule::onLoad()
 
     _lua.addFunction("showArgs", luaShowArgs);
     _lua.addFunction("setColor", luaSetColor);
+    _lua.addFunction("setBlink", luaSetBlink);
     _lua.addFunction("setLocation", luaSetLocation);
     return true;
 }

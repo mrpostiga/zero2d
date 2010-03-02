@@ -54,6 +54,7 @@ class Vector3D
         T operator*(const Vector3D<T>& inVector) const;
         const Vector3D<T> operator*(const T inRight) const;
         const Vector3D<T> operator^(const Vector3D<T>& inVector) const;
+        bool operator==(const Vector3D<T>& inVector);
         T& operator[](int inIndex);
         T operator[](int inIndex) const;
         const T* array() const;
@@ -252,6 +253,15 @@ const Vector3D<T> Vector3D<T>::operator^(const Vector3D<T>& inVector) const
     outVector[2] = (_vector[0] * inVector._vector[1]) -
         (_vector[1] * inVector._vector[0]);
     return outVector;
+}
+
+template<class T>
+bool Vector3D<T>::operator==(const Vector3D<T>& inVector)
+{
+    return _vector[0] == inVector._vector[0]
+        && _vector[1] == inVector._vector[1]
+        && _vector[2] == inVector._vector[2]
+        && _vector[3] == inVector._vector[3];
 }
 
 template<class T>

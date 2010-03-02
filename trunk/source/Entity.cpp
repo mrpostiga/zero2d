@@ -21,6 +21,9 @@ list<Entity*> Entity::_entities;
 
 Entity::Entity(Sprite* inSprite) : _sprite(inSprite), _pulseCount(0)
 {
+    _blink.duration = 0;
+    _blink.tick = 0;
+
     _entities.push_back(this);
 }
 
@@ -42,6 +45,18 @@ void Entity::pulse()
     {
         _args.index = (_args.index + 1) % _sprite->getNumFrames();
         _pulseCount = 0;
+    }
+
+    if (_blink.duration > 0)
+    {
+        ++_blink.tick;
+        if (_blink.tick >= _blink.duration)
+        {
+            _blink.tick = 0;
+            _blink.blinking = !_blink.blinking;
+            _args.colorMod = _blink.blinking ? _blink.blinkColor
+                : _blink.oldColor;
+        }
     }
 }
 
@@ -71,4 +86,23 @@ void Entity::rotate(float inDegrees)
     _args.rotation += inDegrees;
     if (_args.rotation > 180.0f) _args.rotation -= 360.0f;
     if (_args.rotation < -180.0f) _args.rotation += 360.0f;
+}
+
+void Entity::setBlink(const Vector3D<float>& inVector, int inDuration)
+{
+    if (_blink.duration > 0)
+        _args.colorMod = _blink.oldColor;
+    else
+        _blink.oldColor = _args.colorMod;
+
+    _blink.blinkColor = inVector;
+    _blink.duration = inDuration;
+    _blink.tick = 0;
+    _blink.blinking = false;
+}
+
+void Entity::stopBlink()
+{
+    _blink.duration = 0;
+    _args.colorMod = _blink.oldColor;
 }

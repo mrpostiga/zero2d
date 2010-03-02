@@ -23,6 +23,15 @@
 #include <list>
 using namespace std;
 
+struct Blink
+{
+    Vector3D<float> blinkColor;
+    Vector3D<float> oldColor;
+    int duration;
+    int tick;
+    bool blinking;
+};
+
 class Entity
 {
     public:
@@ -36,6 +45,8 @@ class Entity
         void draw();
 
         void setColorMod(const Vector3D<float>& inVector);
+        void setBlink(const Vector3D<float>& inVector, int inDuration);
+        void stopBlink();
         void setRotation(float inDegrees);
         void setLocation(float inX, float inY);
         void rotate(float inDegrees);
@@ -46,6 +57,7 @@ class Entity
         Sprite* _sprite;
         DrawArgs _args;
         int _pulseCount;
+        Blink _blink;
 };
 
 inline void Entity::draw()

@@ -36,6 +36,7 @@ class TestModule : public Module
         /// Lua wiring
         static int luaShowArgs(lua_State* inState);
         static int luaSetColor(lua_State* inState);
+        static int luaSetBlink(lua_State* inState);
         static int luaSetLocation(lua_State* inState);
 
         static Entity* luaEntity;
