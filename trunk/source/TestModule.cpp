@@ -165,8 +165,8 @@ void TestModule::onClose()
 
 void TestModule::onUnload()
 {
-    Sprite::unloadAll();
     Entity::unloadAll();
+    Sprite::unloadAll();
 }
 
 void TestModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
