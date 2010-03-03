@@ -256,7 +256,7 @@ const Vector3D<T> Vector3D<T>::operator^(const Vector3D<T>& inVector) const
 }
 
 template<class T>
-bool Vector3D<T>::operator==(const Vector3D<T>& inVector)
+inline bool Vector3D<T>::operator==(const Vector3D<T>& inVector)
 {
     return _vector[0] == inVector._vector[0]
         && _vector[1] == inVector._vector[1]
@@ -265,21 +265,20 @@ bool Vector3D<T>::operator==(const Vector3D<T>& inVector)
 }
 
 template<class T>
-T& Vector3D<T>::operator[](int inIndex)
+inline T& Vector3D<T>::operator[](int inIndex)
 {
     return _vector[inIndex];
 }
 
 template<class T>
-T Vector3D<T>::operator[](int inIndex) const
+inline T Vector3D<T>::operator[](int inIndex) const
 {
     return _vector[inIndex];
 }
 
 template<class T>
-T Vector3D<T>::get(int inIndex) const
+inline T Vector3D<T>::get(int inIndex) const
 {
-    if (inIndex < 0 || inIndex > 2) return 0.0;
     return _vector[inIndex];
 }
 

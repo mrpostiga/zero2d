@@ -25,9 +25,7 @@ int main(int argc, char** argv)
     Config::initialize(argc, argv);
     DisplayEngine::initialize();
     //SoundEngine::initialize();
-
     Config::outputSettings();
-
     DisplayEngine::start(new IntroPowerModule);
     //SoundEngine::cleanup();
     return 0;

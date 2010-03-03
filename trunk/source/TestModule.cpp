@@ -75,7 +75,7 @@ int TestModule::luaSetBlink(lua_State* inState)
     int argc = lua_gettop(inState);
     if (argc > 3)
     {
-        int d = lua_tonumber(inState, 1);
+        int d = int(lua_tonumber(inState, 1));
         Vector3D<float> c(lua_tonumber(inState, 2), lua_tonumber(inState, 3),
             lua_tonumber(inState, 4));
         luaEntity->setBlink(c, d);
