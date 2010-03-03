@@ -146,6 +146,7 @@ void IntroPowerModule::onRender()
     glLightfv(GL_LIGHT0, GL_AMBIENT, _ambient);
     glLightfv(GL_LIGHT0, GL_POSITION, _pos);
 
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBindTexture(GL_TEXTURE_2D, _logoID);
     glColor3f(1.0f, 1.0f, 1.0f);
 

@@ -60,7 +60,8 @@ class Matrix
         Matrix<T>& operator/=(const T inValue);
         T& operator()(int inRow, int inCol);
         T operator()(int inRow, int inCol) const;
-        T& operator[](int inIndex) const;
+        T& operator[](int inIndex);
+        T operator[](int inIndex) const;
         bool operator==(const Matrix<T>& inMatrix) const;
         bool operator!=(const Matrix<T>& inMatrix) const;
         const Matrix<T> operator+(const Matrix<T>& inMatrix) const;
@@ -408,7 +409,14 @@ T Matrix<T>::operator()(int inRow, int inCol) const
 }
 
 template<class T>
-T& Matrix<T>::operator[](int inIndex) const
+T& Matrix<T>::operator[](int inIndex)
+{
+    if (inIndex < 0 || inIndex >= _size) inIndex = 0;
+    return _matrix[inIndex];
+}
+
+template<class T>
+T Matrix<T>::operator[](int inIndex) const
 {
     if (inIndex < 0 || inIndex >= _size) inIndex = 0;
     return _matrix[inIndex];

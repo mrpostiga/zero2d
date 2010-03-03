@@ -134,6 +134,7 @@ void TextPic::render()
 void TextPic::draw(float inX, float inY, float inScale)
 {
     glEnable(GL_TEXTURE_2D);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBindTexture(GL_TEXTURE_2D, _texture);
     glBegin(GL_QUADS);
     {

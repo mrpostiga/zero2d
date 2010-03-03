@@ -54,8 +54,17 @@ void Entity::pulse()
         {
             _blink.tick = 0;
             _blink.blinking = !_blink.blinking;
-            _args.colorMod = _blink.blinking ? _blink.blinkColor
-                : _blink.oldColor;
+
+            if (_blink.blinking)
+            {
+                _args.colorMod = _blink.blinkColor;
+                _args.textureParam = GL_ADD;
+            }
+            else
+            {
+                _args.colorMod = _blink.oldColor;
+                _args.textureParam = GL_MODULATE;
+            }
         }
     }
 }

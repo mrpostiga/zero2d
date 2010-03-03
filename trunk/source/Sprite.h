@@ -48,8 +48,10 @@ struct DrawArgs
     float rotation;
     bool facingRight;
     Vector3D<float> colorMod;
+    GLint textureParam;
 
-    DrawArgs() : index(0), rotation(0.0f), facingRight(false), colorMod(1) {}
+    DrawArgs() : index(0), rotation(0.0f), facingRight(false), colorMod(1),
+        textureParam(GL_MODULATE) {}
 };
 
 struct Sheet

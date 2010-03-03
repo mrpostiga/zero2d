@@ -144,6 +144,7 @@ void Sprite::draw(const DrawArgs& inArgs)
     glTranslatef(inArgs.location.x, inArgs.location.y, 0.0f);
     glRotatef(inArgs.rotation, 0.0f, 0.0f, -1.0f);
     glEnable(GL_TEXTURE_2D);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, inArgs.textureParam);
     glBindTexture(GL_TEXTURE_2D, _sheets[fd.sheet].texture);
     glBegin(GL_QUADS);
     {

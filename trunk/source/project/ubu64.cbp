@@ -51,6 +51,8 @@
 		<Unit filename="../Entity.h" />
 		<Unit filename="../IntroPowerModule.cpp" />
 		<Unit filename="../IntroPowerModule.h" />
+		<Unit filename="../LogFile.cpp" />
+		<Unit filename="../LogFile.h" />
 		<Unit filename="../LuaMachine.cpp" />
 		<Unit filename="../LuaMachine.h" />
 		<Unit filename="../Matrix.h" />

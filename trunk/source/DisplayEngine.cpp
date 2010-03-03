@@ -34,6 +34,7 @@
 
 Surface DisplayEngine::_display = NULL;
 Surface DisplayEngine::_windowIcon = NULL;
+Surface DisplayEngine::_dot = NULL;
 SDL_Rect** DisplayEngine::_modes = NULL;
 bool DisplayEngine::_mipmapping = false;
 Mask DisplayEngine::_mask;
@@ -71,10 +72,6 @@ void DisplayEngine::start(Module* inModule)
         {
             while (SDL_PollEvent(&event)) currentModule->onEvent(&event);
 
-            currentModule->onRender();
-            SDL_GL_SwapBuffers();
-            ++framesPerSecond;
-
             unsigned int ticks = SDL_GetTicks();
 
             if (ticks > nextSecond)
@@ -88,6 +85,12 @@ void DisplayEngine::start(Module* inModule)
             {
                 currentModule->onPulse();
                 nextPulse += FRAME_LENGTH;
+            }
+            else
+            {
+                currentModule->onRender();
+                SDL_GL_SwapBuffers();
+                ++framesPerSecond;
             }
 
             SDL_Delay(1); // prevent CPU abuse
@@ -182,6 +185,13 @@ void DisplayEngine::initialize()
 
     _display = SDL_SetVideoMode(width, height,
         Config::get<int>("bits per pixel", 32), flags);
+
+    flags = SDL_SWSURFACE | SDL_ASYNCBLIT;
+    Surface t;
+    t = SDL_CreateRGBSurface(flags, 1, 1, 0, _mask.red, _mask.green, _mask.blue,
+        _mask.alpha);
+    _dot = SDL_DisplayFormat(t);
+    SDL_FreeSurface(t);
 
     #ifndef __APPLE__
     // OSX does not support window icons
@@ -296,14 +306,7 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
     bool outSuccess = true;
     if (inSurface == NULL)
     {
-        Uint32 flags = SDL_SWSURFACE | SDL_ASYNCBLIT;
-        int bits = 0;
-
-        Surface t;
-        t = SDL_CreateRGBSurface(flags, 1, 1, bits, _mask.red, _mask.green,
-            _mask.blue, _mask.alpha);
-        inSurface = SDL_DisplayFormat(t);
-        SDL_FreeSurface(t);
+        inSurface = _dot;
         outSuccess = false;
     }
 
@@ -312,9 +315,6 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
     if (_mipmapping)
     {
         glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
-        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
-
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
             GL_LINEAR_MIPMAP_LINEAR);
     }
@@ -326,9 +326,6 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-
 
     GLint nOfColors = inSurface->format->BytesPerPixel;
     GLenum tFormat = GL_RGBA;

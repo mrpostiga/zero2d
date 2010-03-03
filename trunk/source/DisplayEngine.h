@@ -70,6 +70,7 @@ class DisplayEngine
 
         static Surface _display;
         static Surface _windowIcon;
+        static Surface _dot;
         static SDL_Rect** _modes;
         static bool _mipmapping;
         static Mask _mask;
