@@ -110,7 +110,7 @@ int TestModule::luaSetLocation(lua_State* inState)
 
 bool TestModule::onLoad()
 {
-    _sub = new Entity(Sprite::load("data/fighters/subzero"));
+    _fighter = new Entity(Sprite::load("data/fighters/pimple"));
     _cameraZoom = 1.0f;
     _consoleActive = false;
     _consoleOutput.loadFont("data/fonts/DejaVuSans.ttf", 16);
@@ -124,7 +124,9 @@ bool TestModule::onLoad()
 
 void TestModule::onOpen()
 {
-    luaEntity = _sub;
+    Matrix<float> m(4);
+
+    luaEntity = _fighter;
 
     DisplayEngine::ortho(O_RANGE);
     glEnable(GL_BLEND);
@@ -146,7 +148,7 @@ void TestModule::onRender()
     }
     glEnd();
 
-    _sub->draw();
+    _fighter->draw();
     glPopMatrix();
 
     if (_consoleActive)
@@ -155,7 +157,7 @@ void TestModule::onRender()
 
 void TestModule::onPulse()
 {
-    _sub->pulse();
+    _fighter->pulse();
 }
 
 void TestModule::onClose()
@@ -242,19 +244,19 @@ void TestModule::onOtherKey(SDLKey inSym, SDLMod inMod)
 
         case SDLK_SPACE:
         {
-            _sub->flip();
+            _fighter->flip();
             break;
         }
 
         case SDLK_PAGEUP:
         {
-            _sub->rotate(-15.0f);
+            _fighter->rotate(-15.0f);
             break;
         }
 
         case SDLK_PAGEDOWN:
         {
-            _sub->rotate(15.0f);
+            _fighter->rotate(15.0f);
             break;
         }
 

@@ -45,16 +45,62 @@ Sprite::Sprite(const string& inPath) : _numFrames(0), _numSheets(0)
         exit(1);
     }
 
-    getline(staticData, _title) >> _numSheets >> _numFrames;
+    char key;
+    FrameDatum currentData;
+    getline(staticData, _title) >> _numSheets >> _numFrames >> key;
     _sheets = new Sheet[_numSheets];
     _frameData = new FrameDatum[_numFrames];
 
-    for (int i = 0; i < _numFrames; ++i)
+    while (key != 'x')
     {
-        int index = 0;
-        staticData >> index >> _frameData[i];
-        //cerr << "loading frame " << index << endl;
+        cerr << "key -- " << key << endl;
+        switch (key)
+        {
+            case 'b':
+            {
+                staticData >> currentData.base;
+                break;
+            }
+
+            case 'd':
+            {
+                staticData >> currentData.duration;
+                break;
+            }
+
+            case 's':
+            {
+                staticData >> currentData.size;
+                break;
+            }
+
+            case 'f':
+            {
+                int index;
+                staticData >> index;
+                staticData >> _frameData[index].sheet
+                    >> _frameData[index].location;
+                _frameData[index].base = currentData.base;
+                _frameData[index].duration = currentData.duration;
+                _frameData[index].size = currentData.size;
+                break;
+            }
+
+            default:
+            {
+                cerr << "unrecognized data key: " << key << endl;
+                key = 'x';
+            }
+        }
+
+        if (key != 'x') staticData >> key;
     }
+
+//    for (int i = 0; i < _numFrames; ++i)
+//    {
+//        int index = 0;
+//        staticData >> index >> _frameData[i];
+//    }
 
     staticData.close();
 
@@ -135,9 +181,9 @@ void Sprite::draw(const DrawArgs& inArgs)
     if (inArgs.facingRight) TextureUL.x += width;
     TextureLR.x = TextureUL.x + width;
 
-    TextureLR.y = float(_sheets[fd.sheet].size.y - fd.location.y)
+    TextureUL.y = float(fd.location.y)
         / float(_sheets[fd.sheet].size.y);
-    TextureUL.y = TextureLR.y - (float(fd.size.y)
+    TextureLR.y = TextureUL.y + (float(fd.size.y)
         / float(_sheets[fd.sheet].size.y));
 
     glPushMatrix();
@@ -152,15 +198,19 @@ void Sprite::draw(const DrawArgs& inArgs)
         glNormal3f(0.0f, 0.0f, 1.0f);
 
         glTexCoord2f(TextureUL.x, TextureUL.y);
+        //glTexCoord2f(TextureUL.x, 0);
         glVertex2f(QuadUL.x, QuadUL.y);
 
         glTexCoord2f(TextureLR.x, TextureUL.y);
+        //glTexCoord2f(TextureLR.x, 0);
         glVertex2f(QuadLR.x, QuadUL.y);
 
         glTexCoord2f(TextureLR.x, TextureLR.y);
+        //glTexCoord2f(TextureLR.x, 0.25);
         glVertex2f(QuadLR.x, QuadLR.y);
 
         glTexCoord2f(TextureUL.x, TextureLR.y);
+        //glTexCoord2f(TextureUL.x, 0.25);
         glVertex2f(QuadUL.x, QuadLR.y);
     }
     glEnd();

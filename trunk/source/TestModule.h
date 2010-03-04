@@ -51,7 +51,7 @@ class TestModule : public Module
         void onOtherKey(SDLKey inSym, SDLMod inMod);
         void updateConsole();
 
-        Entity* _sub;
+        Entity* _fighter;
         float _cameraZoom;
         bool _consoleActive;
         string _consoleInput;

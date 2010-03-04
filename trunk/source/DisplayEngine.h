@@ -20,13 +20,12 @@
 
 #include "Module.h"
 #include "Point2D.h"
+#include "Vector3D.h"
+#include "Matrix.h"
 
 #include <SDL.h>
 #include <SDL_opengl.h>
 typedef SDL_Surface* Surface;
-
-#include <iostream>
-using namespace std;
 
 // conversion from object space to pixel space
 #define O2P(n) static_cast<int>((n) * 4.0f)
@@ -65,6 +64,9 @@ class DisplayEngine
         static void logOpenGL(ostream& inStream);
         static void logErrors(ostream& inStream);
 
+        template<class T> static void transform(Vector3D<T>& inVector,
+            const Matrix<T>& inMatrix);
+
     private:
         static void cleanup();
 
@@ -75,5 +77,18 @@ class DisplayEngine
         static bool _mipmapping;
         static Mask _mask;
 };
+
+template<class T>
+void DisplayEngine::transform(Vector3D<T>& inVector, const Matrix<T>& inMatrix)
+{
+    inVector[0] = inVector[0] * inMatrix[0] + inVector[1] * inMatrix[4]
+        + inVector[2] * inMatrix[8] + inVector[3] * inMatrix[12];
+    inVector[1] = inVector[0] * inMatrix[1] + inVector[1] * inMatrix[5]
+        + inVector[2] * inMatrix[9] + inVector[3] * inMatrix[13];
+    inVector[2] = inVector[0] * inMatrix[2] + inVector[1] * inMatrix[6]
+        + inVector[2] * inMatrix[10] + inVector[3] * inMatrix[14];
+    inVector[3] = inVector[0] * inMatrix[3] + inVector[1] * inMatrix[7]
+        + inVector[2] * inMatrix[11] + inVector[3] * inMatrix[15];
+}
 
 #endif

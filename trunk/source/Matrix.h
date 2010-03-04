@@ -39,9 +39,7 @@ class Matrix
         int size() const;
         int lastRow() const;
         int lastCol() const;
-        bool square() const;
-        T at(int inIndex) const;
-        T at(int inRow, int inCol) const;
+        bool isSquare() const;
         int toIndex(int inRow, int inCol) const;
         void set(int inRow, int inCol, T inValue);
         T determinant() const;
@@ -75,6 +73,7 @@ class Matrix
 
     private:
         void copy(const Matrix<T>& inMatrix);
+        T at(int inRow, int inCol) const;
 
         int _rows;
         int _cols;
@@ -155,7 +154,7 @@ inline int Matrix<T>::lastCol() const
 }
 
 template<class T>
-inline bool Matrix<T>::square() const
+inline bool Matrix<T>::isSquare() const
 {
     return _rows == _cols;
 }
@@ -178,23 +177,14 @@ void Matrix<T>::set(int inRow, int inCol, T inValue)
 }
 
 template<class T>
-inline T Matrix<T>::at(int inIndex) const
-{
-    return _matrix[inIndex];
-}
-
-template<class T>
 inline T Matrix<T>::at(int inRow, int inCol) const
 {
     return _matrix[(inRow * _cols) + inCol];
 }
 
 template<class T>
-int Matrix<T>::toIndex(int inRow, int inCol) const
+inline int Matrix<T>::toIndex(int inRow, int inCol) const
 {
-    if (inRow < 0 || inCol < 0) return 0;
-    inRow %= _rows;
-    inCol %= _cols;
     return (inRow * _cols) + inCol;
 }
 
@@ -257,7 +247,7 @@ Matrix<T> Matrix<T>::minorMatrix(int inRow, int inCol) const
 
     int p = 0;
 
-    Matrix outMatrix(_rows - 1);
+    Matrix outMatrix(_rows - 1, _rows - 1);
 
     for (int i = 0; i < _rows; ++i)
     {
@@ -390,7 +380,7 @@ inline T& Matrix<T>::operator[](int inIndex)
 }
 
 template<class T>
-T Matrix<T>::operator[](int inIndex) const
+inline T Matrix<T>::operator[](int inIndex) const
 {
     return _matrix[inIndex];
 }
@@ -477,7 +467,7 @@ bool Matrix<T>::operator==(const Matrix<T>& inMatrix) const
 
     for (int i = 0; i < _size; ++i)
     {
-        if (at(i) != inMatrix[i]) return false;
+        if (_matrix[i] != inMatrix[i]) return false;
     }
 
     return true;
@@ -502,7 +492,7 @@ ostream& operator<<(ostream& inStream, const Matrix<T>& inMatrix)
     for (int i = 0; i < inMatrix.size(); ++i)
     {
         if (i % inMatrix.cols() == 0 && i > 0) inStream << endl;
-        inStream << setw(8) << inMatrix.at(i);
+        inStream << setw(8) << inMatrix[i];
     }
 
     inStream << endl;

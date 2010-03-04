@@ -19,10 +19,12 @@
 #define _VECTOR3D_H_
 
 #include <cmath>
-#include "Matrix.h"
+#include <iostream>
+using namespace std;
 
-#define PI 3.141592654
-#define TO_RADIANS(n) ((n) * PI / 180.0)
+#define PI 3.141592653589793238462643383
+#define DEG2RAD(n) ((n) * PI / 180.0)
+#define RAD2DEG(n) ((n) * 180.0 / PI)
 #define PSEUDO_ZERO 0.000001
 
 template<class T>
@@ -33,17 +35,14 @@ class Vector3D
         Vector3D<T>(const Vector3D<T>& inVector);
         Vector3D<T>(T inValue);
         Vector3D<T>(T inX, T inY, T inZ);
-        Matrix<T> toMatrix() const;
         void set(T inValue);
         void set(T inX, T inY, T inZ);
-        T get(int inIndex) const;
         void normalize();
         const Vector3D<T> normalized() const;
         bool isZero() const;
         void negate();
-        float length() const;
+        double length() const;
         const Vector3D<T> negated() const;
-        void processMatrix(const Matrix<T>& inMatrix);
 
         Vector3D<T>& operator=(const Vector3D<T>& inVector);
         Vector3D<T>& operator+=(const Vector3D<T>& inVector);
@@ -52,7 +51,7 @@ class Vector3D
         const Vector3D<T> operator-(const Vector3D<T>& inVector) const;
         const Vector3D<T> operator-() const;
         T operator*(const Vector3D<T>& inVector) const;
-        const Vector3D<T> operator*(const T inRight) const;
+        const Vector3D<T> operator*(const T inValue) const;
         const Vector3D<T> operator^(const Vector3D<T>& inVector) const;
         bool operator==(const Vector3D<T>& inVector);
         T& operator[](int inIndex);
@@ -97,17 +96,6 @@ Vector3D<T>::Vector3D(T inX, T inY, T inZ)
     _vector[1] = inY;
     _vector[2] = inZ;
     _vector[3] = 1;
-}
-
-template<class T>
-Matrix<T> Vector3D<T>::toMatrix() const
-{
-    Matrix<T> outMatrix(4, 1);
-    outMatrix[0] = _vector[0];
-    outMatrix[1] = _vector[1];
-    outMatrix[2] = _vector[2];
-    outMatrix[3] = _vector[3];
-    return outMatrix;
 }
 
 template<class T>
@@ -162,10 +150,13 @@ void Vector3D<T>::negate()
 }
 
 template<class T>
-inline float Vector3D<T>::length() const
+double Vector3D<T>::length() const
 {
-    return sqrt((_vector[0] * _vector[0]) + (_vector[1] * _vector[1]) +
-                (_vector[2] * _vector[2]));
+    Vector3D<double> v;
+    v[0] = _vector[0] * _vector[0];
+    v[1] = _vector[1] * _vector[1];
+    v[2] = _vector[2] * _vector[2];
+    return sqrt(v[0] + v[1] + v[2]);
 }
 
 template<class T>
@@ -233,12 +224,12 @@ T Vector3D<T>::operator*(const Vector3D<T>& inVector) const
 }
 
 template<class T>
-const Vector3D<T> Vector3D<T>::operator*(const T inRight) const
+const Vector3D<T> Vector3D<T>::operator*(const T inValue) const
 {
     Vector3D<T> outVector;
-    outVector._vector[0] = _vector[0] * inRight;
-    outVector._vector[1] = _vector[1] * inRight;
-    outVector._vector[2] = _vector[2] * inRight;
+    outVector._vector[0] = _vector[0] * inValue;
+    outVector._vector[1] = _vector[1] * inValue;
+    outVector._vector[2] = _vector[2] * inValue;
     return outVector;
 }
 
@@ -277,28 +268,9 @@ inline T Vector3D<T>::operator[](int inIndex) const
 }
 
 template<class T>
-inline T Vector3D<T>::get(int inIndex) const
-{
-    return _vector[inIndex];
-}
-
-template<class T>
 inline const T* Vector3D<T>::array() const
 {
     return _vector;
-}
-
-template<class T>
-void Vector3D<T>::processMatrix(const Matrix<T>& inMatrix)
-{
-    _vector[0] = _vector[0] * inMatrix[0] + _vector[1] * inMatrix[4]
-        + _vector[2] * inMatrix[8] + _vector[3] * inMatrix[12];
-    _vector[1] = _vector[0] * inMatrix[1] + _vector[1] * inMatrix[5]
-        + _vector[2] * inMatrix[9] + _vector[3] * inMatrix[13];
-    _vector[2] = _vector[0] * inMatrix[2] + _vector[1] * inMatrix[6]
-        + _vector[2] * inMatrix[10] + _vector[3] * inMatrix[14];
-    _vector[3] = _vector[0] * inMatrix[3] + _vector[1] * inMatrix[7]
-        + _vector[2] * inMatrix[11] + _vector[3] * inMatrix[15];
 }
 
 template<class T>
