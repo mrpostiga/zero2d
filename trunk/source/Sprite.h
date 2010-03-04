@@ -24,8 +24,9 @@
 #include <SDL_opengl.h>
 
 #include <iostream>
-#include <map>
 #include <string>
+#include <map>
+#include <vector>
 using namespace std;
 
 struct FrameDatum
@@ -34,12 +35,18 @@ struct FrameDatum
     Point2D<int> size;
     Point2D<int> base;
     int sheet;
-    int duration;
-
-    FrameDatum() : duration(0) {}
 };
 
-istream& operator>>(istream& inStream, FrameDatum& inFD);
+struct FramePair
+{
+    int index;
+    int duration;
+};
+
+struct StateDatum
+{
+    vector<FramePair> frames;
+};
 
 struct DrawArgs
 {
@@ -69,7 +76,7 @@ class Sprite
         static void unloadAll();
 
         void draw(const DrawArgs& inArgs);
-        int getDuration(int inIndex);
+        const StateDatum* getState(int inIndex);
         int getNumFrames();
 
     private:
@@ -80,8 +87,10 @@ class Sprite
         string _title;
         int _numFrames;
         int _numSheets;
+        int _numStates;
         Sheet* _sheets;
         FrameDatum* _frameData;
+        StateDatum* _stateData;
 };
 
 inline int Sprite::getNumFrames()
@@ -89,9 +98,9 @@ inline int Sprite::getNumFrames()
     return _numFrames;
 }
 
-inline int Sprite::getDuration(int inIndex)
+inline const StateDatum* Sprite::getState(int inIndex)
 {
-    return _frameData[inIndex].duration;
+    return _stateData + inIndex;
 }
 
 #endif

@@ -55,6 +55,9 @@ class Entity
         static list<Entity*> _entities;
 
         Sprite* _sprite;
+        const StateDatum* _stateDatum;
+        int _state;
+        int _subState;
         DrawArgs _args;
         int _pulseCount;
         Blink _blink;

@@ -22,16 +22,10 @@
 #include <fstream>
 #include <sstream>
 
-istream& operator>>(istream& inStream, FrameDatum& inFD)
-{
-    inStream >> inFD.sheet >> inFD.location >> inFD.size >> inFD.base
-        >> inFD.duration;
-    return inStream;
-}
-
 map<string, Sprite*> Sprite::_sprites;
 
-Sprite::Sprite(const string& inPath) : _numFrames(0), _numSheets(0)
+Sprite::Sprite(const string& inPath) : _numFrames(0), _numSheets(0),
+    _numStates(0)
 {
     stringstream filename;
     filename << inPath << "/static.02d";
@@ -53,18 +47,11 @@ Sprite::Sprite(const string& inPath) : _numFrames(0), _numSheets(0)
 
     while (key != 'x')
     {
-        cerr << "key -- " << key << endl;
         switch (key)
         {
             case 'b':
             {
                 staticData >> currentData.base;
-                break;
-            }
-
-            case 'd':
-            {
-                staticData >> currentData.duration;
                 break;
             }
 
@@ -81,7 +68,6 @@ Sprite::Sprite(const string& inPath) : _numFrames(0), _numSheets(0)
                 staticData >> _frameData[index].sheet
                     >> _frameData[index].location;
                 _frameData[index].base = currentData.base;
-                _frameData[index].duration = currentData.duration;
                 _frameData[index].size = currentData.size;
                 break;
             }
@@ -96,13 +82,52 @@ Sprite::Sprite(const string& inPath) : _numFrames(0), _numSheets(0)
         if (key != 'x') staticData >> key;
     }
 
-//    for (int i = 0; i < _numFrames; ++i)
-//    {
-//        int index = 0;
-//        staticData >> index >> _frameData[i];
-//    }
+    staticData >> _numStates;
+    _stateData = new StateDatum[_numStates];
+    int currentDuration = 0;
+    int currentState = 0;
+
+    staticData >> key;
+
+    while (key != 'x')
+    {
+        switch (key)
+        {
+            case 's':
+            {
+                staticData >> currentState;
+                break;
+            }
+
+            case 'd':
+            {
+                staticData >> currentDuration;
+                break;
+            }
+
+            case 'f':
+            {
+                FramePair fp;
+                fp.duration = currentDuration;
+                staticData >> fp.index;
+                _stateData[currentState].frames.push_back(fp);
+                break;
+            }
+
+
+            default:
+            {
+                cerr << "unrecognized data key: " << key << endl;
+                key = 'x';
+            }
+        }
+
+        if (key != 'x') staticData >> key;
+    }
 
     staticData.close();
+
+    cerr << _stateData[0].frames.size() << endl;
 
     for (int i = 0; i < _numSheets; ++i)
     {
@@ -132,6 +157,7 @@ Sprite::~Sprite()
             glDeleteTextures(1, &_sheets[i].texture);
 
         delete [] _frameData;
+        delete [] _stateData;
         delete [] _sheets;
     }
 }

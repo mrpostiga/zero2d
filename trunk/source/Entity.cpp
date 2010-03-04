@@ -19,10 +19,14 @@
 
 list<Entity*> Entity::_entities;
 
-Entity::Entity(Sprite* inSprite) : _sprite(inSprite), _pulseCount(0)
+Entity::Entity(Sprite* inSprite) : _sprite(inSprite), _state(0), _subState(0),
+    _pulseCount(0)
 {
     _blink.duration = 0;
     _blink.tick = 0;
+
+    _stateDatum = _sprite->getState(_state);
+    _args.index = _stateDatum->frames[_subState].index;
 
     _entities.push_back(this);
 }
@@ -41,9 +45,10 @@ void Entity::pulse()
 {
     ++_pulseCount;
 
-    if (_pulseCount >= _sprite->getDuration(_args.index))
+    if (_pulseCount >= _stateDatum->frames[_subState].duration)
     {
-        _args.index = (_args.index + 1) % _sprite->getNumFrames();
+        _subState = (_subState + 1) % _stateDatum->frames.size();
+        _args.index = _stateDatum->frames[_subState].index;
         _pulseCount = 0;
     }
 
@@ -114,4 +119,5 @@ void Entity::stopBlink()
 {
     _blink.duration = 0;
     _args.colorMod = _blink.oldColor;
+    _args.textureParam = GL_MODULATE;
 }
