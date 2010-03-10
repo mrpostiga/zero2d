@@ -50,6 +50,7 @@ class Entity
         void setRotation(float inDegrees);
         void setLocation(float inX, float inY);
         void rotate(float inDegrees);
+        void jumpToState(int inState);
 
     private:
         static list<Entity*> _entities;

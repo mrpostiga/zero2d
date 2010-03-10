@@ -21,7 +21,7 @@
 
 #include <SDL_opengl.h>
 
-#define O_RANGE 40.0
+#define O_RANGE 80.0
 
 Entity* TestModule::luaEntity = NULL;
 
@@ -108,6 +108,24 @@ int TestModule::luaSetLocation(lua_State* inState)
     return 1;
 }
 
+int TestModule::luaSetState(lua_State* inState)
+{
+    int outSuccess = 1;
+    int argc = lua_gettop(inState);
+
+    if (argc < 1)
+    {
+        outSuccess = 0;
+    }
+    else
+    {
+        luaEntity->jumpToState(int(lua_tonumber(inState, 1)));
+    }
+
+    lua_pushnumber(inState, outSuccess);
+    return 1;
+}
+
 bool TestModule::onLoad()
 {
     _fighter = new Entity(Sprite::load("data/fighters/pimple"));
@@ -119,6 +137,7 @@ bool TestModule::onLoad()
     _lua.addFunction("setColor", luaSetColor);
     _lua.addFunction("setBlink", luaSetBlink);
     _lua.addFunction("setLocation", luaSetLocation);
+    _lua.addFunction("setState", luaSetState);
     return true;
 }
 
@@ -128,7 +147,7 @@ void TestModule::onOpen()
 
     luaEntity = _fighter;
 
-    DisplayEngine::ortho(O_RANGE);
+    DisplayEngine::ortho(P2O(SDL_GetVideoSurface()->h / 2));
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
@@ -273,4 +292,9 @@ void TestModule::updateConsole()
     string s("LUA : ");
     s += _consoleInput;
     _consoleOutput.setText(s);
+}
+
+void TestModule::onMButtonDown(int inX, int inY)
+{
+    _cameraZoom = 1.0f;
 }

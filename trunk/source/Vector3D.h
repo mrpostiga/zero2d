@@ -74,10 +74,10 @@ Vector3D<T>::Vector3D()
 template<class T>
 Vector3D<T>::Vector3D(const Vector3D<T>& inVector)
 {
-    _vector[0] = inVector._vector[0];
-    _vector[1] = inVector._vector[1];
-    _vector[2] = inVector._vector[2];
-    _vector[3] = inVector._vector[3];
+    _vector[0] = inVector[0];
+    _vector[1] = inVector[1];
+    _vector[2] = inVector[2];
+    _vector[3] = inVector[3];
 }
 
 template<class T>
@@ -134,7 +134,7 @@ const Vector3D<T> Vector3D<T>::normalized() const
 }
 
 template<class T>
-bool Vector3D<T>::isZero() const
+inline bool Vector3D<T>::isZero() const
 {
     return fabs(_vector[0]) < PSEUDO_ZERO
         && fabs(_vector[1]) < PSEUDO_ZERO
@@ -162,28 +162,28 @@ double Vector3D<T>::length() const
 template<class T>
 Vector3D<T>& Vector3D<T>::operator=(const Vector3D<T>& inVector)
 {
-    _vector[0] = inVector._vector[0];
-    _vector[1] = inVector._vector[1];
-    _vector[2] = inVector._vector[2];
-    _vector[3] = inVector._vector[3];
+    _vector[0] = inVector[0];
+    _vector[1] = inVector[1];
+    _vector[2] = inVector[2];
+    _vector[3] = inVector[3];
     return *this;
 }
 
 template<class T>
 Vector3D<T>& Vector3D<T>::operator+=(const Vector3D<T>& inVector)
 {
-    _vector[0] += inVector._vector[0];
-    _vector[1] += inVector._vector[1];
-    _vector[2] += inVector._vector[2];
+    _vector[0] += inVector[0];
+    _vector[1] += inVector[1];
+    _vector[2] += inVector[2];
     return *this;
 }
 
 template<class T>
 Vector3D<T>& Vector3D<T>::operator-=(const Vector3D<T>& inVector)
 {
-    _vector[0] -= inVector._vector[0];
-    _vector[1] -= inVector._vector[1];
-    _vector[2] -= inVector._vector[2];
+    _vector[0] -= inVector[0];
+    _vector[1] -= inVector[1];
+    _vector[2] -= inVector[2];
     return *this;
 }
 
@@ -191,9 +191,9 @@ template<class T>
 const Vector3D<T> Vector3D<T>::operator+(const Vector3D<T>& inVector) const
 {
     Vector3D<T> outVector;
-    outVector._vector[0] = _vector[0] + inVector._vector[0];
-    outVector._vector[1] = _vector[1] + inVector._vector[1];
-    outVector._vector[2] = _vector[2] + inVector._vector[2];
+    outVector[0] = _vector[0] + inVector[0];
+    outVector[1] = _vector[1] + inVector[1];
+    outVector[2] = _vector[2] + inVector[2];
     return outVector;
 }
 
@@ -201,9 +201,9 @@ template<class T>
 const Vector3D<T> Vector3D<T>::operator-(const Vector3D<T>& inVector) const
 {
     Vector3D<T> outVector;
-    outVector._vector[0] = _vector[0] - inVector._vector[0];
-    outVector._vector[1] = _vector[1] - inVector._vector[1];
-    outVector._vector[2] = _vector[2] - inVector._vector[2];
+    outVector[0] = _vector[0] - inVector[0];
+    outVector[1] = _vector[1] - inVector[1];
+    outVector[2] = _vector[2] - inVector[2];
     return outVector;
 }
 
@@ -218,18 +218,18 @@ const Vector3D<T> Vector3D<T>::operator-() const
 template<class T>
 T Vector3D<T>::operator*(const Vector3D<T>& inVector) const
 {
-    return (_vector[0] * inVector._vector[0])
-        + (_vector[1] * inVector._vector[1])
-        + (_vector[2] * inVector._vector[2]);
+    return (_vector[0] * inVector[0])
+        + (_vector[1] * inVector[1])
+        + (_vector[2] * inVector[2]);
 }
 
 template<class T>
 const Vector3D<T> Vector3D<T>::operator*(const T inValue) const
 {
     Vector3D<T> outVector;
-    outVector._vector[0] = _vector[0] * inValue;
-    outVector._vector[1] = _vector[1] * inValue;
-    outVector._vector[2] = _vector[2] * inValue;
+    outVector[0] = _vector[0] * inValue;
+    outVector[1] = _vector[1] * inValue;
+    outVector[2] = _vector[2] * inValue;
     return outVector;
 }
 
@@ -237,22 +237,22 @@ template<class T>
 const Vector3D<T> Vector3D<T>::operator^(const Vector3D<T>& inVector) const
 {
     Vector3D<T> outVector;
-    outVector[0] = (_vector[1] * inVector._vector[2]) -
-        (_vector[2] * inVector._vector[1]);
-    outVector[1] = (_vector[2] * inVector._vector[0]) -
-        (_vector[0] * inVector._vector[2]);
-    outVector[2] = (_vector[0] * inVector._vector[1]) -
-        (_vector[1] * inVector._vector[0]);
+    outVector[0] = (_vector[1] * inVector[2]) -
+        (_vector[2] * inVector[1]);
+    outVector[1] = (_vector[2] * inVector[0]) -
+        (_vector[0] * inVector[2]);
+    outVector[2] = (_vector[0] * inVector[1]) -
+        (_vector[1] * inVector[0]);
     return outVector;
 }
 
 template<class T>
 inline bool Vector3D<T>::operator==(const Vector3D<T>& inVector)
 {
-    return _vector[0] == inVector._vector[0]
-        && _vector[1] == inVector._vector[1]
-        && _vector[2] == inVector._vector[2]
-        && _vector[3] == inVector._vector[3];
+    return _vector[0] == inVector[0]
+        && _vector[1] == inVector[1]
+        && _vector[2] == inVector[2]
+        && _vector[3] == inVector[3];
 }
 
 template<class T>
@@ -276,22 +276,15 @@ inline const T* Vector3D<T>::array() const
 template<class T>
 istream& operator>>(istream& inStream, Vector3D<T>& inVector)
 {
-    char comma; // used strictly to help ignore delimiter commas
-    T x;
-    T y;
-    T z;
-    inStream >> x >> comma >> y >> comma >> z;
-    inVector[0] = x;
-    inVector[1] = y;
-    inVector[2] = z;
+    for (int i = 0; i < 4; ++i) inStream >> inVector[i];
     return inStream;
 }
 
 template<class T>
 ostream& operator<<(ostream& inStream, const Vector3D<T>& inVector)
 {
-    inStream << '(' << inVector[0] << ", " << inVector[1] << ", "
-        << inVector[2] << ')';
+    inStream << inVector[0];
+    for (int i = 1; i < 4; ++i) inStream << ' ' << inVector[i];
     return inStream;
 }
 

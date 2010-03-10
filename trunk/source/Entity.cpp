@@ -41,6 +41,15 @@ void Entity::unloadAll()
     while (!_entities.empty()) delete _entities.back();
 }
 
+void Entity::jumpToState(int inState)
+{
+    _state = inState;
+    _pulseCount = 0;
+    _subState = 0;
+    _stateDatum = _sprite->getState(_state);
+    _args.index = _stateDatum->frames[_subState].index;
+}
+
 void Entity::pulse()
 {
     ++_pulseCount;

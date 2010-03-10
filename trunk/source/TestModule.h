@@ -38,11 +38,13 @@ class TestModule : public Module
         static int luaSetColor(lua_State* inState);
         static int luaSetBlink(lua_State* inState);
         static int luaSetLocation(lua_State* inState);
+        static int luaSetState(lua_State* inState);
 
         static Entity* luaEntity;
 
     protected:
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+        virtual void onMButtonDown(int inX, int inY);
         virtual void onMouseWheelUp();
         virtual void onMouseWheelDown();
 

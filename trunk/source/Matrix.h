@@ -82,8 +82,17 @@ class Matrix
 };
 
 template<class T>
-Matrix<T>::Matrix() : Matrix(1, 1)
+Matrix<T>::Matrix()
 {
+    // produces a square matrix
+    _rows = 4;
+    _cols = 4;
+    _size = 4 * 4;
+    _matrix = new T[_size];
+
+    // default to identity matrix
+    for (int i = 0; i < _size; ++i)
+        _matrix[i] = (i % (_cols + 1) == 0 ? 1 : 0);
 }
 
 template<class T>
@@ -167,7 +176,7 @@ void Matrix<T>::copy(const Matrix<T>& inMatrix)
     _size = inMatrix._size;
     _matrix = new T[_size];
 
-    for (int i = 0; i < _size; ++i) _matrix[i] = inMatrix._matrix[i];
+    for (int i = 0; i < _size; ++i) _matrix[i] = inMatrix[i];
 }
 
 template<class T>

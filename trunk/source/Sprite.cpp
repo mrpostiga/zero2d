@@ -127,8 +127,6 @@ Sprite::Sprite(const string& inPath) : _numFrames(0), _numSheets(0),
 
     staticData.close();
 
-    cerr << _stateData[0].frames.size() << endl;
-
     for (int i = 0; i < _numSheets; ++i)
     {
         filename.str(string());
@@ -194,10 +192,20 @@ void Sprite::draw(const DrawArgs& inArgs)
     static Point2D<float> QuadUL;
     static Point2D<float> QuadLR;
 
-    QuadUL.x = P2O(-fd.base.x);
-    QuadUL.y = P2O(fd.base.y);
-    QuadLR.x = P2O(-fd.base.x + fd.size.x);
-    QuadLR.y = P2O(fd.base.y - fd.size.y);
+    if (inArgs.facingRight)
+    {
+        QuadUL.x = P2O(fd.base.x - fd.size.x);
+        QuadUL.y = P2O(fd.base.y);
+        QuadLR.x = P2O(fd.base.x);
+        QuadLR.y = P2O(fd.base.y - fd.size.y);
+    }
+    else
+    {
+        QuadUL.x = P2O(-fd.base.x);
+        QuadUL.y = P2O(fd.base.y);
+        QuadLR.x = P2O(fd.size.x - fd.base.x);
+        QuadLR.y = P2O(fd.base.y - fd.size.y);
+    }
 
     static Point2D<float> TextureUL;
     static Point2D<float> TextureLR;
@@ -223,20 +231,16 @@ void Sprite::draw(const DrawArgs& inArgs)
         glColor4fv(inArgs.colorMod.array());
         glNormal3f(0.0f, 0.0f, 1.0f);
 
-        glTexCoord2f(TextureUL.x, TextureUL.y);
-        //glTexCoord2f(TextureUL.x, 0);
+        glTexCoord2f(TextureUL.x, TextureUL.y); // 0.0
         glVertex2f(QuadUL.x, QuadUL.y);
 
-        glTexCoord2f(TextureLR.x, TextureUL.y);
-        //glTexCoord2f(TextureLR.x, 0);
+        glTexCoord2f(TextureLR.x, TextureUL.y); // 0.0
         glVertex2f(QuadLR.x, QuadUL.y);
 
-        glTexCoord2f(TextureLR.x, TextureLR.y);
-        //glTexCoord2f(TextureLR.x, 0.25);
+        glTexCoord2f(TextureLR.x, TextureLR.y); // 0.25
         glVertex2f(QuadLR.x, QuadLR.y);
 
-        glTexCoord2f(TextureUL.x, TextureLR.y);
-        //glTexCoord2f(TextureUL.x, 0.25);
+        glTexCoord2f(TextureUL.x, TextureLR.y); // 0.25
         glVertex2f(QuadUL.x, QuadLR.y);
     }
     glEnd();
