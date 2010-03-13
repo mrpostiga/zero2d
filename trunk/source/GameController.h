@@ -18,31 +18,75 @@
 #ifndef _GAMECONTROLLER_H_
 #define _GAMECONTROLLER_H_
 
+#include "Point2D.h"
+
 #include <SDL.h>
 typedef SDL_Joystick* Joystick;
 
 #include <string>
 using namespace std;
 
+#define MAX_CONTROLLERS 8
+#define MAX_AXES 8
+#define MAX_HATS 4
+#define MAX_BUTTONS 32
+
 class GameController
 {
     public:
-        GameController(int inIndex);
         ~GameController();
 
+        static void loadAll();
+        static void unloadAll();
+        static int count();
+        static GameController* get(Uint8 inIndex);
+
+        bool isActive();
         const string& getName();
         int getAxes();
         int getButtons();
         int getBalls();
 
+        Sint16 getAxis(Uint8 inAxis);
+
+        /// event handlers
+        void moveAxis(Uint8 inAxis, Sint16 inValue);
+        void moveHat(Uint8 inHat, Uint8 inPosition);
+        void buttonDown(Uint8 inButton);
+        void buttonUp(Uint8 inButton);
+
     private:
+        GameController(int inIndex);
+
+        static int _count;
+        static GameController* _controllers[MAX_CONTROLLERS];
+
         Joystick _binding;
         string _name;
         int _index;
         int _axes;
         int _buttons;
         int _balls;
+
+        Sint16 _axisPositions[MAX_AXES];
+        Uint8 _hatPositions[MAX_HATS];
+        bool _buttonPresses[MAX_BUTTONS];
 };
+
+inline int GameController::count()
+{
+    return _count;
+}
+
+inline GameController* GameController::get(Uint8 inIndex)
+{
+    return _controllers[inIndex];
+}
+
+inline bool GameController::isActive()
+{
+    return _binding != NULL;
+}
 
 inline const string& GameController::getName()
 {
@@ -62,6 +106,11 @@ inline int GameController::getButtons()
 inline int GameController::getBalls()
 {
     return _balls;
+}
+
+inline Sint16 GameController::getAxis(Uint8 inAxis)
+{
+    return _axisPositions[inAxis];
 }
 
 #endif

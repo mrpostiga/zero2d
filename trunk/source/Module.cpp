@@ -16,6 +16,7 @@
  */
 
 #include "Module.h"
+#include "GameController.h"
 
 #include <iostream>
 using namespace std;
@@ -173,6 +174,8 @@ void Module::onEvent(SDL_Event* inEvent)
 
         case SDL_JOYAXISMOTION:
         {
+            GameController::get(inEvent->jaxis.which)->moveAxis
+                (inEvent->jaxis.axis, inEvent->jaxis.value);
             onJoyAxis(inEvent->jaxis.which, inEvent->jaxis.axis,
                 inEvent->jaxis.value);
             break;
@@ -187,18 +190,24 @@ void Module::onEvent(SDL_Event* inEvent)
 
         case SDL_JOYHATMOTION:
         {
+            GameController::get(inEvent->jhat.which)->moveHat
+                (inEvent->jhat.hat, inEvent->jhat.value);
             onJoyHat(inEvent->jhat.which, inEvent->jhat.hat,
                 inEvent->jhat.value);
             break;
         }
         case SDL_JOYBUTTONDOWN:
         {
+            GameController::get(inEvent->jbutton.which)->buttonDown
+                (inEvent->jbutton.button);
             onJoyButtonDown(inEvent->jbutton.which, inEvent->jbutton.button);
             break;
         }
 
         case SDL_JOYBUTTONUP:
         {
+            GameController::get(inEvent->jbutton.which)->buttonUp
+                (inEvent->jbutton.button);
             onJoyButtonUp(inEvent->jbutton.which, inEvent->jbutton.button);
             break;
         }

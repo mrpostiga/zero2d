@@ -19,7 +19,11 @@
 #define _CALIBRATIONMODULE_H_
 
 #include "Module.h"
+#include "Vector3D.h"
 #include "PlainImage.h"
+#include "GameController.h"
+
+#define AXIS_FACTOR 250
 
 class CalibrationModule : public Module
 {
@@ -37,6 +41,8 @@ class CalibrationModule : public Module
     protected:
     private:
         PlainImage _image;
+        Vector3D<GLfloat> _translate;
+        GameController* _controller;
 };
 
 #endif

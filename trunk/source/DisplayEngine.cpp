@@ -16,6 +16,7 @@
  */
 
 #include "DisplayEngine.h"
+#include "GameController.h"
 #include "Module.h"
 #include "Config.h"
 #include "LogFile.h"
@@ -154,10 +155,7 @@ void DisplayEngine::initialize()
             cout << "  " << _modes[i]->w << " x " << _modes[i]->h << endl;
     }
 
-    cerr << "SDL_GL_ACCELERATED_VISUAL -- "
-        << SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1) << endl;
-    cerr << "SDL_GL_DOUBLEBUFFER -- "
-        << SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1) << endl;
+    GameController::loadAll();
 
     int width = Config::get<int>("display width", 800);
     int height = Config::get<int>("display height", 600);
@@ -218,6 +216,8 @@ void DisplayEngine::cleanup()
     #endif
 
     SDL_FreeSurface(_dot);
+
+    GameController::unloadAll();
 
     TTF_Quit();
     SDL_Quit();

@@ -25,7 +25,8 @@ CalibrationModule::CalibrationModule() : Module(),
 
 bool CalibrationModule::onLoad()
 {
-    return true;
+    _controller = GameController::get(0);
+    return GameController::count() > 0;
 }
 
 void CalibrationModule::onOpen()
@@ -38,11 +39,19 @@ void CalibrationModule::onOpen()
 void CalibrationModule::onRender()
 {
     glClear(GL_COLOR_BUFFER_BIT);
-    _image.display();
+
+    glPushMatrix();
+    glTranslatef(_translate[0], _translate[1], _translate[2]);
+    {
+        _image.display();
+    }
+    glPopMatrix();
 }
 
 void CalibrationModule::onPulse()
 {
+    _translate[0] = P2O(_controller->getAxis(0) / AXIS_FACTOR);
+    _translate[1] = P2O(_controller->getAxis(1) / -AXIS_FACTOR);
 }
 
 void CalibrationModule::onClose()

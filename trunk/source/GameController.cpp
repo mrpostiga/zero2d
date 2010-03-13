@@ -17,6 +17,26 @@
 
 #include "GameController.h"
 
+int GameController::_count = 0;
+GameController* GameController::_controllers[MAX_CONTROLLERS];
+
+void GameController::loadAll()
+{
+    _count = SDL_NumJoysticks();
+    for (int i = 0; i < _count; ++i)
+    {
+        _controllers[i] = new GameController(i);
+    }
+}
+
+void GameController::unloadAll()
+{
+    for (int i = 0; i < _count; ++i)
+    {
+        delete _controllers[i];
+    }
+}
+
 GameController::GameController(int inIndex) : _binding(NULL), _name("none"),
     _index(inIndex), _axes(0), _buttons(0), _balls(0)
 {
@@ -29,9 +49,34 @@ GameController::GameController(int inIndex) : _binding(NULL), _name("none"),
         _buttons = SDL_JoystickNumButtons(_binding);
         _balls = SDL_JoystickNumBalls(_binding);
     }
+
+    for (int i = 0; i < MAX_BUTTONS; ++i)
+    {
+        _buttonPresses[i] = false;
+    }
 }
 
 GameController::~GameController()
 {
     if (SDL_JoystickOpened(_index)) SDL_JoystickClose(_binding);
+}
+
+void GameController::moveAxis(Uint8 inAxis, Sint16 inValue)
+{
+    _axisPositions[inAxis] = inValue;
+}
+
+void GameController::moveHat(Uint8 inHat, Uint8 inPosition)
+{
+    _hatPositions[inHat] = inPosition;
+}
+
+void GameController::buttonDown(Uint8 inButton)
+{
+    _buttonPresses[inButton] = true;
+}
+
+void GameController::buttonUp(Uint8 inButton)
+{
+    _buttonPresses[inButton] = false;
 }
