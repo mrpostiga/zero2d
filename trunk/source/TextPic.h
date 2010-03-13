@@ -22,7 +22,7 @@
 #include "Point2D.h"
 
 #include <SDL_ttf.h>
-#include <SDL_opengl.h>
+#include "OpenGL.h"
 
 #include <string>
 using namespace std;
@@ -50,7 +50,7 @@ class TextPic
         Vector3D<float> _colorMod;
         string _text;
         GLuint _texture;
-        Point2D<float> _scales;
+        Point _scales;
         TextQuality _quality;
 };
 

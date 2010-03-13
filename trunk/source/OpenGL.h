@@ -15,20 +15,10 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Config.h"
-#include "DisplayEngine.h"
-#include "SoundEngine.h"
-#include "IntroPowerModule.h"
-#include "CalibrationModule.h"
+#ifndef _OPENGL_H_
+#define _OPENGL_H_
 
-int main(int argc, char** argv)
-{
-    Config::initialize(argc, argv);
-    DisplayEngine::initialize();
-    //SoundEngine::initialize();
-    Config::outputSettings();
-    DisplayEngine::start(new IntroPowerModule);
-    //DisplayEngine::start(new CalibrationModule);
-    //SoundEngine::cleanup();
-    return 0;
-}
+#include <GL/glee.h>
+//#include <GL/glu.h>
+
+#endif

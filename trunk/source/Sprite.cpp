@@ -189,8 +189,8 @@ void Sprite::draw(const DrawArgs& inArgs)
 {
     const FrameDatum& fd = _frameData[inArgs.index];
 
-    static Point2D<float> QuadUL;
-    static Point2D<float> QuadLR;
+    static Point QuadUL;
+    static Point QuadLR;
 
     if (inArgs.facingRight)
     {
@@ -207,8 +207,8 @@ void Sprite::draw(const DrawArgs& inArgs)
         QuadLR.y = P2O(fd.base.y - fd.size.y);
     }
 
-    static Point2D<float> TextureUL;
-    static Point2D<float> TextureLR;
+    static Point TextureUL;
+    static Point TextureLR;
 
     TextureUL.x = float(fd.location.x) / float(_sheets[fd.sheet].size.x);
     float width = float(fd.size.x) / float(_sheets[fd.sheet].size.x);
@@ -224,7 +224,7 @@ void Sprite::draw(const DrawArgs& inArgs)
     glTranslatef(inArgs.location.x, inArgs.location.y, 0.0f);
     glRotatef(inArgs.rotation, 0.0f, 0.0f, -1.0f);
     glEnable(GL_TEXTURE_2D);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, inArgs.textureParam);
+    TEXTURE_MODE(inArgs.textureParam);
     glBindTexture(GL_TEXTURE_2D, _sheets[fd.sheet].texture);
     glBegin(GL_QUADS);
     {

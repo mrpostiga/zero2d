@@ -15,20 +15,23 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Config.h"
-#include "DisplayEngine.h"
-#include "SoundEngine.h"
-#include "IntroPowerModule.h"
-#include "CalibrationModule.h"
+#include "GameController.h"
 
-int main(int argc, char** argv)
+GameController::GameController(int inIndex) : _binding(NULL), _name("none"),
+    _index(inIndex), _axes(0), _buttons(0), _balls(0)
 {
-    Config::initialize(argc, argv);
-    DisplayEngine::initialize();
-    //SoundEngine::initialize();
-    Config::outputSettings();
-    DisplayEngine::start(new IntroPowerModule);
-    //DisplayEngine::start(new CalibrationModule);
-    //SoundEngine::cleanup();
-    return 0;
+    if (SDL_NumJoysticks() > _index) _binding = SDL_JoystickOpen(inIndex);
+
+    if (_binding)
+    {
+        _name = SDL_JoystickName(_index);
+        _axes = SDL_JoystickNumAxes(_binding);
+        _buttons = SDL_JoystickNumButtons(_binding);
+        _balls = SDL_JoystickNumBalls(_binding);
+    }
+}
+
+GameController::~GameController()
+{
+    if (SDL_JoystickOpened(_index)) SDL_JoystickClose(_binding);
 }

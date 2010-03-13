@@ -33,15 +33,6 @@ class TestModule : public Module
         virtual void onClose();
         virtual void onUnload();
 
-        /// Lua wiring
-        static int luaShowArgs(lua_State* inState);
-        static int luaSetColor(lua_State* inState);
-        static int luaSetBlink(lua_State* inState);
-        static int luaSetLocation(lua_State* inState);
-        static int luaSetState(lua_State* inState);
-
-        static Entity* luaEntity;
-
     protected:
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         virtual void onMButtonDown(int inX, int inY);
@@ -59,6 +50,15 @@ class TestModule : public Module
         string _consoleInput;
         TextPic _consoleOutput;
         LuaMachine _lua;
+
+        /// Lua wiring
+        static int luaShowArgs(lua_State* inState);
+        static int luaSetColor(lua_State* inState);
+        static int luaSetBlink(lua_State* inState);
+        static int luaSetLocation(lua_State* inState);
+        static int luaSetState(lua_State* inState);
+
+        static Entity* luaEntity;
 };
 
 #endif

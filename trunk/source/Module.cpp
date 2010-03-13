@@ -29,6 +29,15 @@ Module::~Module()
     // here to prevent compiler warnings in Windows :P
 }
 
+bool Module::onLoad()
+{
+    return true;
+}
+
+void Module::onUnload()
+{
+}
+
 void Module::onRender()
 {
 }

@@ -21,7 +21,7 @@
 #include "Point2D.h"
 #include "Vector3D.h"
 
-#include <SDL_opengl.h>
+#include "OpenGL.h"
 
 #include <iostream>
 #include <string>
@@ -31,9 +31,9 @@ using namespace std;
 
 struct FrameDatum
 {
-    Point2D<int> location;
-    Point2D<int> size;
-    Point2D<int> base;
+    Pixel location;
+    Pixel size;
+    Pixel base;
     int sheet;
 };
 
@@ -51,7 +51,7 @@ struct StateDatum
 struct DrawArgs
 {
     int index;
-    Point2D<float> location;
+    Point location;
     float rotation;
     bool facingRight;
     Vector3D<float> colorMod;
@@ -64,7 +64,7 @@ struct DrawArgs
 struct Sheet
 {
     GLuint texture;
-    Point2D<int> size;
+    Pixel size;
 };
 
 class Sprite

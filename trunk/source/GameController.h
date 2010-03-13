@@ -15,35 +15,53 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _INTROPOWERMODULE_H_
-#define _INTROPOWERMODULE_H_
+#ifndef _GAMECONTROLLER_H_
+#define _GAMECONTROLLER_H_
 
-#include "OpenGL.h"
+#include <SDL.h>
+typedef SDL_Joystick* Joystick;
 
-#include "Module.h"
+#include <string>
+using namespace std;
 
-class IntroPowerModule : public Module
+class GameController
 {
     public:
-        virtual bool onLoad();
-        virtual void onOpen();
-        virtual void onPulse();
-        virtual void onRender();
-        virtual void onClose();
-        virtual void onUnload();
+        GameController(int inIndex);
+        ~GameController();
 
-    protected:
-        virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
-        virtual void onLButtonDown(int inX, int inY);
-        virtual void onRButtonDown(int inX, int inY);
-        virtual void onJoyButtonDown(Uint8 inWhich, Uint8 inButton);
+        const string& getName();
+        int getAxes();
+        int getButtons();
+        int getBalls();
 
     private:
-        int _phase;
-        int _freezeFrames;
-        GLuint _logoID;
-        GLfloat _ambient[4];
-        GLfloat _pos[4];
+        Joystick _binding;
+        string _name;
+        int _index;
+        int _axes;
+        int _buttons;
+        int _balls;
 };
+
+inline const string& GameController::getName()
+{
+    return _name;
+}
+
+inline int GameController::getAxes()
+{
+    return _axes;
+}
+
+inline int GameController::getButtons()
+{
+    return _buttons;
+}
+
+inline int GameController::getBalls()
+{
+    return _balls;
+}
 
 #endif

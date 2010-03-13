@@ -41,14 +41,19 @@
 			<Add library="SDL" />
 			<Add library="GL" />
 			<Add library="GLU" />
+			<Add library="glee" />
 			<Add library="lua5.1" />
 		</Linker>
+		<Unit filename="../CalibrationModule.cpp" />
+		<Unit filename="../CalibrationModule.h" />
 		<Unit filename="../Config.cpp" />
 		<Unit filename="../Config.h" />
 		<Unit filename="../DisplayEngine.cpp" />
 		<Unit filename="../DisplayEngine.h" />
 		<Unit filename="../Entity.cpp" />
 		<Unit filename="../Entity.h" />
+		<Unit filename="../GameController.cpp" />
+		<Unit filename="../GameController.h" />
 		<Unit filename="../IntroPowerModule.cpp" />
 		<Unit filename="../IntroPowerModule.h" />
 		<Unit filename="../LogFile.cpp" />
@@ -58,6 +63,9 @@
 		<Unit filename="../Matrix.h" />
 		<Unit filename="../Module.cpp" />
 		<Unit filename="../Module.h" />
+		<Unit filename="../OpenGL.h" />
+		<Unit filename="../PlainImage.cpp" />
+		<Unit filename="../PlainImage.h" />
 		<Unit filename="../Point2D.h" />
 		<Unit filename="../SoundEngine.cpp" />
 		<Unit filename="../SoundEngine.h" />

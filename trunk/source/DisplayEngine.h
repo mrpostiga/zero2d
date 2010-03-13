@@ -18,13 +18,12 @@
 #ifndef _DISPLAYENGINE_H_
 #define _DISPLAYENGINE_H_
 
-#include "Module.h"
 #include "Point2D.h"
 #include "Vector3D.h"
 #include "Matrix.h"
 
 #include <SDL.h>
-#include <SDL_opengl.h>
+#include "OpenGL.h"
 typedef SDL_Surface* Surface;
 
 // conversion from object space to pixel space
@@ -33,19 +32,22 @@ typedef SDL_Surface* Surface;
 // conversion from pixel space to object space
 #define P2O(n) (static_cast<float>(n) / 4.0f)
 
+#define TEXTURE_MODE(n) glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, n)
+
 #define ENGINE_FPS 60
 #define FRAME_LENGTH (1000 / ENGINE_FPS)
-#define FIELD_OF_VIEW 30.0
 #define NEAR_CP 1.0
 #define FAR_CP 10000.0
 
-struct Mask
+struct ColorMask
 {
     Uint32 red;
     Uint32 green;
     Uint32 blue;
     Uint32 alpha;
 };
+
+class Module;
 
 class DisplayEngine
 {
@@ -54,11 +56,12 @@ class DisplayEngine
         static void initialize();
 
         /// OpenGL/SDL functionality wrappers
+        static void ortho();
         static void ortho(double inRange);
         static Surface loadImage(const char* inFile);
-        static bool loadTexture(Surface inSurface, GLuint inTexture,
+        static Pixel loadTexture(Surface inSurface, GLuint inTexture,
             bool inDelete = true);
-        static bool loadTexture(const char* inFile, GLuint inTexture);
+        static Pixel loadTexture(const char* inFile, GLuint inTexture);
         static int processKey(SDLKey inSym, SDLMod inMod);
 
         static void logOpenGL(ostream& inStream);
@@ -75,20 +78,22 @@ class DisplayEngine
         static Surface _dot;
         static SDL_Rect** _modes;
         static bool _mipmapping;
-        static Mask _mask;
+        static ColorMask _mask;
 };
 
 template<class T>
 void DisplayEngine::transform(Vector3D<T>& inVector, const Matrix<T>& inMatrix)
 {
-    inVector[0] = inVector[0] * inMatrix[0] + inVector[1] * inMatrix[4]
+    Vector3D<T> result;
+    result[0] = inVector[0] * inMatrix[0] + inVector[1] * inMatrix[4]
         + inVector[2] * inMatrix[8] + inVector[3] * inMatrix[12];
-    inVector[1] = inVector[0] * inMatrix[1] + inVector[1] * inMatrix[5]
+    result[1] = inVector[0] * inMatrix[1] + inVector[1] * inMatrix[5]
         + inVector[2] * inMatrix[9] + inVector[3] * inMatrix[13];
-    inVector[2] = inVector[0] * inMatrix[2] + inVector[1] * inMatrix[6]
+    result[2] = inVector[0] * inMatrix[2] + inVector[1] * inMatrix[6]
         + inVector[2] * inMatrix[10] + inVector[3] * inMatrix[14];
-    inVector[3] = inVector[0] * inMatrix[3] + inVector[1] * inMatrix[7]
+    result[3] = inVector[0] * inMatrix[3] + inVector[1] * inMatrix[7]
         + inVector[2] * inMatrix[11] + inVector[3] * inMatrix[15];
+    inVector = result;
 }
 
 #endif

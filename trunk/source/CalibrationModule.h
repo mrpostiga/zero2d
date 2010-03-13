@@ -15,35 +15,28 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _INTROPOWERMODULE_H_
-#define _INTROPOWERMODULE_H_
-
-#include "OpenGL.h"
+#ifndef _CALIBRATIONMODULE_H_
+#define _CALIBRATIONMODULE_H_
 
 #include "Module.h"
+#include "PlainImage.h"
 
-class IntroPowerModule : public Module
+class CalibrationModule : public Module
 {
     public:
+        CalibrationModule();
+
+        /// module operation
         virtual bool onLoad();
         virtual void onOpen();
-        virtual void onPulse();
         virtual void onRender();
+        virtual void onPulse();
         virtual void onClose();
         virtual void onUnload();
 
     protected:
-        virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
-        virtual void onLButtonDown(int inX, int inY);
-        virtual void onRButtonDown(int inX, int inY);
-        virtual void onJoyButtonDown(Uint8 inWhich, Uint8 inButton);
-
     private:
-        int _phase;
-        int _freezeFrames;
-        GLuint _logoID;
-        GLfloat _ambient[4];
-        GLfloat _pos[4];
+        PlainImage _image;
 };
 
 #endif

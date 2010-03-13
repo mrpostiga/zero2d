@@ -32,12 +32,12 @@ class Module
         Module* next();
 
         /// module operation
-        virtual bool onLoad() = 0;
+        virtual bool onLoad();
         virtual void onOpen();
         virtual void onRender();
         virtual void onPulse();
         virtual void onClose();
-        virtual void onUnload() = 0;
+        virtual void onUnload();
 
     protected:
         /// event handlers

@@ -37,7 +37,7 @@ Surface DisplayEngine::_windowIcon = NULL;
 Surface DisplayEngine::_dot = NULL;
 SDL_Rect** DisplayEngine::_modes = NULL;
 bool DisplayEngine::_mipmapping = false;
-Mask DisplayEngine::_mask;
+ColorMask DisplayEngine::_mask;
 
 void DisplayEngine::start(Module* inModule)
 {
@@ -118,7 +118,7 @@ void DisplayEngine::start(Module* inModule)
 
 void DisplayEngine::initialize()
 {
-    if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+    if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
     {
         cerr << "-- error on SDL_Init --" << endl;
         exit(1);
@@ -184,7 +184,7 @@ void DisplayEngine::initialize()
     if (Config::get<int>("full screen", 0) == 1) flags |= SDL_FULLSCREEN;
 
     _display = SDL_SetVideoMode(width, height,
-        Config::get<int>("bits per pixel", 32), flags);
+        Config::get<int>("bits per pixel", 24), flags);
 
     flags = SDL_SWSURFACE | SDL_ASYNCBLIT;
     Surface t;
@@ -216,6 +216,8 @@ void DisplayEngine::cleanup()
     #ifndef __APPLE__
     SDL_FreeSurface(_windowIcon);
     #endif
+
+    SDL_FreeSurface(_dot);
 
     TTF_Quit();
     SDL_Quit();
@@ -300,32 +302,21 @@ void DisplayEngine::logErrors(ostream& inStream)
     }
 }
 
-bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
+Pixel DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
     bool inDelete)
 {
-    bool outSuccess = true;
+    Pixel outSize;
+    bool success = true;
     if (inSurface == NULL)
     {
         inSurface = _dot;
-        outSuccess = false;
+        success = false;
     }
+
+    outSize.x = inSurface->w;
+    outSize.y = inSurface->h;
 
     glBindTexture(GL_TEXTURE_2D, inTexture);
-
-    if (_mipmapping)
-    {
-        glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-            GL_LINEAR_MIPMAP_LINEAR);
-    }
-    else
-    {
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    }
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
     GLint nOfColors = inSurface->format->BytesPerPixel;
     GLenum tFormat = GL_RGBA;
@@ -351,14 +342,27 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
         return false;
     }
 
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
     glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, inSurface->w, inSurface->h,
         0, tFormat, GL_UNSIGNED_BYTE, inSurface->pixels);
 
-    if (inDelete || !outSuccess) SDL_FreeSurface(inSurface);
-    return outSuccess;
+    if (_mipmapping)
+    {
+        glGenerateMipmap(GL_TEXTURE_2D);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+            GL_LINEAR_MIPMAP_LINEAR);
+    }
+
+    if (inDelete && success) SDL_FreeSurface(inSurface);
+    return outSize;
 }
 
-bool DisplayEngine::loadTexture(const char* inFile, GLuint inTexture)
+Pixel DisplayEngine::loadTexture(const char* inFile, GLuint inTexture)
 {
     Surface t = loadImage(inFile);
     return loadTexture(t, inTexture, true);
@@ -385,6 +389,11 @@ void DisplayEngine::logOpenGL(ostream& inStream)
             i = stuff.length();
         }
     }
+}
+
+void DisplayEngine::ortho()
+{
+    ortho(P2O(SDL_GetVideoSurface()->h / 2));
 }
 
 void DisplayEngine::ortho(double inRange)

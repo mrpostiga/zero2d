@@ -68,25 +68,27 @@ void TextPic::setText(const string& inText)
 void TextPic::render()
 {
     Surface textSurface = NULL;
+    string text(_text);
+    text += ' ';
 
     switch (_quality)
     {
         case TTF_BLENDED:
         {
-            textSurface = TTF_RenderText_Blended(_font, _text.c_str(), _color);
+            textSurface = TTF_RenderText_Blended(_font, text.c_str(), _color);
             break;
         }
 
         case TTF_SHADED:
         {
-            //textSurface = TTF_RenderText_Shaded(_font, _text.c_str(), _color);
+            //textSurface = TTF_RenderText_Shaded(_font, text.c_str(), _color);
             break;
         }
 
         case TTF_SOLID:
         default:
         {
-            textSurface = TTF_RenderText_Solid(_font, _text.c_str(), _color);
+            textSurface = TTF_RenderText_Solid(_font, text.c_str(), _color);
         }
     }
 
@@ -96,7 +98,7 @@ void TextPic::render()
         return;
     }
 
-    Point2D<int> size(textSurface->w, textSurface->h);
+    Pixel size(textSurface->w, textSurface->h);
 
     int widthPower = int(log(size.x) / log(2.0f)) + 1;
     int heightPower = int(log(size.y) / log(2.0f)) + 1;
@@ -114,7 +116,7 @@ void TextPic::render()
 
     if (SDL_BlitSurface(textSurface, NULL, s, NULL) != 0)
     {
-        cerr << "blitting error" << endl;
+        cerr << "TextPic::render() -- blitting error" << endl;
     }
 
     SDL_SetAlpha(s, SDL_SRCALPHA, textSurface->format->alpha);
@@ -122,7 +124,7 @@ void TextPic::render()
     SDL_FreeSurface(textSurface);
 
     float ratio = float(size.x) / float(size.y);
-    Point2D<float> ratios;
+    Point ratios;
     ratios.x = float(size.x) / (s == NULL ? 1.0f : s->w);
     ratios.y = float(size.y) / (s == NULL ? 1.0f : s->h);
     _scales.x = ratio / ratios.x;

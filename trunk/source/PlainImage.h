@@ -15,20 +15,32 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Config.h"
-#include "DisplayEngine.h"
-#include "SoundEngine.h"
-#include "IntroPowerModule.h"
-#include "CalibrationModule.h"
+#ifndef _PLAINIMAGE_H_
+#define _PLAINIMAGE_H_
 
-int main(int argc, char** argv)
+#include "DisplayEngine.h"
+
+class PlainImage
 {
-    Config::initialize(argc, argv);
-    DisplayEngine::initialize();
-    //SoundEngine::initialize();
-    Config::outputSettings();
-    DisplayEngine::start(new IntroPowerModule);
-    //DisplayEngine::start(new CalibrationModule);
-    //SoundEngine::cleanup();
-    return 0;
+    public:
+        PlainImage(const char* inFile);
+        ~PlainImage();
+
+        void display();
+        void setTransparency(GLfloat inLevel);
+
+    private:
+        GLuint _texture;
+        GLint _filter;
+        Vector3D<GLfloat> _color;
+
+        Point _quadUL;
+        Point _quadLR;
+};
+
+inline void PlainImage::setTransparency(GLfloat inLevel)
+{
+    _color[3] = inLevel;
 }
+
+#endif

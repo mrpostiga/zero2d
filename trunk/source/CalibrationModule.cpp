@@ -15,20 +15,41 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Config.h"
-#include "DisplayEngine.h"
-#include "SoundEngine.h"
-#include "IntroPowerModule.h"
 #include "CalibrationModule.h"
+#include "DisplayEngine.h"
 
-int main(int argc, char** argv)
+CalibrationModule::CalibrationModule() : Module(),
+    _image("data/images/calibration.png")
 {
-    Config::initialize(argc, argv);
-    DisplayEngine::initialize();
-    //SoundEngine::initialize();
-    Config::outputSettings();
-    DisplayEngine::start(new IntroPowerModule);
-    //DisplayEngine::start(new CalibrationModule);
-    //SoundEngine::cleanup();
-    return 0;
+}
+
+bool CalibrationModule::onLoad()
+{
+    return true;
+}
+
+void CalibrationModule::onOpen()
+{
+    DisplayEngine::ortho();
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+void CalibrationModule::onRender()
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+    _image.display();
+}
+
+void CalibrationModule::onPulse()
+{
+}
+
+void CalibrationModule::onClose()
+{
+    glDisable(GL_BLEND);
+}
+
+void CalibrationModule::onUnload()
+{
 }

@@ -31,6 +31,9 @@ struct Point2D
     T y;
 };
 
+typedef Point2D<float> Point;
+typedef Point2D<int> Pixel;
+
 template<class T>
 Point2D<T>::Point2D() : x(0), y(0)
 {
