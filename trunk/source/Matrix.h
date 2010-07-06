@@ -15,10 +15,11 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MATRIX_H_
-#define _MATRIX_H_
+#ifndef MATRIX_H
+#define MATRIX_H
 
 #include <cstdlib>
+#include <cstring>
 #include <ctime>
 #include <iostream>
 #include <iomanip>
@@ -29,23 +30,15 @@ class Matrix
     public:
         Matrix();
         Matrix(const Matrix<T>& inMatrix);
-        Matrix(int inRows, int inCols);
-        Matrix(int inEdge);
+        Matrix(size_t inRows, size_t inCols);
+        Matrix(size_t inEdge);
         ~Matrix();
 
-        int rows() const;
-        int cols() const;
-        int size() const;
-        int lastRow() const;
-        int lastCol() const;
-        bool square() const;
-        int toIndex(int inRow, int inCol) const;
-        void set(int inRow, int inCol, T inValue);
-        T determinant() const;
-        Matrix<T> subMatrix(int inRow, int inCol, int inHeight, int inWidth);
-        Matrix<T> minorMatrix(int inRow, int inCol) const;
         void transpose();
-        const Matrix<T> transposed();
+        T determinant() const;
+        Matrix<T> minorMatrix(size_t inRow, size_t inCol) const;
+        Matrix<T> subMatrix(size_t inRow, size_t inCol, size_t inHeight,
+            size_t inWidth);
 
         Matrix<T>& operator=(const Matrix<T>& inMatrix);
         Matrix<T>& operator+=(const Matrix<T>& inMatrix);
@@ -55,28 +48,109 @@ class Matrix
         Matrix<T>& operator-=(const T inValue);
         Matrix<T>& operator*=(const T inValue);
         Matrix<T>& operator/=(const T inValue);
-        T& operator()(int inRow, int inCol);
-        T operator()(int inRow, int inCol) const;
-        T& operator[](int inIndex);
-        T operator[](int inIndex) const;
-        bool operator==(const Matrix<T>& inMatrix) const;
-        bool operator!=(const Matrix<T>& inMatrix) const;
-        const Matrix<T> operator+(const Matrix<T>& inMatrix) const;
-        const Matrix<T> operator-(const Matrix<T>& inMatrix) const;
-        const Matrix<T> operator*(const Matrix<T>& inMatrix) const;
-        const Matrix<T> operator+(const T inValue) const;
-        const Matrix<T> operator-(const T inValue) const;
-        const Matrix<T> operator*(const T inValue) const;
-        const Matrix<T> operator/(const T inValue) const;
-        T* array();
+
+        inline size_t rows() const { return mRows; }
+        inline size_t cols() const { return mCols; }
+        inline size_t size() const { return mSize; }
+        inline size_t lastRow() const { return mRows - 1; }
+        inline size_t lastCol() const { return mCols - 1; }
+        inline bool square() const { return mRows == mCols; }
+
+        inline size_t toIndex(size_t inRow, size_t inCol) const
+        {
+            return (inRow * mCols) + inCol;
+        }
+
+        inline void set(size_t inRow, size_t inCol, T inValue)
+        {
+            mMatrix[(inRow * mCols) + inCol] = inValue;
+        }
+
+        inline const Matrix<T> transposed()
+        {
+            return Matrix<T>(*this).transpose();
+        }
+
+        inline T& operator()(size_t inRow, size_t inCol)
+        {
+            return mMatrix[(inRow * mCols) + inCol];
+        }
+
+        inline T operator()(size_t inRow, size_t inCol) const
+        {
+            return mMatrix[(inRow * mCols) + inCol];
+        }
+
+        inline T& operator[](size_t inIndex)
+        {
+            return mMatrix[inIndex];
+        }
+
+        inline T operator[](size_t inIndex) const
+        {
+            return mMatrix[inIndex];
+        }
+
+        inline bool operator==(const Matrix<T>& inMatrix) const
+        {
+            return mRows == inMatrix.mRows && mCols == inMatrix.mCols
+                && !memcmp(mMatrix, inMatrix.mMatrix, mSize * sizeof(T));
+        }
+
+        inline bool operator!=(const Matrix<T>& inMatrix) const
+        {
+            return mRows != inMatrix.mRows || mCols != inMatrix.mCols
+                || memcmp(mMatrix, inMatrix.mMatrix, mSize * sizeof(T));
+        }
+
+        inline const Matrix<T> operator+(const Matrix<T>& inMatrix) const
+        {
+            return Matrix<T>(*this) += inMatrix;
+        }
+
+        inline const Matrix<T> operator-(const Matrix<T>& inMatrix) const
+        {
+            return Matrix<T>(*this) -= inMatrix;
+        }
+
+        inline const Matrix<T> operator*(const Matrix<T>& inMatrix) const
+        {
+            return Matrix<T>(*this) *= inMatrix;
+        }
+
+        inline const Matrix<T> operator+(const T inValue) const
+        {
+            return Matrix<T>(*this) += inValue;
+        }
+
+        inline const Matrix<T> operator-(const T inValue) const
+        {
+            return Matrix<T>(*this) -= inValue;
+        }
+
+        inline const Matrix<T> operator*(const T inValue) const
+        {
+            return Matrix<T>(*this) *= inValue;
+        }
+
+        inline const Matrix<T> operator/(const T inValue) const
+        {
+            return Matrix<T>(*this) /= inValue;
+        }
+
+        inline T* array() { return mMatrix; }
 
     private:
         void copy(const Matrix<T>& inMatrix);
-        T at(int inRow, int inCol) const;
 
-        int mRows;
-        int mCols;
-        int mSize;
+        inline T at(int inRow, int inCol) const
+        {
+            return mMatrix[(inRow * mCols) + inCol];
+        }
+
+        size_t mRows;
+        size_t mCols;
+        size_t mSize;
         T* mMatrix;
 };
 
@@ -90,23 +164,23 @@ Matrix<T>::Matrix()
     mMatrix = new T[mSize];
 
     // default to identity matrix
-    for (int i = 0; i < mSize; ++i)
+    for (size_t i = 0; i < mSize; ++i)
         mMatrix[i] = (i % (mCols + 1) == 0 ? 1 : 0);
 }
 
 template<class T>
-Matrix<T>::Matrix(int inRows, int inCols)
+Matrix<T>::Matrix(size_t inRows, size_t inCols)
 {
     mRows = inRows > 0 ? inRows : 1;
     mCols = inCols > 0 ? inCols : 1;
     mSize = mRows * mCols;
     mMatrix = new T[mSize];
 
-    for (int i = 0; i < mSize; ++i) mMatrix[i] = 0;
+    memset(mMatrix, 0, mSize * sizeof(T));
 }
 
 template<class T>
-Matrix<T>::Matrix(int inEdge)
+Matrix<T>::Matrix(size_t inEdge)
 {
     // produces a square matrix
     mRows = inEdge > 0 ? inEdge : 1;
@@ -115,7 +189,7 @@ Matrix<T>::Matrix(int inEdge)
     mMatrix = new T[mSize];
 
     // default to identity matrix
-    for (int i = 0; i < mSize; ++i)
+    for (size_t i = 0; i < mSize; ++i)
         mMatrix[i] = (i % (mCols + 1) == 0 ? 1 : 0);
 }
 
@@ -132,42 +206,6 @@ Matrix<T>::~Matrix()
 }
 
 template<class T>
-inline int Matrix<T>::rows() const
-{
-    return mRows;
-}
-
-template<class T>
-inline int Matrix<T>::cols() const
-{
-    return mCols;
-}
-
-template<class T>
-inline int Matrix<T>::size() const
-{
-    return mSize;
-}
-
-template<class T>
-inline int Matrix<T>::lastRow() const
-{
-    return mRows - 1;
-}
-
-template<class T>
-inline int Matrix<T>::lastCol() const
-{
-    return mCols - 1;
-}
-
-template<class T>
-bool Matrix<T>::square() const
-{
-    return mRows == mCols;
-}
-
-template<class T>
 void Matrix<T>::copy(const Matrix<T>& inMatrix)
 {
     mRows = inMatrix.mRows;
@@ -175,28 +213,7 @@ void Matrix<T>::copy(const Matrix<T>& inMatrix)
     mSize = inMatrix.mSize;
     mMatrix = new T[mSize];
 
-    for (int i = 0; i < mSize; ++i) mMatrix[i] = inMatrix.mMatrix[i];
-}
-
-template<class T>
-inline void Matrix<T>::set(int inRow, int inCol, T inValue)
-{
-    mMatrix[(inRow * mCols) + inCol] = inValue;
-}
-
-template<class T>
-inline T Matrix<T>::at(int inRow, int inCol) const
-{
-    return mMatrix[(inRow * mCols) + inCol];
-}
-
-template<class T>
-int Matrix<T>::toIndex(int inRow, int inCol) const
-{
-    if (inRow < 0 || inCol < 0) return 0;
-    inRow %= mRows;
-    inCol %= mCols;
-    return (inRow * mCols) + inCol;
+    memcpy(mMatrix, inMatrix.mMatrix, mSize * sizeof(T));
 }
 
 template<class T>
@@ -217,10 +234,10 @@ T Matrix<T>::determinant() const
 
     T outValue = 0;
 
-    for (int i = 0; i < mRows; ++i)
+    for (size_t i = 0; i < mRows; ++i)
     {
         Matrix m = minorMatrix(0, i);
-        int neg = ((i % 2 == 0) ? 1 : -1);
+        int neg = (i % 2 == 0) ? 1 : -1;
         outValue += neg * at(0, i) * m.determinant();
     }
 
@@ -228,19 +245,20 @@ T Matrix<T>::determinant() const
 }
 
 template<class T>
-Matrix<T> Matrix<T>::subMatrix(int inRow, int inCol, int inHeight, int inWidth)
+Matrix<T> Matrix<T>::subMatrix(size_t inRow, size_t inCol, size_t inHeight,
+    size_t inWidth)
 {
-    int bottom = inRow + inHeight - 1;
-    int right = inCol + inWidth - 1;
+    size_t bottom = inRow + inHeight - 1;
+    size_t right = inCol + inWidth - 1;
 
     if (inHeight < 1 || inWidth < 1 || inRow < 0 || bottom >= mRows || inCol < 0
         || right >= mCols)
         return Matrix(1, 1);
 
     Matrix<T> outMatrix(inHeight, inWidth);
-    for (int i = 0; i < inHeight; ++i)
+    for (size_t i = 0; i < inHeight; ++i)
     {
-        for (int j = 0; j < inWidth; ++j)
+        for (size_t j = 0; j < inWidth; ++j)
         {
             outMatrix(i, j) = at(i + inRow, j + inCol);
         }
@@ -250,22 +268,21 @@ Matrix<T> Matrix<T>::subMatrix(int inRow, int inCol, int inHeight, int inWidth)
 }
 
 template<class T>
-Matrix<T> Matrix<T>::minorMatrix(int inRow, int inCol) const
+Matrix<T> Matrix<T>::minorMatrix(size_t inRow, size_t inCol) const
 {
-    if (mRows != mCols || inRow < 0 || inRow >= mRows || inCol < 0
-        || inCol >= mCols)
+    if (mRows != mCols || inRow >= mRows || inCol >= mCols)
         return Matrix(1, 1);
 
-    int p = 0;
+    size_t p = 0;
 
     Matrix outMatrix(mRows - 1);
 
-    for (int i = 0; i < mRows; ++i)
+    for (size_t i = 0; i < mRows; ++i)
     {
         if (i != inRow)
         {
-            int q = 0;
-            for (int j = 0; j < mCols; ++j)
+            size_t q = 0;
+            for (size_t j = 0; j < mCols; ++j)
             {
                 if (j != inCol)
                 {
@@ -284,23 +301,15 @@ template<class T>
 void Matrix<T>::transpose()
 {
     if (mRows < 2 || mRows != mCols) return;
-    for (int i = 0; i < mRows; ++i)
+    for (size_t i = 0; i < mRows; ++i)
     {
-        for (int j = i + 1; j < mCols; ++j)
+        for (size_t j = i + 1; j < mCols; ++j)
         {
             T t = at(i, j);
             (*this)(i, j) = at(j, i);
             (*this)(j, i) = t;
         }
     }
-}
-
-template<class T>
-const Matrix<T> Matrix<T>::transposed()
-{
-    Matrix<T> outMatrix(*this);
-    outMatrix.transpose();
-    return outMatrix;
 }
 
 template<class T>
@@ -319,7 +328,7 @@ Matrix<T>& Matrix<T>::operator+=(const Matrix<T>& inMatrix)
 {
     if (mRows == inMatrix.mRows && mCols == inMatrix.mCols)
     {
-        for (int i = 0; i < mSize; ++i) mMatrix[i] += inMatrix.mMatrix[i];
+        for (size_t i = 0; i < mSize; ++i) mMatrix[i] += inMatrix.mMatrix[i];
     }
     return *this;
 }
@@ -327,7 +336,7 @@ Matrix<T>& Matrix<T>::operator+=(const Matrix<T>& inMatrix)
 template<class T>
 Matrix<T>& Matrix<T>::operator+=(const T inValue)
 {
-    for (int i = 0; i < mSize; ++i) mMatrix[i] += inValue;
+    for (size_t i = 0; i < mSize; ++i) mMatrix[i] += inValue;
     return *this;
 }
 
@@ -336,7 +345,7 @@ Matrix<T>& Matrix<T>::operator-=(const Matrix<T>& inMatrix)
 {
     if (mRows == inMatrix.mRows && mCols == inMatrix.mCols)
     {
-        for (int i = 0; i < mSize; ++i) mMatrix[i] -= inMatrix.mMatrix[i];
+        for (size_t i = 0; i < mSize; ++i) mMatrix[i] -= inMatrix.mMatrix[i];
     }
     return *this;
 }
@@ -344,7 +353,7 @@ Matrix<T>& Matrix<T>::operator-=(const Matrix<T>& inMatrix)
 template<class T>
 Matrix<T>& Matrix<T>::operator-=(const T inValue)
 {
-    for (int i = 0; i < mSize; ++i) mMatrix[i] -= inValue;
+    for (size_t i = 0; i < mSize; ++i) mMatrix[i] -= inValue;
     return *this;
 }
 
@@ -361,169 +370,41 @@ Matrix<T>& Matrix<T>::operator*=(const Matrix<T>& inMatrix)
 template<class T>
 Matrix<T>& Matrix<T>::operator*=(const T inValue)
 {
-    for (int i = 0; i < mSize; ++i) mMatrix[i] *= inValue;
+    for (size_t i = 0; i < mSize; ++i) mMatrix[i] *= inValue;
     return *this;
 }
 
 template<class T>
 Matrix<T>& Matrix<T>::operator/=(const T inValue)
 {
-    for (int i = 0; i < mSize; ++i) mMatrix[i] /= inValue;
+    for (size_t i = 0; i < mSize; ++i) mMatrix[i] /= inValue;
     return *this;
 }
 
 template<class T>
-inline T& Matrix<T>::operator()(int inRow, int inCol)
+std::ostream& operator<<(std::ostream& inStream, const Matrix<T>& inMatrix)
 {
-    return mMatrix[(inRow * mCols) + inCol];
-}
-
-template<class T>
-T Matrix<T>::operator()(int inRow, int inCol) const
-{
-    if (inRow < 0 || inCol < 0) return mMatrix[0];
-
-    inRow %= mRows;
-    inCol %= mCols;
-    return mMatrix[(inRow * mCols) + inCol];
-}
-
-template<class T>
-inline T& Matrix<T>::operator[](int inIndex)
-{
-    return mMatrix[inIndex];
-}
-
-template<class T>
-inline T Matrix<T>::operator[](int inIndex) const
-{
-    return mMatrix[inIndex];
-}
-
-template<class T>
-const Matrix<T> Matrix<T>::operator+(const Matrix<T>& inMatrix) const
-{
-    if (mRows != inMatrix.mRows || mCols != inMatrix.mCols) return Matrix(1, 1);
-
-    Matrix outMatrix(*this);
-    for (int i = 0; i < mSize; ++i) outMatrix[i] += inMatrix[i];
-    return outMatrix;
-}
-
-template<class T>
-const Matrix<T> Matrix<T>::operator+(T inValue) const
-{
-    Matrix outMatrix(*this);
-    for (int i = 0; i < mSize; ++i) outMatrix[i] += inValue;
-    return outMatrix;
-}
-
-template<class T>
-const Matrix<T> Matrix<T>::operator-(const Matrix<T>& inMatrix) const
-{
-    if (mRows != inMatrix.mRows || mCols != inMatrix.mCols) return Matrix(1, 1);
-
-    Matrix outMatrix(*this);
-    for (int i = 0; i < mSize; ++i) outMatrix[i] -= inMatrix[i];
-    return outMatrix;
-}
-
-template<class T>
-const Matrix<T> Matrix<T>::operator-(T inValue) const
-{
-    Matrix outMatrix(*this);
-    for (int i = 0; i < mSize; ++i) outMatrix[i] -= inValue;
-    return outMatrix;
-}
-
-template<class T>
-const Matrix<T> Matrix<T>::operator*(const Matrix<T>& inMatrix) const
-{
-    if (mCols != inMatrix.mRows) return Matrix(1, 1);
-
-    Matrix outMatrix(mRows, inMatrix.mCols);
-
-    for (int i = 0; i < outMatrix.mRows; ++i)
+    inStream << std::setprecision(3);
+    for (size_t i = 0; i < inMatrix.size(); ++i)
     {
-        for (int j = 0; j < outMatrix.mCols; ++j)
-        {
-            T value = 0;
-            for (int k = 0; k < mCols; ++k)
-            {
-                value += (at(i, k) * inMatrix.at(k, j));
-            }
-            outMatrix(i, j) = value;
-        }
+        if (i % inMatrix.cols() == 0 && i > 0) inStream << std::endl;
+        inStream << std::setw(8) << inMatrix[i];
     }
 
-    return outMatrix;
-}
-
-template<class T>
-const Matrix<T> Matrix<T>::operator*(T inValue) const
-{
-    Matrix outMatrix(*this);
-    for (int i = 0; i < mSize; ++i) outMatrix[i] *= inValue;
-    return outMatrix;
-}
-
-template<class T>
-const Matrix<T> Matrix<T>::operator/(T inValue) const
-{
-    Matrix outMatrix(*this);
-    for (int i = 0; i < mSize; ++i) outMatrix[i] /= inValue;
-    return outMatrix;
-}
-
-template<class T>
-bool Matrix<T>::operator==(const Matrix<T>& inMatrix) const
-{
-    if (mRows != inMatrix.mRows || mCols != inMatrix.mCols) return false;
-
-    for (int i = 0; i < mSize; ++i)
-    {
-        if (at(i) != inMatrix.at(i)) return false;
-    }
-
-    return true;
-}
-
-template<class T>
-bool Matrix<T>::operator!=(const Matrix<T>& inMatrix) const
-{
-    return !(*this == inMatrix);
-}
-
-template<class T>
-T* Matrix<T>::array()
-{
-    return mMatrix;
-}
-
-template<class T>
-ostream& operator<<(ostream& inStream, const Matrix<T>& inMatrix)
-{
-    inStream << setprecision(3);
-    for (int i = 0; i < inMatrix.size(); ++i)
-    {
-        if (i % inMatrix.cols() == 0 && i > 0) inStream << endl;
-        inStream << setw(8) << inMatrix.at(i);
-    }
-
-    inStream << endl;
+    inStream << std::endl;
 
     return inStream;
 }
 
 template<class T>
-istream& operator>>(istream& inStream, Matrix<T>& inMatrix)
+std::istream& operator>>(std::istream& inStream, Matrix<T>& inMatrix)
 {
-    int rows;
-    int cols;
+    size_t rows;
+    size_t cols;
     inStream >> rows >> cols;
     inMatrix = Matrix<T>(rows, cols);
 
-    for (int i = 0; i < inMatrix.size(); ++i) inStream >> inMatrix[i];
+    for (size_t i = 0; i < inMatrix.size(); ++i) inStream >> inMatrix[i];
 
     return inStream;
 }
