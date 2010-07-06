@@ -15,7 +15,6 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Vector3D.h"
 #include "Config.h"
 #include "DisplayEngine.h"
 #include "SoundEngine.h"
@@ -23,7 +22,6 @@
 
 int main(int argc, char** argv)
 {
-
     Config::initialize(argc, argv);
     DisplayEngine::initialize();
     //SoundEngine::initialize();
