@@ -25,7 +25,6 @@ class TestModule : public Module
         Matrix3D mProjection;
         MatrixStack mModelView;
         ShaderProgram mSP;
-        Shader* mShaders[2];
         ShaderVBO mSVBO;
 };
 
