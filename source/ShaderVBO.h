@@ -27,7 +27,8 @@ class ShaderVBO
             GLuint VBOindex;
         };
 
-        void display();
+        void displayIndexed();
+        void displayLinear(GLenum inMode, GLint inFirst, GLsizei inCount);
         void loadVAA(const char* inAttribute, GLuint inValuesPerVertex,
             GLuint inSize, const GLfloat* inData,
             GLenum inUsage = GL_STATIC_DRAW);

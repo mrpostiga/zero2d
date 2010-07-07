@@ -184,12 +184,12 @@ void Matrix3D::orthographic(float inRange, float inRatio)
     if (inRatio < 1.0f)
     {
         orthographic(-inRange, inRange, -inRange / inRatio, inRange / inRatio,
-            -1.0f, 1.0f);
+            -10.0f, 10.0f);
     }
     else
     {
         orthographic(-inRange * inRatio, inRange * inRatio, -inRange, inRange,
-            -1.0f, 1.0f);
+            -10.0f, 10.0f);
     }
 }
 
