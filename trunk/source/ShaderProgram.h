@@ -15,6 +15,10 @@ class ShaderProgram
         void bindAttributeLocations(ShaderVBO& inSVBO);
         void setMatrix(const Matrix3D& inMatrix);
         inline void use() { glUseProgram(mHandle); }
+        inline GLint getUniformLocation(const char* inName)
+        {
+            return glGetUniformLocation(mHandle, inName);
+        }
 
     protected:
     private:

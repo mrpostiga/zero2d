@@ -14,7 +14,7 @@ ShaderVBO::~ShaderVBO()
         glDeleteBuffers(1, &mIndexArray.VBOindex);
 }
 
-void ShaderVBO::display()
+void ShaderVBO::displayIndexed()
 {
     for (size_t i = 0; i < mData.size(); ++i)
     {
@@ -32,6 +32,30 @@ void ShaderVBO::display()
     {
         glDisableVertexAttribArray(mData[i].VAindex);
     }
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+void ShaderVBO::displayLinear(GLenum inMode, GLint inFirst, GLsizei inCount)
+{
+    for (size_t i = 0; i < mData.size(); ++i)
+    {
+        DataArray& da = mData[i];
+        glBindBuffer(GL_ARRAY_BUFFER, da.VBOindex);
+        glVertexAttribPointer(da.VAindex, da.valuesPerVertex, GL_FLOAT,
+            GL_FALSE, 0, 0);
+        glEnableVertexAttribArray(da.VAindex);
+    }
+
+    glDrawArrays(inMode, inFirst, inCount);
+
+    for (size_t i = 0; i < mData.size(); ++i)
+    {
+        glDisableVertexAttribArray(mData[i].VAindex);
+    }
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 /// load Vertex Attribute Array

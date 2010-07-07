@@ -20,9 +20,14 @@ class TestModule : public Module
         virtual void onUnload();
 
     protected:
+        virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+
     private:
         float mRotation;
+        float mTime;
+        Uint32 mTickStart;
         Matrix3D mProjection;
+        Matrix3D mMVPM;
         MatrixStack mModelView;
         ShaderProgram mSP;
         ShaderVBO mSVBO;

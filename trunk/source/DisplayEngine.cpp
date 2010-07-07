@@ -103,8 +103,8 @@ void DisplayEngine::start(Module* inModule)
                 mFPS = framesPerSecond;
                 framesPerSecond = 0;
 
-                client.sendData("cdaragorn", 10);
-                client.sendData("TheBuzzSaw", 11);
+                //client.sendData("cdaragorn", 10);
+                //client.sendData("TheBuzzSaw", 11);
             }
 
             if (ticks > nextFrame)
@@ -334,7 +334,7 @@ void DisplayEngine::initialize()
     glViewport(0, 0, w, h);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    //glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     SDL_WM_SetCaption("Zero2D version 0.0.1", "Zero2D");
