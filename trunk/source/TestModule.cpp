@@ -32,6 +32,13 @@ bool TestModule::onLoad()
     mSVBO.loadIA(GL_TRIANGLES, 6, indices);
     mSP.bindAttributeLocations(mSVBO);
 
+    mRotation = 0.0f;
+    float ratio = float(SDL_GetVideoSurface()->w)
+        / float(SDL_GetVideoSurface()->h);
+    //mProjection.orthographic(1.5f, ratio);
+    mProjection.perspective(30.0f, ratio, 1.0f, 100.0f);
+    mModelView.matrix().translate(0.0f, 0.0f, -10.0f);
+
     return true;
 }
 
@@ -51,10 +58,17 @@ void TestModule::onClose()
 
 void TestModule::onLoop()
 {
+    glClear(GL_COLOR_BUFFER_BIT);
+    mModelView.push();
+    mModelView.matrix().rotateX(mRotation);
+    mModelView.matrix().rotateY(mRotation);
+    mSP.setMatrix(mProjection * mModelView.matrix());
     mSVBO.display();
+    mModelView.pop();
 }
 
 void TestModule::onFrame()
 {
-
+    mRotation += 1.0f;
+    if (mRotation > 180.0f) mRotation -= 360.0f;
 }

@@ -3,6 +3,7 @@
 
 #include "Shader.h"
 #include "ShaderVBO.h"
+#include "Matrix3D.h"
 
 class ShaderProgram
 {
@@ -12,6 +13,7 @@ class ShaderProgram
 
         void attachShader(Shader* inShader);
         void bindAttributeLocations(ShaderVBO& inSVBO);
+        void setMatrix(const Matrix3D& inMatrix);
         inline void use() { glUseProgram(mHandle); }
 
     protected:
@@ -21,6 +23,7 @@ class ShaderProgram
         Shader** mShaders;
         size_t mCapacity;
         size_t mSize;
+        GLint mUniformMatrix;
 };
 
 #endif
