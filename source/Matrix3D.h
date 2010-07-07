@@ -51,6 +51,7 @@ class Matrix3D
         void multiply(const Matrix3D& inMatrix);
 
         inline float* array() { return mData; }
+        inline const float* array() const { return mData; }
         inline float& operator[](size_t inIndex) { return mData[inIndex]; }
         inline float operator[](size_t inIndex) const { return mData[inIndex]; }
 

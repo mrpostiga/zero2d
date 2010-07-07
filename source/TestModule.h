@@ -2,6 +2,7 @@
 #define TESTMODULE_H
 
 #include "Module.h"
+#include "MatrixStack.h"
 #include "ShaderProgram.h"
 
 class TestModule : public Module
@@ -20,6 +21,9 @@ class TestModule : public Module
 
     protected:
     private:
+        float mRotation;
+        Matrix3D mProjection;
+        MatrixStack mModelView;
         ShaderProgram mSP;
         Shader* mShaders[2];
         ShaderVBO mSVBO;
