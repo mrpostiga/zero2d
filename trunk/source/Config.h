@@ -46,18 +46,18 @@ class Config
         template<class T>
         static T get(const char* inKey, T inDefault)
         {
-                T outValue;
+            T outValue;
 
-                std::stringstream ss;
-                ss << inDefault;
-                std::string s(ss.str());
+            std::stringstream ss;
+            ss << inDefault;
+            std::string s(ss.str());
 
-                ss.str(std::string());
-                ss.clear();
+            ss.str(std::string());
+            ss.clear();
 
-                ss << getRaw(inKey, s.c_str());
-                if(ss.str().length() > 0) ss >> outValue;
-                return outValue;
+            ss << getRaw(inKey, s.c_str());
+            if(ss.str().length() > 0) ss >> outValue;
+            return outValue;
         }
 
     private:

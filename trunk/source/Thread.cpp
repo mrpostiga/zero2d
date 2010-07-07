@@ -41,3 +41,24 @@ int Thread::startThread(void* inData)
     t->mRunning = false;
     return 0;
 }
+
+/**
+ *  Waits for a thread to finish its run() function. WARNING: Needs to be called
+ *  on a thread that will end eventually without any kind of stop() call (or
+ *  where you have called it prior).
+ */
+void Thread::wait()
+{
+    if (mRunning) SDL_WaitThread(mThread, NULL);
+}
+
+/**
+ *  Both requests a stop in the thread and waits until the thread is no longer
+ *  running. This is just an alternative to having to call stop() and wait()
+ *  separately.
+ */
+void Thread::stopAndWait()
+{
+    stop();
+    wait();
+}

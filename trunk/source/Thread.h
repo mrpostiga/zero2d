@@ -27,14 +27,20 @@ class Thread
         virtual ~Thread();
 
         void start(Uint32 inDelay = 0);
+        void wait();
+        void stopAndWait();
         virtual void run() = 0;
-        inline bool isRunning();
-        inline void stop();
-        inline void wait();
-        inline void stopAndWait();
+
+        inline bool isRunning() { return mRunning; }
+        inline void stop()
+        {
+            /// Requests a stop in the thread but continues normal execution
+            /// without waiting.
+            mStop = true;
+        }
 
     protected:
-        inline bool stopRequested();
+        inline bool stopRequested() { return mStop; }
 
     private:
         static int startThread(void* inData);
@@ -43,45 +49,5 @@ class Thread
         volatile bool mStop;
         SDL_Thread* mThread;
 };
-
-inline bool Thread::isRunning()
-{
-    return mRunning;
-}
-
-/**
- *  Requests a stop in the thread but continues normal execution without
- *  waiting.
- */
-inline void Thread::stop()
-{
-    mStop = true;
-}
-
-/**
- *  Waits for a thread to finish its run() function. WARNING: Needs to be called
- *  on a thread that will end eventually without any kind of stop() call (or
- *  where you have called it prior).
- */
-inline void Thread::wait()
-{
-    if (mRunning) SDL_WaitThread(mThread, NULL);
-}
-
-/**
- *  Both requests a stop in the thread and waits until the thread is no longer
- *  running. This is just an alternative to having to call stop() and wait()
- *  separately.
- */
-inline void Thread::stopAndWait()
-{
-    stop();
-    wait();
-}
-
-inline bool Thread::stopRequested()
-{
-    return mStop;
-}
 
 #endif

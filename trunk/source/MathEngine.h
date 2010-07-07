@@ -29,19 +29,17 @@
 class MathEngine
 {
     public:
-        template<class T> static T supremeRandom(T min, T max);
+        template<class T>
+        static T supremeRandom(T min, T max)
+        {
+            boost::uniform_real<T> u(min, max);
+            boost::variate_generator< boost::mt19937&, boost::uniform_real<T> >
+                outValue(mSeed, u);
+            return outValue();
+        }
 
     private:
         static boost::mt19937 mSeed;
 };
-
-template<class T>
-T MathEngine::supremeRandom(T min, T max)
-{
-    boost::uniform_real<T> u(min, max);
-    boost::variate_generator< boost::mt19937&, boost::uniform_real<T> >
-        outValue(mSeed, u);
-    return outValue();
-}
 
 #endif
