@@ -42,6 +42,7 @@ SDL_Rect** DisplayEngine::mModes = NULL;
 int DisplayEngine::mMipmapping = 0;
 ColorMask DisplayEngine::mMask;
 unsigned int DisplayEngine::mFPS = 0;
+string DisplayEngine::mShaderFolder("data/shaders/");
 LogFile DisplayEngine::mLogFile;
 
 void DisplayEngine::start(Module* inModule)
@@ -58,16 +59,6 @@ void DisplayEngine::start(Module* inModule)
 
     unsigned nextFrame = SDL_GetTicks() + FRAME_LENGTH;
     SDL_Event event;
-
-    /// begin network code
-
-    GameServer server;
-    server.start(100);
-
-    NetworkStream client;
-    client.connect("127.0.0.1", Config::get<Uint16>("server port", 9421));
-
-    /// end network initialization
 
     while (currentModule != NULL || moduleStack.size() > 0)
     {
@@ -102,9 +93,6 @@ void DisplayEngine::start(Module* inModule)
                 //store the # of frames printed this second
                 mFPS = framesPerSecond;
                 framesPerSecond = 0;
-
-                //client.sendData("cdaragorn", 10);
-                //client.sendData("TheBuzzSaw", 11);
             }
 
             if (ticks > nextFrame)
@@ -141,26 +129,26 @@ void DisplayEngine::start(Module* inModule)
 
     }
 
-    server.stopAndWait();
-
     cleanup();
 }
 
 void DisplayEngine::initialize()
 {
-    using namespace boost::filesystem;
-
-    //delete any old log files
-    string logsDir(Config::getUserFolder());
-    logsDir += "logs/";
-
-    if (is_directory(logsDir))
     {
-        for (directory_iterator itr(logsDir); itr != directory_iterator(); ++itr)
+        using namespace boost::filesystem;
+
+        //delete any old log files
+        string logsDir(Config::getUserFolder());
+        logsDir += "logs/";
+
+        if (is_directory(logsDir))
         {
-            if (is_regular_file(itr->status()))
+            for (directory_iterator itr(logsDir); itr != directory_iterator(); ++itr)
             {
-                remove(itr->path());
+                if (is_regular_file(itr->status()))
+                {
+                    remove(itr->path());
+                }
             }
         }
     }
@@ -255,8 +243,6 @@ void DisplayEngine::initialize()
     int width = Config::get<int>("display width", 800);
     int height = Config::get<int>("display height", 600);
 
-    mMipmapping = Config::get<int>("mipmapping", 0);
-
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
     mMask.red   = 0xff000000;
     mMask.green = 0x00ff0000;
@@ -317,6 +303,7 @@ void DisplayEngine::initialize()
     }
 #endif
 
+    mMipmapping = Config::get<int>("mipmapping", 0);
     if (mMipmapping == 1)
     {
         if (GLEE_ARB_framebuffer_object || GLEE_EXT_framebuffer_object)
@@ -329,6 +316,22 @@ void DisplayEngine::initialize()
             mLogFile.addLine("extension not found -- using SGI method");
             mMipmapping = 2;
         }
+    }
+
+    int shaderSetting = Config::get<int>("shader", 1);
+    double shaderVersion;
+    stringstream ss;
+    ss << glGetString(GL_SHADING_LANGUAGE_VERSION);
+    ss >> shaderVersion;
+    if (shaderSetting == 2 || (shaderSetting == 1 && shaderVersion >= 1.5))
+    {
+        mLogFile.addLine("using high version shaders");
+        mShaderFolder += "high/";
+    }
+    else
+    {
+        mLogFile.addLine("using low version shaders");
+        mShaderFolder += "low/";
     }
 
     GLsizei w = SDL_GetVideoSurface()->w;
@@ -390,51 +393,6 @@ bool DisplayEngine::printErrors(const char* inMessage, ostream& inStream)
     while (error != GL_NO_ERROR)
     {
         inStream << gluErrorString(error) << endl;
-        /*
-        switch(error)
-        {
-            case GL_INVALID_ENUM:
-            {
-                inStream << "Invalid enum." << endl;
-                break;
-            }
-            case GL_INVALID_VALUE:
-            {
-                inStream << "Invalid value." << endl;
-                break;
-            }
-            case GL_INVALID_OPERATION:
-            {
-                inStream << "Invalid operation." << endl;
-                break;
-            }
-            case GL_STACK_OVERFLOW:
-            {
-                inStream << "Stack Overflow" << endl;
-                break;
-            }
-            case GL_STACK_UNDERFLOW:
-            {
-                inStream << "Stack Underflow" << endl;
-                break;
-            }
-            case GL_OUT_OF_MEMORY:
-            {
-                inStream << "Out of memory." << endl;
-                break;
-            }
-            case GL_TABLE_TOO_LARGE:
-            {
-                inStream << "Table too large." << endl;
-                break;
-            }
-            default:
-            {
-                inStream << "unknown error" << endl;
-            }
-        }
-        */
-
         error = glGetError();
     }
     return isError;
@@ -574,7 +532,8 @@ void DisplayEngine::openGLDriverInfo(ostream& inStream)
     inStream << "Vendor: " << (char*)glGetString(GL_VENDOR) << endl;
     inStream << "Renderer: " << (char*)glGetString(GL_RENDERER) << endl;
     inStream << "OpenGL Version: " << (char*)glGetString(GL_VERSION) << endl;
-    inStream << "Shader version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
+    inStream << "Shader version: " << glGetString(GL_SHADING_LANGUAGE_VERSION)
+        << endl;
 
     inStream << "\n---[ EXTENSIONS ]---" << endl;
 
