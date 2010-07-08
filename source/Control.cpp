@@ -26,5 +26,4 @@ Control::Control(Entity* inEntity)
 Control::~Control()
 {
     delete mEntity;
-    //dtor
 }

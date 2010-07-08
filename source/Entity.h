@@ -19,7 +19,8 @@
 #define ENTITY_H
 
 #include "Vector3D.h"
-
+#include "Matrix3D.h"
+#include "Sprite.h"
 
 
 class Entity
@@ -48,12 +49,12 @@ class Entity
         const Vector3D<float>& getPosition() const;
         void setPosition(const Vector3D<float>& inPosition);
 
-        EntityType getWhatIAm();
+        Type getWhatIAm();
         bool isAlive();
         void die();
 
     protected:
-        EntityType mWhatAmI;
+        Type mWhatAmI;
 
         Matrix3D mTranslation;
         Matrix3D mRotation;
