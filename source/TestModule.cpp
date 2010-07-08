@@ -27,11 +27,6 @@ bool TestModule::onLoad()
     GLfloat* velocities = new GLfloat[NUM_PARTICLES * 3];
     GLfloat* startTimes = new GLfloat[NUM_PARTICLES];
 
-    GLfloat* ver = vertices;
-    GLfloat* col = colors;
-    GLfloat* vel = velocities;
-    GLfloat* sta = startTimes;
-
     srand(time(NULL));
     for (size_t i = 0; i < NUM_PARTICLES; ++i)
     {
@@ -69,7 +64,7 @@ bool TestModule::onLoad()
     mRotation = 0.0f;
     mTime = 0.0f;
 
-    glPointSize(0.2f);
+    glPointSize(2.0f);
 
     float ratio = float(SDL_GetVideoSurface()->w)
         / float(SDL_GetVideoSurface()->h);
@@ -116,7 +111,6 @@ void TestModule::onFrame()
     //mRotation += 5.0f;
     if (mRotation > 180.0f) mRotation -= 360.0f;
 
-    //GLint t = mSP.getUniformLocation("Time");
     glUniform1f(mT, float(SDL_GetTicks() - mTickStart) * 0.0004f);
 }
 
