@@ -28,5 +28,6 @@ int main(int argc, char** argv)
     //Config::outputSettings();
     DisplayEngine::start(new TestModule);
     //SoundEngine::cleanup();
+    Config::finalize();
     return 0;
 }

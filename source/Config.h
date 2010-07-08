@@ -31,6 +31,7 @@ class Config
 {
     public:
         static void initialize(int inArgc, char** inArgv);
+        static void finalize();
         static void loadFromFile(const char* inFile);
         static void outputSettings();
         static void outputSettings(std::ostream& inStream);
@@ -63,6 +64,7 @@ class Config
     private:
         static std::map<std::string, std::string> mSettings;
         static std::string mUserFolder;
+        static bool mCreateSettingsFile;
 };
 
 void trim(std::string& inString);

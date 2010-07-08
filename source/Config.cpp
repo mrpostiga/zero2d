@@ -25,6 +25,7 @@
 using namespace std;
 
 map<string, string> Config::mSettings;
+bool Config::mCreateSettingsFile = false;
 
 #ifndef __WIN32__
 string Config::mUserFolder(UNIX_HOME_FOLDER);
@@ -46,15 +47,18 @@ void trim(string& inString)
 void Config::initialize(int inArgc, char** inArgv)
 {
 #ifndef __WIN32__
-    // UNIX home folder settings file
-    string s(UNIX_HOME_FOLDER);
-    s += "/.cyborus";
-    boost::filesystem::create_directory(s.c_str());
-    s += "/zero2d";
-    boost::filesystem::create_directory(s.c_str());
-    s += "/logs";
-    boost::filesystem::create_directory(s.c_str());
-    mUserFolder += "/.cyborus/zero2d/";
+    {
+        // UNIX home folder settings file
+        using namespace boost::filesystem;
+        string s(UNIX_HOME_FOLDER);
+        s += "/.cyborus";
+        create_directory(s.c_str());
+        s += "/zero2d";
+        create_directory(s.c_str());
+        s += "/logs";
+        create_directory(s.c_str());
+        mUserFolder += "/.cyborus/zero2d/";
+    }
 #endif
 
     string settingsFile(mUserFolder);
@@ -69,6 +73,7 @@ void Config::loadFromFile(const char* inFile)
     if (settingsFile.fail())
     {
         cerr << "failed to open " << inFile << endl;
+        mCreateSettingsFile = true;
         return;
     }
 
@@ -101,7 +106,9 @@ void Config::outputSettings(ostream& inStream)
 {
     for (map<string, string>::iterator i = mSettings.begin();
         i != mSettings.end(); ++i)
+    {
         inStream << i->first << " = " << i->second << endl;
+    }
 }
 
 const char* Config::getRaw(const char* inKey, const char* inDefault)
@@ -125,4 +132,17 @@ const char* Config::getRaw(const char* inKey)
 void Config::set(const char* inKey, const char* inValue)
 {
     mSettings[inKey] = inValue;
+}
+
+void Config::finalize()
+{
+    if (mCreateSettingsFile)
+    {
+        string s(getUserFolder());
+        s += "settings.txt";
+        ofstream settings(s.c_str());
+        if (settings.fail()) return;
+        outputSettings(settings);
+        settings.close();
+    }
 }

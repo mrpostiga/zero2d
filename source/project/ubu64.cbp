@@ -34,7 +34,6 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Linker>
-			<Add library="glee" />
 			<Add library="GL" />
 			<Add library="GLU" />
 			<Add library="SDLmain" />
@@ -51,6 +50,10 @@
 		<Unit filename="../Config.h" />
 		<Unit filename="../DisplayEngine.cpp" />
 		<Unit filename="../DisplayEngine.h" />
+		<Unit filename="../GLee.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../GLee.h" />
 		<Unit filename="../GameServer.cpp" />
 		<Unit filename="../GameServer.h" />
 		<Unit filename="../LogFile.cpp" />
