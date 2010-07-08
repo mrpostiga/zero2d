@@ -79,6 +79,11 @@ class DisplayEngine
             return mShaderFolder;
         }
 
+        static inline float getAspectRatio()
+        {
+            return mAspectRatio;
+        }
+
     private:
         static void cleanup();
 
@@ -90,6 +95,7 @@ class DisplayEngine
         static int mMipmapping;
         static ColorMask mMask;
         static std::string mShaderFolder;
+        static float mAspectRatio;
 
 
         static LogFile mLogFile;

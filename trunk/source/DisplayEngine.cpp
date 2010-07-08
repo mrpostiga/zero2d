@@ -43,6 +43,7 @@ int DisplayEngine::mMipmapping = 0;
 ColorMask DisplayEngine::mMask;
 unsigned int DisplayEngine::mFPS = 0;
 string DisplayEngine::mShaderFolder("data/shaders/");
+float DisplayEngine::mAspectRatio;
 LogFile DisplayEngine::mLogFile;
 
 void DisplayEngine::start(Module* inModule)
@@ -303,7 +304,7 @@ void DisplayEngine::initialize()
     }
 #endif
 
-    mMipmapping = Config::get<int>("mipmapping", 0);
+    mMipmapping = Config::get<int>("mipmapping", 1);
     if (mMipmapping == 1)
     {
         if (GLEE_ARB_framebuffer_object || GLEE_EXT_framebuffer_object)
@@ -336,6 +337,7 @@ void DisplayEngine::initialize()
 
     GLsizei w = SDL_GetVideoSurface()->w;
     GLsizei h = SDL_GetVideoSurface()->h;
+    mAspectRatio = float(w) / float(h);
     glViewport(0, 0, w, h);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
