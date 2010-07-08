@@ -324,7 +324,7 @@ void DisplayEngine::initialize()
     stringstream ss;
     ss << glGetString(GL_SHADING_LANGUAGE_VERSION);
     ss >> shaderVersion;
-    if (shaderSetting == 2 || (shaderSetting == 1 && shaderVersion >= 1.5))
+    if (shaderSetting == 2 || (shaderSetting == 1 && shaderVersion >= 1.4))
     {
         mLogFile.addLine("using high version shaders");
         mShaderFolder += "high/";

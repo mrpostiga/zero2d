@@ -57,7 +57,7 @@ class DisplayEngine
         static void initialize();
         static Surface loadImage(const char* inFile);
         static bool loadTexture(Surface inSurface, GLuint inTexture,
-            bool inDelete = false);
+            bool inDelete = true);
         static bool loadTexture(const char* inFile, GLuint inTexture);
         static void openGLDriverInfo(std::ostream& inStream);
 
