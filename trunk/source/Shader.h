@@ -3,6 +3,8 @@
 
 #include "OGL.h"
 
+#include <string>
+
 class Shader
 {
     public:
@@ -15,6 +17,13 @@ class Shader
         static char* fileToBuffer(const char* inFile);
 
         GLuint mHandle;
+};
+
+class ShaderException
+{
+    public:
+        ShaderException(const std::string& inReason);
+        const std::string reason;
 };
 
 #endif

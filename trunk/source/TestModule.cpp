@@ -1,6 +1,8 @@
 #include "TestModule.h"
 
 #include <ctime>
+#include <iostream>
+using namespace std;
 
 #define NUM_PARTICLES 1000
 
@@ -19,47 +21,61 @@ TestModule::~TestModule()
 
 bool TestModule::onLoad()
 {
-    mSP.attachShader(new Shader("data/shaders/test2-particles-120.vs"));
-    mSP.attachShader(new Shader("data/shaders/test2-particles-120.fs"));
-
-    GLfloat* vertices = new GLfloat[NUM_PARTICLES * 3];
-    GLfloat* colors = new GLfloat[NUM_PARTICLES * 3];
-    GLfloat* velocities = new GLfloat[NUM_PARTICLES * 3];
-    GLfloat* startTimes = new GLfloat[NUM_PARTICLES];
-
-    srand(time(NULL));
-    for (size_t i = 0; i < NUM_PARTICLES; ++i)
+    try
     {
-        size_t j = i * 3;
+        mSP.attachShader(new Shader("test2-particles.vs"));
+        mSP.attachShader(new Shader("test2-particles.fs"));
 
-        vertices[j] = 0.0;
-        vertices[j + 1] = 0.0f;
-        vertices[j + 2] = 0.0f;
+        GLfloat* vertices = new GLfloat[NUM_PARTICLES * 3];
+        GLfloat* colors = new GLfloat[NUM_PARTICLES * 3];
+        GLfloat* velocities = new GLfloat[NUM_PARTICLES * 3];
+        GLfloat* startTimes = new GLfloat[NUM_PARTICLES];
 
-        colors[j] = randomValue();
-        colors[j + 1] = randomValue();
-        colors[j + 2] = randomValue();
+        srand(time(NULL));
+        for (size_t i = 0; i < NUM_PARTICLES; ++i)
+        {
+            size_t j = i * 3;
 
-        velocities[j] = 2.0f * randomValue() - 1.0f;
-        velocities[j + 1] = 4.0f * randomValue();
-        velocities[j + 2] = 2.0f * randomValue() - 1.0f;
+            vertices[j] = 0.0;
+            vertices[j + 1] = 0.0f;
+            vertices[j + 2] = 0.0f;
 
-        startTimes[i] = randomValue() * 1.0f;
+            colors[j] = randomValue();
+            colors[j + 1] = randomValue();
+            colors[j + 2] = randomValue();
+
+            velocities[j] = 2.0f * randomValue() - 1.0f;
+            velocities[j + 1] = 4.0f * randomValue();
+            velocities[j + 2] = 2.0f * randomValue() - 1.0f;
+
+            startTimes[i] = randomValue() * 1.0f;
+        }
+
+        mSVBO.loadVAA("MCVertex", 3, NUM_PARTICLES, vertices);
+        mSVBO.loadVAA("MColor", 3, NUM_PARTICLES, colors);
+        mSVBO.loadVAA("Velocity", 3, NUM_PARTICLES, velocities);
+        mSVBO.loadVAA("StartTime", 1, NUM_PARTICLES, startTimes);
+        mSP.bindAttributeLocations(mSVBO);
+
+        delete [] vertices;
+        delete [] colors;
+        delete [] velocities;
+        delete [] startTimes;
+    }
+    catch (ShaderException& se)
+    {
+        cerr << "shader exception -- " << se.reason << endl;
+        return false;
+    }
+    catch(...)
+    {
+        cerr << "unknown exception" << endl;
+        return false;
     }
 
-    mSVBO.loadVAA("MCVertex", 3, NUM_PARTICLES, vertices);
-    mSVBO.loadVAA("MColor", 3, NUM_PARTICLES, colors);
-    mSVBO.loadVAA("Velocity", 3, NUM_PARTICLES, velocities);
-    mSVBO.loadVAA("StartTime", 1, NUM_PARTICLES, startTimes);
-    mSP.bindAttributeLocations(mSVBO);
     mT = mSP.getUniformLocation("Time");
 
     mSP.use();
-
-    delete [] vertices;
-    delete [] colors;
-    delete [] velocities;
-    delete [] startTimes;
 
     mRotation = 0.0f;
     mTime = 0.0f;

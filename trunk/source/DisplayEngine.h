@@ -74,6 +74,11 @@ class DisplayEngine
         static bool printErrors(const char* inMessage,
             std::ostream& inStream = mLogFile);
 
+        static inline const std::string& getShaderFolder()
+        {
+            return mShaderFolder;
+        }
+
     private:
         static void cleanup();
 
@@ -84,6 +89,7 @@ class DisplayEngine
         static unsigned int mCurrentFrame;
         static int mMipmapping;
         static ColorMask mMask;
+        static std::string mShaderFolder;
 
 
         static LogFile mLogFile;

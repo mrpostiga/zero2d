@@ -9,6 +9,8 @@ ShaderProgram::ShaderProgram(size_t inCapacity) : mHandle(0), mTopIndex(0),
     if (mCapacity < 2) mCapacity = 2;
     mShaders = new Shader*[mCapacity];
     mHandle = glCreateProgram();
+    if (!mHandle)
+        throw ShaderException("unable to create program (glCreateProgram)");
 }
 
 ShaderProgram::~ShaderProgram()

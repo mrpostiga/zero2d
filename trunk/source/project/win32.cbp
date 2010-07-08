@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Zero2D (ubu64)" />
+		<Option title="Zero2D (win32)" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -27,6 +27,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add option="-mwindows" />
 				</Linker>
 			</Target>
 		</Build>
@@ -41,17 +42,20 @@
 			<Add library="SDL_ttf" />
 			<Add library="SDL_mixer" />
 			<Add library="SDL" />
-			<Add library="Glee" />
 			<Add library="opengl32" />
 			<Add library="glu32" />
-			<Add library="boost_system" />
-			<Add library="boost_filesystem" />
 			<Add library="lua51" />
+			<Add library="C:\dev\MingW\lib\boost\libboost_system-mgw34-mt.lib" />
+			<Add library="C:\dev\MingW\lib\boost\libboost_filesystem-mgw34-mt.lib" />
 		</Linker>
 		<Unit filename="..\Config.cpp" />
 		<Unit filename="..\Config.h" />
 		<Unit filename="..\DisplayEngine.cpp" />
 		<Unit filename="..\DisplayEngine.h" />
+		<Unit filename="..\GLee.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\GLee.h" />
 		<Unit filename="..\GameServer.cpp" />
 		<Unit filename="..\GameServer.h" />
 		<Unit filename="..\LogFile.cpp" />
@@ -86,6 +90,7 @@
 		<Unit filename="..\Thread.cpp" />
 		<Unit filename="..\Thread.h" />
 		<Unit filename="..\Vector3D.h" />
+		<Unit filename="..\glee.h" />
 		<Unit filename="..\main.cpp" />
 		<Extensions>
 			<code_completion />
