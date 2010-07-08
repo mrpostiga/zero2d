@@ -32,6 +32,8 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add directory="/usr/include/SDL" />
+			<Add directory="/usr/include/lua5.1" />
 		</Compiler>
 		<Linker>
 			<Add library="GL" />
@@ -73,8 +75,6 @@
 		<Unit filename="../NetworkStream.h" />
 		<Unit filename="../OGL.h" />
 		<Unit filename="../Point2D.h" />
-		<Unit filename="../PowerVBO.cpp" />
-		<Unit filename="../PowerVBO.h" />
 		<Unit filename="../Shader.cpp" />
 		<Unit filename="../Shader.h" />
 		<Unit filename="../ShaderProgram.cpp" />
@@ -83,8 +83,12 @@
 		<Unit filename="../ShaderVBO.h" />
 		<Unit filename="../SoundEngine.cpp" />
 		<Unit filename="../SoundEngine.h" />
+		<Unit filename="../Sprite.cpp" />
+		<Unit filename="../Sprite.h" />
 		<Unit filename="../TestModule.cpp" />
 		<Unit filename="../TestModule.h" />
+		<Unit filename="../TextureModule.cpp" />
+		<Unit filename="../TextureModule.h" />
 		<Unit filename="../Thread.cpp" />
 		<Unit filename="../Thread.h" />
 		<Unit filename="../Vector3D.h" />
