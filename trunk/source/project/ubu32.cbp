@@ -85,6 +85,8 @@
 		<Unit filename="../Sprite.h" />
 		<Unit filename="../TestModule.cpp" />
 		<Unit filename="../TestModule.h" />
+		<Unit filename="../TextureModule.cpp" />
+		<Unit filename="../TextureModule.h" />
 		<Unit filename="../Thread.cpp" />
 		<Unit filename="../Thread.h" />
 		<Unit filename="../Vector3D.h" />
