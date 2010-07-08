@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-using namespace std;
+using namespace std; // yes
 
 Sprite::Sprite(const char* inKey) : mKey(inKey)
 {
