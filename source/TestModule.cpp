@@ -2,7 +2,7 @@
 
 #include <ctime>
 
-#define NUM_PARTICLES 100000
+#define NUM_PARTICLES 1000
 
 float randomValue()
 {
@@ -19,8 +19,8 @@ TestModule::~TestModule()
 
 bool TestModule::onLoad()
 {
-    mSP.attachShader(new Shader("data/shaders/test2-particles.vs"));
-    mSP.attachShader(new Shader("data/shaders/test2-particles.fs"));
+    mSP.attachShader(new Shader("data/shaders/test2-particles-120.vs"));
+    mSP.attachShader(new Shader("data/shaders/test2-particles-120.fs"));
 
     GLfloat* vertices = new GLfloat[NUM_PARTICLES * 3];
     GLfloat* colors = new GLfloat[NUM_PARTICLES * 3];
@@ -64,7 +64,7 @@ bool TestModule::onLoad()
     mRotation = 0.0f;
     mTime = 0.0f;
 
-    glPointSize(2.0f);
+    glPointSize(1.5f);
 
     float ratio = float(SDL_GetVideoSurface()->w)
         / float(SDL_GetVideoSurface()->h);

@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="..\..\zero2d-ubu64-debug" prefix_auto="1" extension_auto="1" />
+				<Option output="..\..\zero2d-win32-debug" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="..\.." />
 				<Option object_output="obj\Debug\" />
 				<Option type="1" />
@@ -17,7 +17,7 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="..\..\zero2d-ubu64" prefix_auto="1" extension_auto="1" />
+				<Option output="..\..\zero2d-win32" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="..\.." />
 				<Option object_output="obj\Release\" />
 				<Option type="1" />
@@ -34,18 +34,19 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Linker>
-			<Add library="glee" />
-			<Add library="GL" />
-			<Add library="GLU" />
+			<Add library="mingw32" />
 			<Add library="SDLmain" />
 			<Add library="SDL_image" />
 			<Add library="SDL_net" />
 			<Add library="SDL_ttf" />
 			<Add library="SDL_mixer" />
 			<Add library="SDL" />
+			<Add library="Glee" />
+			<Add library="opengl32" />
+			<Add library="glu32" />
 			<Add library="boost_system" />
 			<Add library="boost_filesystem" />
-			<Add library="lua5.1" />
+			<Add library="lua51" />
 		</Linker>
 		<Unit filename="..\Config.cpp" />
 		<Unit filename="..\Config.h" />
