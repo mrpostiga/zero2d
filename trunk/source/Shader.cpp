@@ -51,6 +51,16 @@ Shader::Shader(const char* inFile) : mHandle(0)
 
     glShaderSource(mHandle, 1, (const GLchar**)&source, 0);
     glCompileShader(mHandle);
+    GLint compiled;
+    glGetShaderiv(mHandle, GL_COMPILE_STATUS, &compiled);
+    if (!compiled)
+    {
+        GLchar log[2048];
+        GLsizei length;
+        glGetShaderInfoLog(mHandle, 2048, &length, log);
+        throw ShaderException(log);
+    }
+
     delete [] source;
 }
 

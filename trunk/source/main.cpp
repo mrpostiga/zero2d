@@ -19,6 +19,7 @@
 #include "DisplayEngine.h"
 #include "SoundEngine.h"
 #include "TestModule.h"
+#include "TextureModule.h"
 
 int main(int argc, char** argv)
 {
@@ -26,7 +27,8 @@ int main(int argc, char** argv)
     DisplayEngine::initialize();
     //SoundEngine::initialize();
     //Config::outputSettings();
-    DisplayEngine::start(new TestModule);
+    //DisplayEngine::start(new TestModule);
+    DisplayEngine::start(new TextureModule);
     //SoundEngine::cleanup();
     Config::finalize();
     return 0;

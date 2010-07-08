@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "Control.h"
 
+#include <SDL.h>
 #include <SDL_mutex.h>
 #include <list>
 using namespace std;

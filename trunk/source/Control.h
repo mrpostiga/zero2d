@@ -21,8 +21,6 @@
 #include "Vector3D.h"
 #include "Entity.h"
 
-class Entity;
-
 
 class Control
 {
@@ -32,13 +30,10 @@ class Control
         Control(Entity* inEntity);
         virtual ~Control();
 
-        enum ControlType { NO_CONTROLS, PLAYER_TANK, NETWORK_TANK, ROBOT_TANK, DUMMY_BULLET };
+        enum Type { CHARACTER };
         virtual void update() = 0;
-        //virtual void setPosition(const Vector3D<float>& inPosition);
-        //virtual void changeDirection(float inDirection);
-        //virtual void changeSpeed(float inSpeed);
 
-        ControlType getWhatIAm();
+        Type getWhatIAm();
         virtual void setGameDead();
         virtual bool isGameDead();
         Entity* getEntity();
@@ -46,7 +41,7 @@ class Control
     protected:
         Entity* mEntity;
 
-        ControlType mWhatAmI;
+        Type mWhatAmI;
         bool mGameDead;
 
         //AI turrets have to move differently than player turrets,
@@ -70,7 +65,7 @@ inline Entity* Control::getEntity()
     return mEntity;
 }
 
-inline Control::ControlType Control::getWhatIAm()
+inline Control::Type Control::getWhatIAm()
 {
     return mWhatAmI;
 }

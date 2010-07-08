@@ -482,7 +482,6 @@ bool DisplayEngine::loadTexture(const char* inFile, GLuint inTexture)
     Surface t = loadImage(inFile);
     if (t == NULL) return false;
     loadTexture(t, inTexture);
-    SDL_FreeSurface(t);
     return true;
 }
 

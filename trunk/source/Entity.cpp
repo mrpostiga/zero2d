@@ -27,7 +27,6 @@ Entity::Entity()
 
 Entity::~Entity()
 {
-    //delete mControl;
 }
 
 void Entity::update()
@@ -41,7 +40,7 @@ void Entity::setPosition(const Vector3D<float>& inPosition)
     mPosition = inPosition;
 }
 
-Entity::EntityType Entity::getWhatIAm()
+Entity::Type Entity::getWhatIAm()
 {
     return mWhatAmI;
 }
