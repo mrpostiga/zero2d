@@ -226,6 +226,7 @@ void DisplayEngine::initialize()
      *  http://www.libsdl.org/cgi/docwiki.cgi/SDL_GLattr
      */
 
+
     logStream << "setting SDL OpenGL settings (0 indicates success)" << endl
         << endl;
 
@@ -275,6 +276,7 @@ void DisplayEngine::initialize()
 
     mDisplay = SDL_SetVideoMode(width, height,
         Config::get<int>("bits per pixel", 24), flags);
+
 
     logStream << endl << "current SDL OpenGL settings" << endl << endl;
 
@@ -572,6 +574,8 @@ void DisplayEngine::openGLDriverInfo(ostream& inStream)
     inStream << "Vendor: " << (char*)glGetString(GL_VENDOR) << endl;
     inStream << "Renderer: " << (char*)glGetString(GL_RENDERER) << endl;
     inStream << "OpenGL Version: " << (char*)glGetString(GL_VERSION) << endl;
+    inStream << "Shader version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
+
     inStream << "\n---[ EXTENSIONS ]---" << endl;
 
     string stuff = (char*)glGetString(GL_EXTENSIONS);
