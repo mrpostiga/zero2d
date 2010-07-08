@@ -5,6 +5,8 @@
 #include "MatrixStack.h"
 #include "ShaderProgram.h"
 
+#include <iostream>
+
 class TestModule : public Module
 {
     public:
@@ -31,6 +33,8 @@ class TestModule : public Module
         MatrixStack mModelView;
         ShaderProgram mSP;
         ShaderVBO mSVBO;
+
+        GLuint mT;
 };
 
 #endif

@@ -67,7 +67,7 @@ void ShaderVBO::loadVAA(const char* inAttribute, GLuint inValuesPerVertex,
     da.valuesPerVertex = inValuesPerVertex;
     glGenBuffers(1, &da.VBOindex);
     glBindBuffer(GL_ARRAY_BUFFER, da.VBOindex);
-    glBufferData(GL_ARRAY_BUFFER, inSize * sizeof(GLfloat), inData, inUsage);
+    glBufferData(GL_ARRAY_BUFFER, inSize * sizeof(GLfloat) * inValuesPerVertex, inData, inUsage);
     mData.push_back(da);
 }
 

@@ -57,6 +57,8 @@ bool TestModule::onLoad()
     mSVBO.loadVAA("Velocity", 3, NUM_PARTICLES, velocities);
     mSVBO.loadVAA("StartTime", 1, NUM_PARTICLES, startTimes);
     mSP.bindAttributeLocations(mSVBO);
+    mT = mSP.getUniformLocation("Time");
+
     mSP.use();
 
     delete [] vertices;
@@ -67,7 +69,7 @@ bool TestModule::onLoad()
     mRotation = 0.0f;
     mTime = 0.0f;
 
-    glPointSize(2.0f);
+    glPointSize(0.2f);
 
     float ratio = float(SDL_GetVideoSurface()->w)
         / float(SDL_GetVideoSurface()->h);
@@ -105,7 +107,7 @@ void TestModule::onLoop()
     mMVPM.multiply(mModelView.matrix());
     mSP.setMatrix(mMVPM);
 
-    mSVBO.displayLinear(GL_POINTS, 0, NUM_PARTICLES / 3);
+    mSVBO.displayLinear(GL_POINTS, 0, NUM_PARTICLES);
     mModelView.pop();
 }
 
@@ -114,8 +116,8 @@ void TestModule::onFrame()
     //mRotation += 5.0f;
     if (mRotation > 180.0f) mRotation -= 360.0f;
 
-    GLint t = mSP.getUniformLocation("Time");
-    glUniform1f(t, float(SDL_GetTicks() - mTickStart) * 0.0004f);
+    //GLint t = mSP.getUniformLocation("Time");
+    glUniform1f(mT, float(SDL_GetTicks() - mTickStart) * 0.0004f);
 }
 
 void TestModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
