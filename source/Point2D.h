@@ -18,6 +18,8 @@
 #ifndef POINT2D_H
 #define POINT2D_H
 
+#include <iostream>
+
 template<class T>
 struct Point2D
 {
@@ -42,5 +44,15 @@ template<class T>
 Point2D<T>::Point2D(T inX, T inY) : x(inX), y(inY)
 {
 }
+
+template<class T>
+std::istream& operator>>(std::istream& inStream, Point2D<T>& inPoint)
+{
+    inStream >> inPoint.x >> inPoint.y;
+    return inStream;
+}
+
+typedef Point2D<int> Pixel;
+typedef Point2D<float> Point;
 
 #endif
