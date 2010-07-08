@@ -2,7 +2,7 @@
 
 #include <ctime>
 
-#define NUM_PARTICLES 10000
+#define NUM_PARTICLES 100000
 
 float randomValue()
 {
