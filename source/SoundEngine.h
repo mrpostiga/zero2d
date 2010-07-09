@@ -48,9 +48,8 @@ class SoundEngine
         static void unloadSound(SoundEffect inSound);
 
         static void playSound(SoundEffect inSound);
-        static void playPositionalSound(SoundEffect inSound, int inAngle, int inDistance);
-
-        //static void tankFire(int inAngle, int inDistance);
+        static void playPositionalSound(SoundEffect inSound, int inAngle,
+            int inDistance);
 
         static void cleanup();
 
@@ -66,4 +65,4 @@ class SoundEngine
         static int mMusicVolume;
 };
 
-#endif // SOUNDENGINE_H
+#endif

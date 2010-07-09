@@ -71,6 +71,7 @@ void ShaderVBO::loadVAA(const char* inAttribute, GLuint inValuesPerVertex,
     mData.push_back(da);
 }
 
+/// load Index Array
 void ShaderVBO::loadIA(GLenum inDrawMode, GLsizei inSize, const GLuint* inData,
     GLenum inUsage)
 {
