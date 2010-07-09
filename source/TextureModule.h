@@ -30,6 +30,10 @@ class TextureModule : public Module
     private:
         GLuint mT;
 
+        int animation[8];
+        int mCounter;
+        int mCurrentIndex;
+
         float mRotation;
         Matrix3D mProjection;
         Matrix3D mMVPM;
