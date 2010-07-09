@@ -1,3 +1,5 @@
+#version 120
+
 uniform mat4 MVPM;
 
 attribute vec4 MCVertex;
