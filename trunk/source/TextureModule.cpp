@@ -60,6 +60,18 @@ bool TextureModule::onLoad()
     //mProjection.perspective(30.0f, ratio, 1.0f, 100.0f);
     //mModelView.matrix().translate(0.0f, 0.0f, -5.0f);
 
+    animation[0] = 2;
+    animation[1] = 3;
+    animation[2] = 4;
+    animation[3] = 3;
+    animation[4] = 5;
+    animation[5] = 6;
+    animation[6] = 7;
+    animation[7] = 6;
+    mCounter = 0;
+    mCurrentIndex = 0;
+    mRotation = 0;
+
     return true;
 
 }
@@ -80,15 +92,24 @@ void TextureModule::onLoop()
 
     (mMVPM = mProjection).multiply(mModelView.matrix());
     mSP.setMatrix(mMVPM);
-    mSprite->draw(6, true);
+    mSprite->draw(animation[mCurrentIndex], true);
 
     mModelView.pop();
 }
 
 void TextureModule::onFrame()
 {
-    mRotation += 1.0f;
-    if (mRotation > 180.0f) mRotation -= 360.0f;
+    if (mCounter >= 4)
+    {
+        mCounter = 0;
+        mCurrentIndex = (mCurrentIndex + 1) % 8;
+    }
+    else
+    {
+        ++mCounter;
+    }
+    //mRotation += 1.0f;
+    //if (mRotation > 180.0f) mRotation -= 360.0f;
 }
 
 void TextureModule::onClose()
