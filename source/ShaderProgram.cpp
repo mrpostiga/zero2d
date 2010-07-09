@@ -4,7 +4,7 @@
 using namespace std;
 
 ShaderProgram::ShaderProgram(size_t inCapacity) : mHandle(0), mTopIndex(0),
-    mCapacity(inCapacity), mSize(0)
+    mCapacity(inCapacity), mSize(0), mLink(false)
 {
     if (mCapacity < 2) mCapacity = 2;
     mShaders = new Shader*[mCapacity];
@@ -36,6 +36,8 @@ void ShaderProgram::attachShader(Shader* inShader)
 
 void ShaderProgram::bindAttributeLocations(ShaderVBO& inSVBO)
 {
+    if (mLink) return;
+
     for (size_t i = 0; i < inSVBO.getSize(); ++i)
     {
         ShaderVBO::DataArray* da = inSVBO.getArrays() + i;

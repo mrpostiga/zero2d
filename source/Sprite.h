@@ -1,12 +1,11 @@
 #ifndef SPRITE_H
 #define SPRITE_H
 
-#include "ShaderVBO.h"
+#include "ShaderProgram.h"
 #include "Point2D.h"
 
 #include <string>
 #include <vector>
-// yes
 
 class Sprite
 {
@@ -43,6 +42,8 @@ class Sprite
         void draw(int inIndex, bool inFacingRight);
 
     private:
+        static ShaderProgram* mShaderProgram;
+
         ShaderVBO mSVBO;
         const std::string mKey;
         std::string mName;
