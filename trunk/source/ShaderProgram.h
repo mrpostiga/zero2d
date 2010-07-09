@@ -28,6 +28,7 @@ class ShaderProgram
         size_t mCapacity;
         size_t mSize;
         GLint mUniformMatrix;
+        bool mLink;
 };
 
 #endif

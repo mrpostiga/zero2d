@@ -5,7 +5,9 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-using namespace std; // yes
+using namespace std;
+
+ShaderProgram* Sprite::mShaderProgram = NULL;
 
 Sprite::Sprite(const char* inKey) : mKey(inKey)
 {
@@ -133,6 +135,85 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
 
         DisplayEngine::loadTexture(s, mSheets[i].texture);
     }
+
+    GLfloat* vertices = new GLfloat[mFrames.size() * 16];
+    GLfloat* coordinates = new GLfloat[mFrames.size() * 16];
+
+    for (size_t i = 0; i < mFrames.size(); ++i)
+    {
+        const Frame& f = mFrames[i];
+        const Sheet& s = mSheets[f.sheet];
+
+        Point halves;
+        halves.x = float(f.size.x) / 2.0f;
+        halves.y = float(f.size.y) / 2.0f;
+
+        float width = float(f.size.x) / float(s.size.x);
+        float height = float(f.size.y) / float(s.size.y);
+
+        Point textureUL;
+        textureUL.x = float(f.location.x) / float(s.size.x);
+        textureUL.y = float(f.location.y) / float(s.size.y);
+
+        Point textureLR;
+        textureLR.x = textureUL.x + width;
+        textureLR.y = textureUL.y + height;
+
+        for (size_t j = 0; j < 2; ++j)
+        {
+            size_t k = (i * 16) + (j * 8);
+            float offset = width * float(j);
+
+            /// upper right
+            vertices[k + 0] = halves.x;
+            vertices[k + 1] = halves.y;
+            coordinates[k + 0] = textureLR.x + offset;
+            coordinates[k + 1] = textureUL.y;
+
+            /// lower right
+            vertices[k + 2] = halves.x;
+            vertices[k + 3] = -halves.y;
+            coordinates[k + 2] = textureLR.x + offset;
+            coordinates[k + 3] = textureLR.y;
+
+            /// lower left
+            vertices[k + 4] = -halves.x;
+            vertices[k + 5] = -halves.y;
+            coordinates[k + 4] = textureUL.x + offset;
+            coordinates[k + 5] = textureLR.y;
+
+            /// upper left
+            vertices[k + 6] = -halves.x;
+            vertices[k + 7] = halves.y;
+            coordinates[k + 6] = textureUL.x + offset;
+            coordinates[k + 7] = textureUL.y;
+        }
+    }
+
+    try
+    {
+        mSVBO.loadVAA("CornerVertex", 2, mFrames.size() * 8, vertices);
+        mSVBO.loadVAA("TexCoord", 2, mFrames.size() * 8, coordinates);
+
+        if (!mShaderProgram)
+        {
+            mShaderProgram = new ShaderProgram;
+            mShaderProgram->bindAttributeLocations(mSVBO);
+        }
+    }
+    catch (ShaderException& se)
+    {
+        cerr << "sprite shader exception -- " << se.reason << endl;
+        exit(1);
+    }
+    catch (...)
+    {
+        cerr << "unknown sprite exception" << endl;
+        exit(1);
+    }
+
+    delete [] coordinates;
+    delete [] vertices;
 }
 
 Sprite::~Sprite()

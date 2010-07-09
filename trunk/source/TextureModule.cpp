@@ -92,7 +92,8 @@ void TextureModule::onLoop()
 
 void TextureModule::onFrame()
 {
-    mRotation += 5.0f;
+    mRotation += 1.0f;
+    if (mRotation > 180.0f) mRotation -= 360.0f;
 
     //glUniform1f(mT, float(SDL_GetTicks() - mTickStart) * 0.0004f);
 }
