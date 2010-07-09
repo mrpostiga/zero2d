@@ -39,6 +39,9 @@ bool TextureModule::onLoad()
         mSP.bindAttributeLocations(mSVBO);
 
         GLint texLoc = mSP.getUniformLocation("Texture");
+        mFadeShader = mSP.getUniformLocation("fade");
+        mFade = 1.0f;
+        mFading = false;
         glUniform1i(texLoc, 0);
 
     }
@@ -81,6 +84,7 @@ void TextureModule::onOpen()
     glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glUniform1f(mFadeShader, 1.0);
 }
 
 void TextureModule::onLoop()
@@ -108,6 +112,13 @@ void TextureModule::onFrame()
     {
         ++mCounter;
     }
+
+    if (mFading)
+    {
+        mFade -= 0.01;
+        glUniform1f(mFadeShader, mFade);
+    }
+
     //mRotation += 1.0f;
     //if (mRotation > 180.0f) mRotation -= 360.0f;
 }
@@ -134,7 +145,7 @@ void TextureModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         case SDLK_SPACE:
         {
-
+            mFading = true;
             break;
         }
 

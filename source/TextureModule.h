@@ -34,6 +34,10 @@ class TextureModule : public Module
         int mCounter;
         int mCurrentIndex;
 
+        GLint mFadeShader;
+        float mFade;
+        bool mFading;
+
         float mRotation;
         Matrix3D mProjection;
         Matrix3D mMVPM;
