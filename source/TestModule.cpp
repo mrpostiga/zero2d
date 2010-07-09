@@ -1,4 +1,5 @@
 #include "TestModule.h"
+#include "DisplayEngine.h"
 
 #include <ctime>
 #include <iostream>
@@ -82,8 +83,7 @@ bool TestModule::onLoad()
 
     glPointSize(1.5f);
 
-    float ratio = float(SDL_GetVideoSurface()->w)
-        / float(SDL_GetVideoSurface()->h);
+    float ratio = DisplayEngine::getAspectRatio();
     mProjection.orthographic(1.5f, ratio);
     //mProjection.perspective(30.0f, ratio, 1.0f, 100.0f);
     //mModelView.matrix().translate(0.0f, 0.0f, -5.0f);
@@ -114,8 +114,7 @@ void TestModule::onLoop()
     mModelView.push();
     mModelView.matrix().rotateY(mRotation);
 
-    mMVPM = mProjection;
-    mMVPM.multiply(mModelView.matrix());
+    (mMVPM = mProjection).multiply(mModelView.matrix());
     mSP.setMatrix(mMVPM);
 
     mSVBO.displayLinear(GL_POINTS, 0, NUM_PARTICLES);
