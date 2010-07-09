@@ -1,10 +1,14 @@
 #version 120
 
-varying vec2 tex;
-
 uniform sampler2D Texture;
+uniform float fade;
+
+varying vec2 tex;
 
 void main()
 {
-    gl_FragColor = texture2D(Texture, tex);
+    vec4 color = texture2D(Texture, tex);
+    color.a *= fade;
+    color.a = clamp(color.a, 0.0, 1.0);
+    gl_FragColor = color;
 }

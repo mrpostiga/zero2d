@@ -85,6 +85,7 @@ void TextureModule::onOpen()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glUniform1f(mFadeShader, 1.0);
+    mModelView.reset();
 }
 
 void TextureModule::onLoop()
@@ -116,6 +117,11 @@ void TextureModule::onFrame()
     if (mFading)
     {
         mFade -= 0.01;
+        if (mFade < 0.0f)
+        {
+            mFade = 1.0f;
+            mFading = false;
+        }
         glUniform1f(mFadeShader, mFade);
     }
 
