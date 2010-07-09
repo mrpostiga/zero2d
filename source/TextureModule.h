@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "MatrixStack.h"
 #include "ShaderProgram.h"
+#include "Sprite.h"
 
 #include "OGL.h"
 
@@ -35,8 +36,9 @@ class TextureModule : public Module
         MatrixStack mModelView;
         ShaderProgram mSP;
         ShaderVBO mSVBO;
+        Sprite* mSprite;
 
         GLuint mTexture;
 };
 
-#endif // TEXTUREMODULE_H
+#endif

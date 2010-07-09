@@ -19,6 +19,8 @@ bool TextureModule::onLoad()
 {
     try
     {
+        mSprite = new Sprite("pimple");
+
         glGenTextures(1, &mTexture);
         DisplayEngine::loadTexture("data/sprites/pimple/sheet-0.png", mTexture);
 
@@ -54,7 +56,7 @@ bool TextureModule::onLoad()
     mSP.use();
 
     float ratio = DisplayEngine::getAspectRatio();
-    mProjection.orthographic(5.0f, ratio);
+    mProjection.orthographic(100.0f, ratio);
     //mProjection.perspective(30.0f, ratio, 1.0f, 100.0f);
     //mModelView.matrix().translate(0.0f, 0.0f, -5.0f);
 
@@ -75,12 +77,11 @@ void TextureModule::onLoop()
 
     mModelView.push();
     mModelView.matrix().rotateZ(mRotation);
-    mModelView.matrix().translate(0.0f, -2.0f, 0.0f);
 
     (mMVPM = mProjection).multiply(mModelView.matrix());
     mSP.setMatrix(mMVPM);
+    mSprite->draw(6, true);
 
-    mSVBO.displayLinear(GL_QUADS, 0, NUM_POINTS);
     mModelView.pop();
 }
 
