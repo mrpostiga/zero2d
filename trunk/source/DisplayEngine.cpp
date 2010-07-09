@@ -34,6 +34,7 @@
 
 #include <list>
 #include <fstream>
+#include <sstream>
 using namespace std;
 
 Surface DisplayEngine::mDisplay = NULL;

@@ -5,7 +5,7 @@
 #include <iostream>
 using namespace std;
 
-#define NUM_PARTICLES 10000
+#define NUM_PARTICLES 100
 
 float randomValue()
 {
