@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-#define NUM_PARTICLES 4
+#define NUM_POINTS 4
 
 TextureModule::TextureModule()
 {
@@ -12,7 +12,6 @@ TextureModule::TextureModule()
 
 TextureModule::~TextureModule()
 {
-    //dtor
 }
 
 
@@ -34,8 +33,8 @@ bool TextureModule::onLoad()
         GLfloat texCoords[8] = {0, 0, 1, 0,
                                 1, 1, 0, 1};
 
-        mSVBO.loadVAA("MCVertex", 3, NUM_PARTICLES, vertices);
-        mSVBO.loadVAA("TexCoord", 2, NUM_PARTICLES, texCoords);
+        mSVBO.loadVAA("MCVertex", 3, NUM_POINTS, vertices);
+        mSVBO.loadVAA("TexCoord", 2, NUM_POINTS, texCoords);
         mSP.bindAttributeLocations(mSVBO);
 
         GLint texLoc = mSP.getUniformLocation("Texture");
@@ -71,6 +70,7 @@ bool TextureModule::onLoad()
 
 void TextureModule::onOpen()
 {
+    glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
@@ -80,13 +80,14 @@ void TextureModule::onLoop()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     mModelView.push();
+    mModelView.matrix().rotateZ(mRotation);
+    mModelView.matrix().translate(0.0f, -2.0f, 0.0f);
 
     mMVPM = mProjection;
     mMVPM.multiply(mModelView.matrix());
-    mMVPM.rotateZ(mRotation);
     mSP.setMatrix(mMVPM);
 
-    mSVBO.displayLinear(GL_QUADS, 0, NUM_PARTICLES);
+    mSVBO.displayLinear(GL_QUADS, 0, NUM_POINTS);
     mModelView.pop();
 }
 
@@ -94,19 +95,16 @@ void TextureModule::onFrame()
 {
     mRotation += 1.0f;
     if (mRotation > 180.0f) mRotation -= 360.0f;
-
-    //glUniform1f(mT, float(SDL_GetTicks() - mTickStart) * 0.0004f);
 }
 
 void TextureModule::onClose()
 {
     glDisable(GL_BLEND);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 void TextureModule::onUnload()
 {
-
-
 }
 
 void TextureModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)

@@ -14,6 +14,7 @@ class ShaderProgram
         void attachShader(Shader* inShader);
         void bindAttributeLocations(ShaderVBO& inSVBO);
         void setMatrix(const Matrix3D& inMatrix);
+
         inline void use() { glUseProgram(mHandle); }
         inline GLint getUniformLocation(const char* inName)
         {
@@ -29,6 +30,7 @@ class ShaderProgram
         size_t mSize;
         GLint mUniformMatrix;
         bool mLink;
+        bool mCreate;
 };
 
 #endif

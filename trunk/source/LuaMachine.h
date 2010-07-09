@@ -33,7 +33,11 @@ class LuaMachine
 
         void loadFile(const char* inFile);
         void runCommand(const char* inCommand);
-        void addFunction(const char* inName, lua_CFunction inFunction);
+
+        inline void addFunction(const char* inName, lua_CFunction inFunction)
+        {
+            lua_register(mLuaState, inName, inFunction);
+        }
 
     private:
         void execute();
@@ -45,11 +49,5 @@ class LuaMachine
         int mStatus;
         std::string mError;
 };
-
-inline void LuaMachine::addFunction(const char* inName,
-    lua_CFunction inFunction)
-{
-    lua_register(mLuaState, inName, inFunction);
-}
 
 #endif
