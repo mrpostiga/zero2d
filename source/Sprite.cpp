@@ -157,7 +157,7 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
 
         Point textureLR;
         textureLR.x = textureUL.x + width;
-        textureLR.y = textureUL.y + height;
+        textureLR.y = textureUL.y - height;
 
         for (size_t j = 0; j < 2; ++j)
         {
@@ -231,6 +231,7 @@ Sprite::~Sprite()
 
 void Sprite::draw(int inIndex, bool inFacingRight)
 {
+    cerr << mFrames[inIndex].location.x << ", " << mFrames[inIndex].location.y << endl;
     GLint target = inIndex * 8;
     if (inFacingRight) target += 4;
     mSVBO.displayLinear(GL_QUADS, target, 4);
