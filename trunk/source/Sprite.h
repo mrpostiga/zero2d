@@ -41,6 +41,11 @@ class Sprite
 
         void draw(int inIndex, bool inFacingRight);
 
+        static inline void setProgram(ShaderProgram* inProgram)
+        {
+            mShaderProgram = inProgram;
+        }
+
     private:
         static ShaderProgram* mShaderProgram;
 

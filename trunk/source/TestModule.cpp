@@ -52,11 +52,17 @@ bool TestModule::onLoad()
             startTimes[i] = randomValue() * 1.0f;
         }
 
-        mSVBO.loadVAA("MCVertex", 3, NUM_PARTICLES, vertices);
-        mSVBO.loadVAA("MColor", 3, NUM_PARTICLES, colors);
-        mSVBO.loadVAA("Velocity", 3, NUM_PARTICLES, velocities);
-        mSVBO.loadVAA("StartTime", 1, NUM_PARTICLES, startTimes);
-        mSP.bindAttributeLocations(mSVBO);
+        mSP.addVariable("MCVertex");
+        mSP.addVariable("MColor");
+        mSP.addVariable("Velocity");
+        mSP.addVariable("StartTime");
+        mSP.bindAndLink();
+
+        mSVBO.loadVAA(mSP.getBinding("MCVertex"), 3, NUM_PARTICLES, vertices);
+        mSVBO.loadVAA(mSP.getBinding("MColor"), 3, NUM_PARTICLES, colors);
+        mSVBO.loadVAA(mSP.getBinding("Velocity"), 3, NUM_PARTICLES, velocities);
+        mSVBO.loadVAA(mSP.getBinding("StartTime"), 1, NUM_PARTICLES,
+            startTimes);
 
         delete [] vertices;
         delete [] colors;

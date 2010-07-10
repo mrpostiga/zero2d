@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 
-ShaderProgram::ShaderProgram(size_t inCapacity) : mHandle(0), mTopIndex(0),
+ShaderProgram::ShaderProgram(size_t inCapacity) : mHandle(0),
     mCapacity(inCapacity), mSize(0), mLink(false), mCreate(false)
 {
     if (mCapacity < 2) mCapacity = 2;
@@ -41,19 +41,22 @@ void ShaderProgram::attachShader(Shader* inShader)
     ++mSize;
 }
 
-void ShaderProgram::bindAttributeLocations(ShaderVBO& inSVBO)
+void ShaderProgram::bindAndLink()
 {
     // can only be bound and linked once
     if (mLink) return;
     mLink = true;
 
-    for (size_t i = 0; i < inSVBO.getSize(); ++i)
+    GLuint topIndex = 0;
+
+    for (map<string, GLuint>::iterator i = mBindings.begin();
+        i != mBindings.end(); ++i)
     {
-        ShaderVBO::DataArray* da = inSVBO.getArrays() + i;
-        da->VAindex = mTopIndex;
-        glBindAttribLocation(mHandle, mTopIndex, da->attributeBinding.c_str());
-        ++mTopIndex;
+        i->second = topIndex;
+        glBindAttribLocation(mHandle, topIndex, i->first.c_str());
+        ++topIndex;
     }
+
     glLinkProgram(mHandle);
 
     GLint linked;
@@ -68,4 +71,20 @@ void ShaderProgram::bindAttributeLocations(ShaderVBO& inSVBO)
 void ShaderProgram::setMatrix(const Matrix3D& inMatrix)
 {
     glUniformMatrix4fv(mUniformMatrix, 1, GL_TRUE, inMatrix.array());
+}
+
+GLuint ShaderProgram::getBinding(const string& inName)
+{
+    if (!mLink) throw ShaderException("cannot request binding before link");
+
+    map<string, GLuint>::iterator i = mBindings.find(inName);
+
+    if (i == mBindings.end())
+    {
+        string s("request for non-existent binding: ");
+        s += inName;
+        throw ShaderException(s);
+    }
+
+    return i->second;
 }

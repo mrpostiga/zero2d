@@ -59,11 +59,11 @@ void ShaderVBO::displayLinear(GLenum inMode, GLint inFirst, GLsizei inCount)
 }
 
 /// load Vertex Attribute Array
-void ShaderVBO::loadVAA(const char* inAttribute, GLuint inValuesPerVertex,
+void ShaderVBO::loadVAA(GLuint inVAindex, GLuint inValuesPerVertex,
     GLuint inSize, const GLfloat* inData, GLenum inUsage)
 {
     DataArray da;
-    da.attributeBinding = inAttribute;
+    da.VAindex = inVAindex;
     da.valuesPerVertex = inValuesPerVertex;
     glGenBuffers(1, &da.VBOindex);
     glBindBuffer(GL_ARRAY_BUFFER, da.VBOindex);
