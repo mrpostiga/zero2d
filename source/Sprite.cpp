@@ -192,14 +192,12 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
 
     try
     {
-        mSVBO.loadVAA("CornerVertex", 2, mFrames.size() * 8, vertices);
-        mSVBO.loadVAA("TexCoord", 2, mFrames.size() * 8, coordinates);
+        if (!mShaderProgram) throw ShaderException("no program pointer");
 
-        if (!mShaderProgram)
-        {
-            mShaderProgram = new ShaderProgram;
-            mShaderProgram->bindAttributeLocations(mSVBO);
-        }
+        mSVBO.loadVAA(mShaderProgram->getBinding("CornerVertex"), 2,
+            mFrames.size() * 8, vertices);
+        mSVBO.loadVAA(mShaderProgram->getBinding("TexCoord"), 2,
+            mFrames.size() * 8, coordinates);
     }
     catch (ShaderException& se)
     {
@@ -231,7 +229,6 @@ Sprite::~Sprite()
 
 void Sprite::draw(int inIndex, bool inFacingRight)
 {
-    //cerr << mFrames[inIndex].location.x << ", " << mFrames[inIndex].location.y << endl;
     GLint target = inIndex * 8;
     if (inFacingRight) target += 4;
     mSVBO.displayLinear(GL_QUADS, target, 4);

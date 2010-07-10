@@ -17,7 +17,6 @@ class ShaderVBO
             GLuint VAindex; // vertex attribute index
             GLuint VBOindex; // vertex buffer object index
             GLuint valuesPerVertex;
-            std::string attributeBinding;
         };
 
         struct IndexArray
@@ -29,14 +28,10 @@ class ShaderVBO
 
         void displayIndexed();
         void displayLinear(GLenum inMode, GLint inFirst, GLsizei inCount);
-        void loadVAA(const char* inAttribute, GLuint inValuesPerVertex,
-            GLuint inSize, const GLfloat* inData,
-            GLenum inUsage = GL_STATIC_DRAW);
+        void loadVAA(GLuint inVAindex, GLuint inValuesPerVertex, GLuint inSize,
+            const GLfloat* inData, GLenum inUsage = GL_STATIC_DRAW);
         void loadIA(GLenum inDrawMode, GLsizei inSize, const GLuint* inData,
             GLenum inUsage = GL_STATIC_DRAW);
-
-        inline DataArray* getArrays() { return &mData[0]; }
-        inline size_t getSize() { return mData.size(); }
 
     protected:
     private:

@@ -42,9 +42,11 @@ class TextureModule : public Module
         Matrix3D mProjection;
         Matrix3D mMVPM;
         MatrixStack mModelView;
-        ShaderProgram mSP;
-        ShaderVBO mSVBO;
+        ShaderProgram mParticleProgram;
+        ShaderVBO mParticleVBO;
+        ShaderProgram mSpriteProgram;
         Sprite* mSprite;
+        Uint32 mTickStart;
 
         GLuint mTexture;
 };

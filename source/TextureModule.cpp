@@ -5,6 +5,12 @@
 using namespace std;
 
 #define NUM_POINTS 4
+#define NUM_PARTICLES 10000
+
+float RV()
+{
+    return (float)rand() / RAND_MAX;
+}
 
 TextureModule::TextureModule()
 {
@@ -19,30 +25,79 @@ bool TextureModule::onLoad()
 {
     try
     {
-        mSprite = new Sprite("pimple");
-
         glGenTextures(1, &mTexture);
         DisplayEngine::loadTexture("data/sprites/pimple/sheet-0.png", mTexture);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, mTexture);
-        mSP.attachShader(new Shader("sprite.vs"));
-        mSP.attachShader(new Shader("sprite.fs"));
 
-        GLfloat vertices[12] = {-4, 4, 0, 4, 4, 0,
-                                4, -4, 0, -4, -4, 0};
-        GLfloat texCoords[8] = {0, 0, 1, 0,
-                                1, 1, 0, 1};
+        mParticleProgram.attachShader(new Shader("test2-particles.vs"));
+        mParticleProgram.attachShader(new Shader("test2-particles.fs"));
 
-        mSVBO.loadVAA("MCVertex", 3, NUM_POINTS, vertices);
-        mSVBO.loadVAA("TexCoord", 2, NUM_POINTS, texCoords);
-        mSP.bindAttributeLocations(mSVBO);
+        GLfloat* vertices = new GLfloat[NUM_PARTICLES * 3];
+        GLfloat* colors = new GLfloat[NUM_PARTICLES * 3];
+        GLfloat* velocities = new GLfloat[NUM_PARTICLES * 3];
+        GLfloat* startTimes = new GLfloat[NUM_PARTICLES];
 
-        GLint texLoc = mSP.getUniformLocation("Texture");
-        mFadeShader = mSP.getUniformLocation("fade");
+        srand(time(NULL));
+        for (size_t i = 0; i < NUM_PARTICLES; ++i)
+        {
+            size_t j = i * 3;
+
+            vertices[j] = 0.0;
+            vertices[j + 1] = 0.0f;
+            vertices[j + 2] = 0.0f;
+
+            colors[j] = RV();
+            colors[j + 1] = 0;
+            colors[j + 2] = 0;
+
+            velocities[j] = 2.0f * RV() - 1.0f;
+            velocities[j + 1] = 4.0f * RV();
+            velocities[j + 2] = 2.0f * RV() - 1.0f;
+
+            startTimes[i] = RV() * 1.0f;
+        }
+
+        mParticleProgram.addVariable("MCVertex");
+        mParticleProgram.addVariable("MColor");
+        mParticleProgram.addVariable("Velocity");
+        mParticleProgram.addVariable("StartTime");
+        mParticleProgram.bindAndLink();
+
+        mParticleVBO.loadVAA(mParticleProgram.getBinding("MCVertex"), 3, NUM_PARTICLES, vertices);
+        mParticleVBO.loadVAA(mParticleProgram.getBinding("MColor"), 3, NUM_PARTICLES, colors);
+        mParticleVBO.loadVAA(mParticleProgram.getBinding("Velocity"), 3, NUM_PARTICLES, velocities);
+        mParticleVBO.loadVAA(mParticleProgram.getBinding("StartTime"), 1, NUM_PARTICLES,
+            startTimes);
+
+        delete [] vertices;
+        delete [] colors;
+        delete [] velocities;
+        delete [] startTimes;
+
+        mSpriteProgram.attachShader(new Shader("sprite.vs"));
+        mSpriteProgram.attachShader(new Shader("sprite.fs"));
+        mSpriteProgram.addVariable("CornerVertex");
+        mSpriteProgram.addVariable("TexCoord");
+        mSpriteProgram.bindAndLink();
+
+        Sprite::setProgram(&mSpriteProgram);
+        mSprite = new Sprite("pimple");
+
+        GLint texLoc = mSpriteProgram.getUniformLocation("Texture");
+        glUniform1i(texLoc, 0);
+
+        GLint z = mSpriteProgram.getUniformLocation("z");
+        glUniform1f(z, 0.0f);
+
+        mFadeShader = mSpriteProgram.getUniformLocation("fade");
         mFade = 1.0f;
         mFading = false;
-        glUniform1i(texLoc, 0);
+
+        mT = mParticleProgram.getUniformLocation("Time");
+        mTickStart = SDL_GetTicks();
+        glPointSize(2.0f);
 
     }
     catch (ShaderException& se)
@@ -56,7 +111,7 @@ bool TextureModule::onLoad()
         return false;
     }
 
-    mSP.use();
+    mSpriteProgram.use();
 
     float ratio = DisplayEngine::getAspectRatio();
     mProjection.orthographic(100.0f, ratio);
@@ -81,7 +136,7 @@ bool TextureModule::onLoad()
 
 void TextureModule::onOpen()
 {
-    glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glUniform1f(mFadeShader, 1.0);
@@ -96,14 +151,24 @@ void TextureModule::onLoop()
     mModelView.matrix().rotateZ(mRotation);
 
     (mMVPM = mProjection).multiply(mModelView.matrix());
-    mSP.setMatrix(mMVPM);
+    mSpriteProgram.setMatrix(mMVPM);
+
+    mSpriteProgram.use();
     mSprite->draw(animation[mCurrentIndex], true);
+
+    mParticleProgram.use();
+    mModelView.matrix().scale(60.0f);
+    (mMVPM = mProjection).multiply(mModelView.matrix());
+    mParticleProgram.setMatrix(mMVPM);
+    mParticleVBO.displayLinear(GL_POINTS, 0, NUM_PARTICLES);
 
     mModelView.pop();
 }
 
 void TextureModule::onFrame()
 {
+    glUniform1f(mT, float(SDL_GetTicks() - mTickStart) * 0.0004f);
+
     if (mCounter >= 4)
     {
         mCounter = 0;
@@ -151,6 +216,7 @@ void TextureModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         case SDLK_SPACE:
         {
+            mTickStart = SDL_GetTicks();
             mFading = true;
             break;
         }
