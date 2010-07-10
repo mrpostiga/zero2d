@@ -49,8 +49,8 @@ bool TextureModule::onLoad()
             vertices[j + 2] = 0.0f;
 
             colors[j] = RV();
-            colors[j + 1] = 0;
-            colors[j + 2] = 0;
+            colors[j + 1] = 0.0f;
+            colors[j + 2] = 0.0f;
 
             velocities[j] = 2.0f * RV() - 1.0f;
             velocities[j + 1] = 4.0f * RV();
@@ -130,6 +130,8 @@ bool TextureModule::onLoad()
     mCurrentIndex = 0;
     mRotation = 0;
 
+    glUniform1f(mFadeShader, mFade);
+
     return true;
 
 }
@@ -148,7 +150,7 @@ void TextureModule::onLoop()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     mModelView.push();
-    mModelView.matrix().rotateZ(mRotation);
+    //mModelView.matrix().rotateZ(mRotation);
 
     (mMVPM = mProjection).multiply(mModelView.matrix());
     mSpriteProgram.setMatrix(mMVPM);
@@ -187,8 +189,10 @@ void TextureModule::onFrame()
             mFade = 1.0f;
             mFading = false;
         }
-        glUniform1f(mFadeShader, mFade);
     }
+
+    mSpriteProgram.use();
+    glUniform1f(mFadeShader, mFade);
 
     //mRotation += 1.0f;
     //if (mRotation > 180.0f) mRotation -= 360.0f;
