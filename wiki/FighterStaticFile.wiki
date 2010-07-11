@@ -30,7 +30,7 @@ This data entry system functions as a state machine. In other words, you do not 
 
 Next is the state data entry. This section uses the same rules as frame data entry did, but the keys are different. Before any data entry begins, one number is required indicating the number of states that will be read in.
 
-*s* - _state_ - requires one parameter: the state index (zero-based)
+*s* - _state_ - requires two parameters: the state index (zero-based) and the number of frames in this state
 
 *d* - _duration_ - requires one parameter: the number of game pulses to apply to the frames
 
