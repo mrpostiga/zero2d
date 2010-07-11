@@ -539,7 +539,7 @@ void DisplayEngine::openGLDriverInfo(ostream& inStream)
 
     inStream << "\n---[ EXTENSIONS ]---" << endl;
 
-    string stuff = (char*)glGetString(GL_EXTENSIONS);
+    string stuff((char*)glGetString(GL_EXTENSIONS));
 
     for (size_t i = 0; i < stuff.length(); ++i)
     {
@@ -556,6 +556,10 @@ void DisplayEngine::openGLDriverInfo(ostream& inStream)
         }
     }
     inStream << endl;
+
+    GLint maxTextureSize;
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+    inStream << "\nmax texture size -- " << maxTextureSize << endl;
 }
 
 int DisplayEngine::processKey(SDLKey inSym, SDLMod inMod)
