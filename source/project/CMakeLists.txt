@@ -4,26 +4,7 @@ project(Zero2D)
 
 set(CMAKE_CXX_FLAGS "-g -Wall")
 
-set(SRCS
-../Config.cpp 
-../DisplayEngine.cpp  
-../GameServer.cpp 
-../LogFile.cpp
-../LuaMachine.cpp 
-../MathEngine.cpp
-../Matrix3D.cpp 
-../MatrixStack.cpp
-../Module.cpp
-../NetworkStream.cpp 
-../Shader.cpp 
-../ShaderProgram.cpp 
-../ShaderVBO.cpp 
-../SoundEngine.cpp
-../Sprite.cpp 
-../TestModule.cpp
-../TextureModule.cpp 
-../Thread.cpp
-)
+file(GLOB SRCS "../*.cpp")
 
 find_package(Boost 1.40 COMPONENTS system filesystem REQUIRED)
 link_directories(${Boost_LIBRARY_DIRS})
@@ -65,7 +46,7 @@ ${LUA_LIBRARIES}
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}../../../../)
 
-add_executable(zero2d ../main.cpp ${SRCS}) 
+add_executable(zero2d ${SRCS}) 
 target_link_libraries(zero2d ${LIBRARIES})
 
 
