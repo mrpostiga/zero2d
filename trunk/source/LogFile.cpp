@@ -49,11 +49,6 @@ LogFile::~LogFile()
     if (mStream.is_open()) mStream.close();
 }
 
-void LogFile::addLine(const char* inText)
-{
-    mStream << inText << endl;
-}
-
 void LogFile::addLine(const string& inText)
 {
     mStream << inText << endl;

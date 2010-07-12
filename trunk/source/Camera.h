@@ -15,44 +15,30 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef POINT2D_H
-#define POINT2D_H
+#ifndef CAMERA_H
+#define CAMERA_H
 
-#include <iostream>
+#include "Matrix3D.h"
+#include "Vector2D.h"
 
-template<class T>
-struct Point2D
+class Camera
 {
-    Point2D<T>();
-    Point2D<T>(T inValue);
-    Point2D<T>(T inX, T inY);
-    T x;
-    T y;
+    public:
+        Camera();
+        ~Camera();
+
+        void update();
+        void zoom(float inOffset);
+
+        inline const Matrix3D& matrix()
+        {
+            return mMatrix;
+        }
+
+    private:
+        Matrix3D mMatrix;
+        Point mFocus;
+        float mZoom;
 };
-
-template<class T>
-Point2D<T>::Point2D() : x(0), y(0)
-{
-}
-
-template<class T>
-Point2D<T>::Point2D(T inValue) : x(inValue), y(inValue)
-{
-}
-
-template<class T>
-Point2D<T>::Point2D(T inX, T inY) : x(inX), y(inY)
-{
-}
-
-template<class T>
-std::istream& operator>>(std::istream& inStream, Point2D<T>& inPoint)
-{
-    inStream >> inPoint.x >> inPoint.y;
-    return inStream;
-}
-
-typedef Point2D<int> Pixel;
-typedef Point2D<float> Point;
 
 #endif

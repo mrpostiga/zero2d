@@ -5,6 +5,7 @@
 #include "MatrixStack.h"
 #include "ShaderProgram.h"
 #include "Sprite.h"
+#include "Camera.h"
 
 #include "OGL.h"
 
@@ -26,6 +27,7 @@ class TextureModule : public Module
     protected:
 
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+        virtual void onMouseWheel(bool inUp, bool inDown);
 
     private:
         GLuint mT;
@@ -45,10 +47,11 @@ class TextureModule : public Module
         ShaderProgram mParticleProgram;
         ShaderVBO mParticleVBO;
         ShaderProgram mSpriteProgram;
+        ShaderVBO mBackVBO;
+        GLuint mBackTexture;
         Sprite* mSprite;
         Uint32 mTickStart;
-
-        GLuint mTexture;
+        Camera mCamera;
 };
 
 #endif

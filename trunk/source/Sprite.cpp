@@ -1,5 +1,4 @@
 #include "Sprite.h"
-#include "Point2D.h"
 #include "DisplayEngine.h"
 
 #include <iostream>
@@ -130,8 +129,8 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
             exit(1);
         }
 
-        mSheets[i].size.x = s->w;
-        mSheets[i].size.y = s->h;
+        mSheets[i].size[0] = s->w;
+        mSheets[i].size[1] = s->h;
 
         DisplayEngine::loadTexture(s, mSheets[i].texture);
     }
@@ -145,19 +144,19 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
         const Sheet& s = mSheets[f.sheet];
 
         Point halves;
-        halves.x = float(f.size.x) / 2.0f;
-        halves.y = float(f.size.y) / 2.0f;
+        halves[0] = float(f.size[0]) / 2.0f;
+        halves[1] = float(f.size[1]) / 2.0f;
 
-        float width = float(f.size.x) / float(s.size.x);
-        float height = float(f.size.y) / float(s.size.y);
+        float width = float(f.size[0]) / float(s.size[0]);
+        float height = float(f.size[1]) / float(s.size[1]);
 
         Point textureUL;
-        textureUL.x = float(f.location.x) / float(s.size.x);
-        textureUL.y = float(f.location.y) / float(s.size.y);
+        textureUL[0] = float(f.location[0]) / float(s.size[0]);
+        textureUL[1] = float(f.location[1]) / float(s.size[1]);
 
         Point textureLR;
-        textureLR.x = textureUL.x + width;
-        textureLR.y = textureUL.y + height;
+        textureLR[0] = textureUL[0] + width;
+        textureLR[1] = textureUL[1] + height;
 
         for (size_t j = 0; j < 2; ++j)
         {
@@ -165,28 +164,28 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
             float offset = width * float(j);
 
             /// upper right
-            vertices[k + 0] = halves.x;
-            vertices[k + 1] = halves.y;
-            coordinates[k + 0] = textureLR.x + offset;
-            coordinates[k + 1] = textureUL.y;
+            vertices[k + 0] = halves[0];
+            vertices[k + 1] = halves[1];
+            coordinates[k + 0] = textureLR[0] + offset;
+            coordinates[k + 1] = textureUL[1];
 
             /// lower right
-            vertices[k + 2] = halves.x;
-            vertices[k + 3] = -halves.y;
-            coordinates[k + 2] = textureLR.x + offset;
-            coordinates[k + 3] = textureLR.y;
+            vertices[k + 2] = halves[0];
+            vertices[k + 3] = -halves[1];
+            coordinates[k + 2] = textureLR[0] + offset;
+            coordinates[k + 3] = textureLR[1];
 
             /// lower left
-            vertices[k + 4] = -halves.x;
-            vertices[k + 5] = -halves.y;
-            coordinates[k + 4] = textureUL.x + offset;
-            coordinates[k + 5] = textureLR.y;
+            vertices[k + 4] = -halves[0];
+            vertices[k + 5] = -halves[1];
+            coordinates[k + 4] = textureUL[0] + offset;
+            coordinates[k + 5] = textureLR[1];
 
             /// upper left
-            vertices[k + 6] = -halves.x;
-            vertices[k + 7] = halves.y;
-            coordinates[k + 6] = textureUL.x + offset;
-            coordinates[k + 7] = textureUL.y;
+            vertices[k + 6] = -halves[0];
+            vertices[k + 7] = halves[1];
+            coordinates[k + 6] = textureUL[0] + offset;
+            coordinates[k + 7] = textureUL[1];
         }
     }
 
@@ -227,8 +226,10 @@ Sprite::~Sprite()
     }
 }
 
-void Sprite::draw(int inIndex, bool inFacingRight)
+void Sprite::draw(size_t inIndex, bool inFacingRight)
 {
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, mSheets[mFrames[inIndex].sheet].texture);
     GLint target = inIndex * 8;
     if (inFacingRight) target += 4;
     mSVBO.displayLinear(GL_QUADS, target, 4);

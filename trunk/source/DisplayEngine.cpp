@@ -486,49 +486,6 @@ bool DisplayEngine::loadTexture(const char* inFile, GLuint inTexture)
     return true;
 }
 
-
-Point2D<int> DisplayEngine::convert2DObjectToPixel(Point2D<float> inPoint,
-    Point2D<int> inDisplay, float inRange)
-{
-    Point2D<int> center;
-    Point2D<int> result;
-
-    center.x = inDisplay.x / 2;
-    center.y = inDisplay.y / 2;
-
-    float ratio = (inDisplay.x < inDisplay.y) ? ((float)center.x / inRange)
-        : ((float)center.y / inRange);
-
-
-    result.x = center.x + int(inPoint.x * ratio);
-    result.y = center.y - int(inPoint.y * ratio);
-
-    return result;
-}
-
-
-Point2D<float> DisplayEngine::convert2DPixelToObject(Point2D<int> inPoint,
-    Point2D<int> inDisplay, float inRange)
-{
-    Point2D<float> center;
-    Point2D<float> result;
-
-    center.x = inDisplay.x / 2;
-    center.y = inDisplay.y / 2;
-/*
-    float ratio = (inDisplay.x < inDisplay.y) ? ((float)center.x / inRange)
-        : ((float)center.y / inRange);
-*/
-    float ratio = (inDisplay.x < inDisplay.y) ? (inRange / (float)center.x)
-        : (inRange / (float)center.y);
-
-    result.x = (inPoint.x - center.x) * ratio;
-    result.y = (-(inPoint.y - center.y)) * ratio;
-
-    return result;
-
-}
-
 void DisplayEngine::openGLDriverInfo(ostream& inStream)
 {
     inStream << "Vendor: " << (char*)glGetString(GL_VENDOR) << endl;

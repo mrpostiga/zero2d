@@ -23,8 +23,9 @@ LogFile LuaMachine::mLogFile;
 
 LuaMachine::LuaMachine() : mLuaState(luaL_newstate())
 {
-    //luaL_openlibs(mLuaState); // massive security hole
+    luaL_openlibs(mLuaState);
     mLogFile.start("lua");
+    // need to run the Lua sandbox script for security here
 }
 
 LuaMachine::~LuaMachine()
