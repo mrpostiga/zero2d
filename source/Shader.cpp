@@ -22,7 +22,8 @@ char* Shader::fileToBuffer(const char* inFile)
     length = ftell(fptr);
     outBuffer = new char[length + 1];
     fseek(fptr, 0, SEEK_SET);
-    fread(outBuffer, length, 1, fptr);
+    size_t v;
+    v = fread(outBuffer, length, 1, fptr);
     fclose(fptr);
     outBuffer[length] = 0;
 

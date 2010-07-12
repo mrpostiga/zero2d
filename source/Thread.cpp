@@ -17,7 +17,7 @@
 
 #include "Thread.h"
 
-Thread::Thread() : mRunning(false)
+Thread::Thread() : mRunning(false), mStop(false)
 {
 }
 

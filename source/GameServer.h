@@ -26,6 +26,7 @@ class GameServer : public Thread
         GameServer();
         virtual ~GameServer();
 
+    protected:
         virtual void run();
 };
 

@@ -5,7 +5,7 @@
 using namespace std;
 
 #define NUM_POINTS 4
-#define NUM_PARTICLES 10000
+#define NUM_PARTICLES 1000
 
 float RV()
 {
@@ -25,11 +25,10 @@ bool TextureModule::onLoad()
 {
     try
     {
-        glGenTextures(1, &mTexture);
-        DisplayEngine::loadTexture("data/sprites/pimple/sheet-0.png", mTexture);
-
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, mTexture);
+        glGenTextures(1, &mBackTexture);
+        DisplayEngine::loadTexture("data/images/dragon.png",
+            mBackTexture);
 
         mParticleProgram.attachShader(new Shader("test2-particles.vs"));
         mParticleProgram.attachShader(new Shader("test2-particles.fs"));
@@ -49,8 +48,8 @@ bool TextureModule::onLoad()
             vertices[j + 2] = 0.0f;
 
             colors[j] = RV();
-            colors[j + 1] = 0.0f;
-            colors[j + 2] = 0.0f;
+            colors[j + 1] = RV();
+            colors[j + 2] = RV();
 
             velocities[j] = 2.0f * RV() - 1.0f;
             velocities[j + 1] = 4.0f * RV();
@@ -65,22 +64,48 @@ bool TextureModule::onLoad()
         mParticleProgram.addVariable("StartTime");
         mParticleProgram.bindAndLink();
 
-        mParticleVBO.loadVAA(mParticleProgram.getBinding("MCVertex"), 3, NUM_PARTICLES, vertices);
-        mParticleVBO.loadVAA(mParticleProgram.getBinding("MColor"), 3, NUM_PARTICLES, colors);
-        mParticleVBO.loadVAA(mParticleProgram.getBinding("Velocity"), 3, NUM_PARTICLES, velocities);
-        mParticleVBO.loadVAA(mParticleProgram.getBinding("StartTime"), 1, NUM_PARTICLES,
-            startTimes);
-
-        delete [] vertices;
-        delete [] colors;
-        delete [] velocities;
-        delete [] startTimes;
+        mParticleVBO.loadVAA(mParticleProgram.getBinding("MCVertex"), 3,
+            NUM_PARTICLES, vertices);
+        mParticleVBO.loadVAA(mParticleProgram.getBinding("MColor"), 3,
+            NUM_PARTICLES, colors);
+        mParticleVBO.loadVAA(mParticleProgram.getBinding("Velocity"), 3,
+            NUM_PARTICLES, velocities);
+        mParticleVBO.loadVAA(mParticleProgram.getBinding("StartTime"), 1,
+            NUM_PARTICLES, startTimes);
 
         mSpriteProgram.attachShader(new Shader("sprite.vs"));
         mSpriteProgram.attachShader(new Shader("sprite.fs"));
         mSpriteProgram.addVariable("CornerVertex");
         mSpriteProgram.addVariable("TexCoord");
         mSpriteProgram.bindAndLink();
+
+        vertices[0] = 1024.0f;
+        vertices[1] = 1024.0f;
+        vertices[2] = 1024.0f;
+        vertices[3] = -1024.0f;
+        vertices[4] = -1024.0f;
+        vertices[5] = -1024.0f;
+        vertices[6] = -1024.0f;
+        vertices[7] = 1024.0f;
+
+        colors[0] = 1.0f;
+        colors[1] = 0.0f;
+        colors[2] = 1.0f;
+        colors[3] = 1.0f;
+        colors[4] = 0.0f;
+        colors[5] = 1.0f;
+        colors[6] = 0.0f;
+        colors[7] = 0.0f;
+
+        mBackVBO.loadVAA(mSpriteProgram.getBinding("CornerVertex"), 2, 4,
+            vertices);
+        mBackVBO.loadVAA(mSpriteProgram.getBinding("TexCoord"), 2, 4,
+            colors);
+
+        delete [] vertices;
+        delete [] colors;
+        delete [] velocities;
+        delete [] startTimes;
 
         Sprite::setProgram(&mSpriteProgram);
         mSprite = new Sprite("pimple");
@@ -97,7 +122,7 @@ bool TextureModule::onLoad()
 
         mT = mParticleProgram.getUniformLocation("Time");
         mTickStart = SDL_GetTicks();
-        glPointSize(2.0f);
+        glPointSize(1.0f);
 
     }
     catch (ShaderException& se)
@@ -114,7 +139,7 @@ bool TextureModule::onLoad()
     mSpriteProgram.use();
 
     float ratio = DisplayEngine::getAspectRatio();
-    mProjection.orthographic(100.0f, ratio);
+    mProjection.orthographic(360.0f, ratio);
     //mProjection.perspective(30.0f, ratio, 1.0f, 100.0f);
     //mModelView.matrix().translate(0.0f, 0.0f, -5.0f);
 
@@ -152,10 +177,14 @@ void TextureModule::onLoop()
     mModelView.push();
     //mModelView.matrix().rotateZ(mRotation);
 
+    mModelView.matrix().multiply(mCamera.matrix());
     (mMVPM = mProjection).multiply(mModelView.matrix());
     mSpriteProgram.setMatrix(mMVPM);
 
     mSpriteProgram.use();
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, mBackTexture);
+    mBackVBO.displayLinear(GL_QUADS, 0, 4);
     mSprite->draw(animation[mCurrentIndex], true);
 
     mParticleProgram.use();
@@ -169,7 +198,9 @@ void TextureModule::onLoop()
 
 void TextureModule::onFrame()
 {
-    glUniform1f(mT, float(SDL_GetTicks() - mTickStart) * 0.0004f);
+    mCamera.update();
+    mParticleProgram.use();
+    glUniform1f(mT, float(SDL_GetTicks() - mTickStart) * 0.0006f);
 
     if (mCounter >= 4)
     {
@@ -206,6 +237,13 @@ void TextureModule::onClose()
 
 void TextureModule::onUnload()
 {
+    delete mSprite;
+    glDeleteTextures(1, &mBackTexture);
+}
+
+void TextureModule::onMouseWheel(bool inUp, bool inDown)
+{
+    mCamera.zoom(inUp ? 0.1f : -0.1f);
 }
 
 void TextureModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)

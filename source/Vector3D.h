@@ -39,7 +39,6 @@ class Vector3D
         void normalize();
         const Vector3D<T> normalized() const;
         void negate();
-        const Vector3D<T> negated() const;
 
         Vector3D<T>& operator=(T inValue);
         Vector3D<T>& operator=(const Vector3D<T>& inVector);

@@ -29,7 +29,6 @@ class Thread
         void start(Uint32 inDelay = 0);
         void wait();
         void stopAndWait();
-        virtual void run() = 0;
 
         inline bool isRunning() { return mRunning; }
         inline void stop()
@@ -40,6 +39,7 @@ class Thread
         }
 
     protected:
+        virtual void run() = 0;
         inline bool stopRequested() { return mStop; }
 
     private:

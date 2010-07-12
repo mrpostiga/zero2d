@@ -18,7 +18,7 @@
 #ifndef _DISPLAYENGINE_H_
 #define _DISPLAYENGINE_H_
 
-#include "Point2D.h"
+#include "Vector2D.h"
 #include "LogFile.h"
 
 #include <SDL.h>
@@ -60,11 +60,6 @@ class DisplayEngine
             bool inDelete = true);
         static bool loadTexture(const char* inFile, GLuint inTexture);
         static void openGLDriverInfo(std::ostream& inStream);
-
-        static Point2D<int> convert2DObjectToPixel(Point2D<float> inPoint,
-            Point2D<int> inDisplay, float inRange);
-        static Point2D<float> convert2DPixelToObject(Point2D<int> inPoint,
-            Point2D<int> inDisplay, float inRange);
 
         static int processKey(SDLKey inSym, SDLMod inMod);
 

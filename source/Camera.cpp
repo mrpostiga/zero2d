@@ -15,29 +15,27 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGFILE_H
-#define LOGFILE_H
+#include "Camera.h"
+#include "OGL.h"
 
-#include <iostream>
-#include <fstream>
-#include <string>
-
-class LogFile
+Camera::Camera() : mZoom(1.0f)
 {
-    public:
-        LogFile();
-        ~LogFile();
+}
 
-        inline operator std::ofstream&()
-        {
-            return mStream;
-        }
+Camera::~Camera()
+{
+}
 
-        void start(const char* inTitle);
-        void addLine(const std::string& inText);
+void Camera::update()
+{
+    mMatrix.loadIdentity();
+    mMatrix.scale(mZoom);
+    mMatrix.translate(-mFocus[0], -mFocus[1], 0.0f);
+}
 
-    protected:
-        std::ofstream mStream;
-};
-
-#endif
+void Camera::zoom(float inOffset)
+{
+    mZoom += inOffset;
+    if (mZoom < 0.0f) mZoom = 0.0f;
+    glPointSize(mZoom);
+}

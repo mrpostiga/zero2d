@@ -48,10 +48,18 @@
 			<Add library="boost_filesystem" />
 			<Add library="lua5.1" />
 		</Linker>
+		<Unit filename="../Camera.cpp" />
+		<Unit filename="../Camera.h" />
 		<Unit filename="../Config.cpp" />
 		<Unit filename="../Config.h" />
+		<Unit filename="../Control.cpp" />
+		<Unit filename="../Control.h" />
 		<Unit filename="../DisplayEngine.cpp" />
 		<Unit filename="../DisplayEngine.h" />
+		<Unit filename="../Entity.cpp" />
+		<Unit filename="../Entity.h" />
+		<Unit filename="../EntityGarbageCollector.cpp" />
+		<Unit filename="../EntityGarbageCollector.h" />
 		<Unit filename="../GLee.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -74,7 +82,6 @@
 		<Unit filename="../NetworkStream.cpp" />
 		<Unit filename="../NetworkStream.h" />
 		<Unit filename="../OGL.h" />
-		<Unit filename="../Point2D.h" />
 		<Unit filename="../Shader.cpp" />
 		<Unit filename="../Shader.h" />
 		<Unit filename="../ShaderProgram.cpp" />
@@ -91,6 +98,7 @@
 		<Unit filename="../TextureModule.h" />
 		<Unit filename="../Thread.cpp" />
 		<Unit filename="../Thread.h" />
+		<Unit filename="../Vector2D.h" />
 		<Unit filename="../Vector3D.h" />
 		<Unit filename="../main.cpp" />
 		<Extensions>

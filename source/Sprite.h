@@ -2,7 +2,7 @@
 #define SPRITE_H
 
 #include "ShaderProgram.h"
-#include "Point2D.h"
+#include "Vector2D.h"
 
 #include <string>
 #include <vector>
@@ -39,7 +39,7 @@ class Sprite
             SubState* animation;
         };
 
-        void draw(int inIndex, bool inFacingRight);
+        void draw(size_t inIndex, bool inFacingRight);
 
         static inline void setProgram(ShaderProgram* inProgram)
         {
