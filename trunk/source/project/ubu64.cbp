@@ -66,6 +66,8 @@
 		<Unit filename="../GLee.h" />
 		<Unit filename="../GameServer.cpp" />
 		<Unit filename="../GameServer.h" />
+		<Unit filename="../LoadScreen.cpp" />
+		<Unit filename="../LoadScreen.h" />
 		<Unit filename="../LogFile.cpp" />
 		<Unit filename="../LogFile.h" />
 		<Unit filename="../LuaMachine.cpp" />

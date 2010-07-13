@@ -40,7 +40,6 @@ void LoadScreen::setup()
     mBackProgram.addVariable("CornerVertex");
     mBackProgram.addVariable("TexCoord");
     mBackProgram.bindAndLink();
-    mBackProgram.use();
 
     GLfloat* vertices = new GLfloat[8];
     GLfloat* texCoord = new GLfloat[8];

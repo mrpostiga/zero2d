@@ -65,6 +65,8 @@ void ShaderProgram::bindAndLink()
     if (!linked)
         throw ShaderException("failed to link program (glLinkProgram)");
 
+    use();
+
     mUniformMatrix = glGetUniformLocation(mHandle, "MVPM");
 }
 
