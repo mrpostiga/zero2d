@@ -105,7 +105,8 @@ void DisplayEngine::start(Module* inModule)
             else
             {
                 currentModule->onLoop();
-                SDL_GL_SwapBuffers();
+                //SDL_GL_SwapBuffers();
+                render();
                 ++framesPerSecond;
             }
 

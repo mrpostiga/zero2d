@@ -48,6 +48,8 @@
 			<Add library="boost_system" />
 			<Add library="boost_filesystem" />
 		</Linker>
+		<Unit filename="..\Camera.cpp" />
+		<Unit filename="..\Camera.h" />
 		<Unit filename="..\Config.cpp" />
 		<Unit filename="..\Config.h" />
 		<Unit filename="..\Control.cpp" />
@@ -97,6 +99,7 @@
 		<Unit filename="..\TextureModule.h" />
 		<Unit filename="..\Thread.cpp" />
 		<Unit filename="..\Thread.h" />
+		<Unit filename="..\Vector2D.h" />
 		<Unit filename="..\Vector3D.h" />
 		<Unit filename="..\glee.h" />
 		<Unit filename="..\main.cpp" />

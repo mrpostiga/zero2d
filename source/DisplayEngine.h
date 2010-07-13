@@ -79,6 +79,8 @@ class DisplayEngine
             return mAspectRatio;
         }
 
+        static inline void render();
+
     private:
         static void cleanup();
 
@@ -100,6 +102,11 @@ template<class T>
 T linearInterpolate(const T& inMin, const T& inMax, double inT)
 {
     return (inMin * (1.0 - inT)) + (inMax * inT);
+}
+
+inline void DisplayEngine::render()
+{
+    SDL_GL_SwapBuffers();
 }
 
 #endif

@@ -6,6 +6,7 @@
 #include "ShaderProgram.h"
 #include "Sprite.h"
 #include "Camera.h"
+#include "LoadScreen.h"
 
 #include "OGL.h"
 
@@ -52,6 +53,8 @@ class TextureModule : public Module
         Sprite* mSprite;
         Uint32 mTickStart;
         Camera mCamera;
+
+        LoadScreen mLoadScreen;
 };
 
 #endif
