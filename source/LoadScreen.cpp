@@ -14,7 +14,6 @@ void LoadScreen::update(unsigned int inPercent)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     mBackProgram.use();
-    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, mBackTexture);
     mBackVBO.displayLinear(GL_QUADS, 0, 4);
     DisplayEngine::render();
@@ -41,6 +40,7 @@ void LoadScreen::setup()
     mBackProgram.addVariable("CornerVertex");
     mBackProgram.addVariable("TexCoord");
     mBackProgram.bindAndLink();
+    mBackProgram.use();
 
     GLfloat* vertices = new GLfloat[8];
     GLfloat* texCoord = new GLfloat[8];
@@ -75,7 +75,6 @@ void LoadScreen::setup()
     GLint z = mBackProgram.getUniformLocation("z");
     glUniform1f(z, 0.0f);
 
-    Matrix3D basic;
     mBackProgram.setMatrix(mProjection);
 }
 
@@ -105,5 +104,5 @@ void LoadScreen::setRange(float inRange)
     mScreenRange = inRange;
 
     float ratio = DisplayEngine::getAspectRatio();
-    mProjection.orthographic(10.0f, ratio);
+    mProjection.orthographic(inRange, ratio);
 }
