@@ -11,7 +11,7 @@ void main()
     //vec3 temp = vec3(texture(Texture, tex));
     //gl_FragColor = vec4(temp, 1.0);
     vec4 color = texture(Texture, tex);
-    //color.a *= fade;
+    color.a *= fade;
     color.a = clamp(color.a, 0.0, 1.0);
     gl_FragColor = color;
 }
