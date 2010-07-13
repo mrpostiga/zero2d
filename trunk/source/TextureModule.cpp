@@ -23,9 +23,14 @@ TextureModule::~TextureModule()
 
 bool TextureModule::onLoad()
 {
+    mLoadScreen.setBackgroundImage("dragon.png");
+    mLoadScreen.setRange(360.0f);
+    mLoadScreen.setup();
+
+    mLoadScreen.update(10u);
     try
     {
-        glActiveTexture(GL_TEXTURE0);
+        //glActiveTexture(GL_TEXTURE0);
         glGenTextures(1, &mBackTexture);
         DisplayEngine::loadTexture("data/images/dragon.png",
             mBackTexture);
