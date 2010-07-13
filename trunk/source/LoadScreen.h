@@ -19,23 +19,23 @@ class LoadScreen
 
         void setBackgroundImage(char* inBackgroundImage);
         void setLoadImage(char* inLoadImage);
-        void setLoadLocation(float inLocation);
+        void setLoadLocation(float inX, float inY);
         void setRange(float inRange);
 
         void setup();
 
     private:
         float mScreenRange;
-        float mLoadLocation;
+        float mLoadLocationX;
+        float mLoadLocationY;
 
         Matrix3D mProjection;
         Matrix3D mMVPM;
         GLuint mBackTexture;
         GLuint mLoadTexture;
 
-        ShaderProgram mParticleProgram;
-        ShaderVBO mParticleVBO;
-        ShaderProgram mBackProgram;
+        ShaderVBO mLoadingBarVBO;
+        ShaderProgram mProgram;
         ShaderVBO mBackVBO;
 };
 

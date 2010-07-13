@@ -13,9 +13,12 @@ void LoadScreen::update(unsigned int inPercent)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    mBackProgram.use();
+    mProgram.use();
     glBindTexture(GL_TEXTURE_2D, mBackTexture);
     mBackVBO.displayLinear(GL_QUADS, 0, 4);
+
+    glBindTexture(GL_TEXTURE_2D, mLoadTexture);
+    mLoadingBarVBO.displayLinear(GL_QUADS, 0, 4);
     DisplayEngine::render();
 }
 
@@ -35,23 +38,26 @@ void LoadScreen::setup()
 {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-    mBackProgram.attachShader(new Shader("sprite.vs"));
-    mBackProgram.attachShader(new Shader("sprite.fs"));
-    mBackProgram.addVariable("CornerVertex");
-    mBackProgram.addVariable("TexCoord");
-    mBackProgram.bindAndLink();
+    mProgram.attachShader(new Shader("sprite.vs"));
+    mProgram.attachShader(new Shader("sprite.fs"));
+    mProgram.addVariable("CornerVertex");
+    mProgram.addVariable("TexCoord");
+    mProgram.bindAndLink();
 
     GLfloat* vertices = new GLfloat[8];
     GLfloat* texCoord = new GLfloat[8];
 
-    vertices[0] = 1024.0f;
-    vertices[1] = 1024.0f;
-    vertices[2] = 1024.0f;
-    vertices[3] = -1024.0f;
-    vertices[4] = -1024.0f;
-    vertices[5] = -1024.0f;
-    vertices[6] = -1024.0f;
-    vertices[7] = 1024.0f;
+    float ratio = DisplayEngine::getAspectRatio();
+    mProjection.orthographic(mScreenRange, ratio);
+
+    vertices[0] = mScreenRange * ratio;
+    vertices[1] = mScreenRange;
+    vertices[2] = mScreenRange * ratio;
+    vertices[3] = -mScreenRange;
+    vertices[4] = -mScreenRange * ratio;
+    vertices[5] = -mScreenRange;
+    vertices[6] = -mScreenRange * ratio;
+    vertices[7] = mScreenRange;
 
 
     texCoord[0] = 1.0f;
@@ -63,18 +69,50 @@ void LoadScreen::setup()
     texCoord[6] = 0.0f;
     texCoord[7] = 0.0f;
 
-    mBackVBO.loadVAA(mBackProgram.getBinding("CornerVertex"), 2, 4,
+    mBackVBO.loadVAA(mProgram.getBinding("CornerVertex"), 2, 4,
         vertices);
-    mBackVBO.loadVAA(mBackProgram.getBinding("TexCoord"), 2, 4,
+    mBackVBO.loadVAA(mProgram.getBinding("TexCoord"), 2, 4,
         texCoord);
 
-    GLint texLoc = mBackProgram.getUniformLocation("Texture");
+    GLint texLoc = mProgram.getUniformLocation("Texture");
     glUniform1i(texLoc, 0);
 
-    GLint z = mBackProgram.getUniformLocation("z");
+    GLint z = mProgram.getUniformLocation("z");
     glUniform1f(z, 0.0f);
 
-    mBackProgram.setMatrix(mProjection);
+    mProgram.setMatrix(mProjection);
+
+
+    vertices[0] = 100.0f;
+    vertices[1] = 10.0f;
+    vertices[2] = 100.0f;
+    vertices[3] = -10.0f;
+    vertices[4] = -100.0f;
+    vertices[5] = -10.0f;
+    vertices[6] = -100.0f;
+    vertices[7] = 10.0f;
+
+
+    texCoord[0] = 1.0f;
+    texCoord[1] = 0.0f;
+    texCoord[2] = 1.0f;
+    texCoord[3] = 1.0f;
+    texCoord[4] = 0.0f;
+    texCoord[5] = 1.0f;
+    texCoord[6] = 0.0f;
+    texCoord[7] = 0.0f;
+
+    mLoadingBarVBO.loadVAA(mProgram.getBinding("CornerVertex"), 2, 4,
+        vertices);
+    mLoadingBarVBO.loadVAA(mProgram.getBinding("TexCoord"), 2, 4,
+        texCoord);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    GLint fade = mProgram.getUniformLocation("fade");
+    glUniform1f(fade, 1.0);
+
 }
 
 void LoadScreen::setBackgroundImage(char* inBackgroundImage)
@@ -93,15 +131,13 @@ void LoadScreen::setLoadImage(char* inLoadImage)
     DisplayEngine::loadTexture(path.c_str(), mLoadTexture);
 }
 
-void LoadScreen::setLoadLocation(float inLocation)
+void LoadScreen::setLoadLocation(float inX, float inY)
 {
-    mLoadLocation = inLocation;
+    mLoadLocationX = inX;
+    mLoadLocationY = inY;
 }
 
 void LoadScreen::setRange(float inRange)
 {
     mScreenRange = inRange;
-
-    float ratio = DisplayEngine::getAspectRatio();
-    mProjection.orthographic(inRange, ratio);
 }
