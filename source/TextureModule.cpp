@@ -24,10 +24,17 @@ TextureModule::~TextureModule()
 bool TextureModule::onLoad()
 {
     mLoadScreen.setBackgroundImage("dragon.png");
+    mLoadScreen.setLoadImage("loading.png");
+    mLoadScreen.setLoadLocation(0.0f, -200.0f);
     mLoadScreen.setRange(360.0f);
     mLoadScreen.setup();
 
-    mLoadScreen.update(10u);
+    for (int i = 0; i < 4000; ++i)
+    {
+        mLoadScreen.update(10u);
+        SDL_Delay(1);
+    }
+
     try
     {
         //glActiveTexture(GL_TEXTURE0);
