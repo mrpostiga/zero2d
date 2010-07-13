@@ -187,7 +187,7 @@ void TextureModule::onLoop()
     mSpriteProgram.setMatrix(mMVPM);
 
     mSpriteProgram.use();
-    glActiveTexture(GL_TEXTURE0);
+    //glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, mBackTexture);
     mBackVBO.displayLinear(GL_QUADS, 0, 4);
     mSprite->draw(animation[mCurrentIndex], true);
