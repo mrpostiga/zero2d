@@ -13,18 +13,15 @@ ShaderProgram::ShaderProgram(size_t inCapacity) : mHandle(0),
 ShaderProgram::~ShaderProgram()
 {
     for (size_t i = 0; i < mSize; ++i)
-    {
         glDetachShader(mHandle, mShaders[i]->handle());
-        delete mShaders[i];
-    }
 
     glDeleteProgram(mHandle);
     delete [] mShaders;
 }
 
-void ShaderProgram::attachShader(Shader* inShader)
+void ShaderProgram::attachShader(const char* inFile)
 {
-    if (inShader == NULL || mSize >= mCapacity) return;
+    if (inFile == NULL || mSize >= mCapacity) return;
 
     if (!mCreate)
     {
@@ -36,8 +33,10 @@ void ShaderProgram::attachShader(Shader* inShader)
             throw ShaderException("unable to create program (glCreateProgram)");
     }
 
-    glAttachShader(mHandle, inShader->handle());
-    mShaders[mSize] = inShader;
+    Shader* s = Shader::load(inFile);
+
+    glAttachShader(mHandle, s->handle());
+    mShaders[mSize] = s;
     ++mSize;
 }
 

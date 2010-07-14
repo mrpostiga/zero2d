@@ -38,8 +38,8 @@ void LoadScreen::setup()
 {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-    mProgram.attachShader(new Shader("sprite.vs"));
-    mProgram.attachShader(new Shader("sprite.fs"));
+    mProgram.attachShader("sprite.vs");
+    mProgram.attachShader("sprite.fs");
     mProgram.addVariable("CornerVertex");
     mProgram.addVariable("TexCoord");
     mProgram.bindAndLink();

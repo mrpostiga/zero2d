@@ -23,23 +23,24 @@ TextureModule::~TextureModule()
 
 bool TextureModule::onLoad()
 {
-    mLoadScreen.setBackgroundImage("dragon.png");
-    mLoadScreen.setLoadImage("loading.png");
-    mLoadScreen.setLoadLocation(0, -200);
-    mLoadScreen.setup();
-
-    mLoadScreen.update(0);
     try
     {
+        mLoadScreen.setBackgroundImage("dragon.png");
+        mLoadScreen.setLoadImage("loading.png");
+        mLoadScreen.setLoadLocation(0, -200);
+        mLoadScreen.setup();
+
+        mLoadScreen.update(0);
+
         //glActiveTexture(GL_TEXTURE0);
         glGenTextures(1, &mBackTexture);
         DisplayEngine::loadTexture("data/images/dragon.png",
             mBackTexture);
         mLoadScreen.update(50);
 
-        mParticleProgram.attachShader(new Shader("test2-particles.vs"));
+        mParticleProgram.attachShader("test2-particles.vs");
         mLoadScreen.update(60);
-        mParticleProgram.attachShader(new Shader("test2-particles.fs"));
+        mParticleProgram.attachShader("test2-particles.fs");
         mLoadScreen.update(70);
 
         GLfloat* vertices = new GLfloat[NUM_PARTICLES * 3];
@@ -87,8 +88,8 @@ bool TextureModule::onLoad()
             NUM_PARTICLES, startTimes);
         mLoadScreen.update(82);
 
-        mSpriteProgram.attachShader(new Shader("sprite.vs"));
-        mSpriteProgram.attachShader(new Shader("sprite.fs"));
+        mSpriteProgram.attachShader("sprite.vs");
+        mSpriteProgram.attachShader("sprite.fs");
         mSpriteProgram.addVariable("CornerVertex");
         mSpriteProgram.addVariable("TexCoord");
         mSpriteProgram.bindAndLink();
