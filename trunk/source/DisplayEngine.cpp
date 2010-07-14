@@ -16,6 +16,7 @@
  */
 
 #include "DisplayEngine.h"
+#include "Shader.h"
 #include "Module.h"
 #include "Config.h"
 #include "NetworkStream.h"
@@ -353,6 +354,8 @@ void DisplayEngine::initialize()
 
 void DisplayEngine::cleanup()
 {
+    Shader::unloadAll();
+
 #ifndef __APPLE__
     SDL_FreeSurface(mWindowIcon);
 #endif

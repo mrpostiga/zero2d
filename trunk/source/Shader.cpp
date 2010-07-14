@@ -8,6 +8,31 @@
 #include <string>
 using namespace std;
 
+map<string, Shader*> Shader::mShaders;
+
+Shader* Shader::load(const char* inFile)
+{
+    map<string, Shader*>::iterator i = mShaders.find(inFile);
+
+    if (i == mShaders.end())
+    {
+        Shader* s = new Shader(inFile);
+        mShaders[inFile] = s;
+        return s;
+    }
+
+    return i->second;
+}
+
+void Shader::unloadAll()
+{
+    for (map<string, Shader*>::iterator i = mShaders.begin();
+        i != mShaders.end(); ++i)
+    {
+        delete i->second;
+    }
+}
+
 char* Shader::fileToBuffer(const char* inFile)
 {
     /// TODO: convert to C++ equivalents, remove dependency on cstdio

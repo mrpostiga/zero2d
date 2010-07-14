@@ -24,8 +24,8 @@ bool TestModule::onLoad()
 {
     try
     {
-        mSP.attachShader(new Shader("test2-particles.vs"));
-        mSP.attachShader(new Shader("test2-particles.fs"));
+        mSP.attachShader("test2-particles.vs");
+        mSP.attachShader("test2-particles.fs");
 
         GLfloat* vertices = new GLfloat[NUM_PARTICLES * 3];
         GLfloat* colors = new GLfloat[NUM_PARTICLES * 3];

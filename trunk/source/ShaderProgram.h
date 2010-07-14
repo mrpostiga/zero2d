@@ -13,7 +13,7 @@ class ShaderProgram
         ShaderProgram(size_t inCapacity = 2);
         virtual ~ShaderProgram();
 
-        void attachShader(Shader* inShader);
+        void attachShader(const char* inFile);
         void setMatrix(const Matrix3D& inMatrix);
         GLuint getBinding(const std::string& inName);
         void bindAndLink();
