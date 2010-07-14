@@ -28,26 +28,25 @@ bool TextureModule::onLoad()
     mLoadScreen.setLoadLocation(0, -200);
     mLoadScreen.setup();
 
-    for (unsigned int i = 0; i < 101; ++i)
-    {
-        mLoadScreen.update(i);
-        SDL_Delay(15);
-    }
-
+    mLoadScreen.update(0);
     try
     {
         //glActiveTexture(GL_TEXTURE0);
         glGenTextures(1, &mBackTexture);
         DisplayEngine::loadTexture("data/images/dragon.png",
             mBackTexture);
+        mLoadScreen.update(50);
 
         mParticleProgram.attachShader(new Shader("test2-particles.vs"));
+        mLoadScreen.update(60);
         mParticleProgram.attachShader(new Shader("test2-particles.fs"));
+        mLoadScreen.update(70);
 
         GLfloat* vertices = new GLfloat[NUM_PARTICLES * 3];
         GLfloat* colors = new GLfloat[NUM_PARTICLES * 3];
         GLfloat* velocities = new GLfloat[NUM_PARTICLES * 3];
         GLfloat* startTimes = new GLfloat[NUM_PARTICLES];
+        mLoadScreen.update(75);
 
         srand(time(NULL));
         for (size_t i = 0; i < NUM_PARTICLES; ++i)
@@ -68,12 +67,15 @@ bool TextureModule::onLoad()
 
             startTimes[i] = RV() * 1.0f;
         }
+        mLoadScreen.update(77);
+
 
         mParticleProgram.addVariable("MCVertex");
         mParticleProgram.addVariable("MColor");
         mParticleProgram.addVariable("Velocity");
         mParticleProgram.addVariable("StartTime");
         mParticleProgram.bindAndLink();
+        mLoadScreen.update(80);
 
         mParticleVBO.loadVAA(mParticleProgram.getBinding("MCVertex"), 3,
             NUM_PARTICLES, vertices);
@@ -83,12 +85,14 @@ bool TextureModule::onLoad()
             NUM_PARTICLES, velocities);
         mParticleVBO.loadVAA(mParticleProgram.getBinding("StartTime"), 1,
             NUM_PARTICLES, startTimes);
+        mLoadScreen.update(82);
 
         mSpriteProgram.attachShader(new Shader("sprite.vs"));
         mSpriteProgram.attachShader(new Shader("sprite.fs"));
         mSpriteProgram.addVariable("CornerVertex");
         mSpriteProgram.addVariable("TexCoord");
         mSpriteProgram.bindAndLink();
+        mLoadScreen.update(85);
 
         vertices[0] = 1024.0f;
         vertices[1] = 1024.0f;
@@ -112,6 +116,7 @@ bool TextureModule::onLoad()
             vertices);
         mBackVBO.loadVAA(mSpriteProgram.getBinding("TexCoord"), 2, 4,
             colors);
+        mLoadScreen.update(87);
 
         delete [] vertices;
         delete [] colors;
@@ -120,6 +125,7 @@ bool TextureModule::onLoad()
 
         Sprite::setProgram(&mSpriteProgram);
         mSprite = new Sprite("pimple");
+        mLoadScreen.update(90);
 
         GLint texLoc = mSpriteProgram.getUniformLocation("Texture");
         glUniform1i(texLoc, 0);
@@ -148,6 +154,7 @@ bool TextureModule::onLoad()
     }
 
     mSpriteProgram.use();
+    mLoadScreen.update(92);
 
     float ratio = DisplayEngine::getAspectRatio();
     mProjection.orthographic(360.0f, ratio);
@@ -165,11 +172,13 @@ bool TextureModule::onLoad()
     mCounter = 0;
     mCurrentIndex = 0;
     mRotation = 0;
+    mLoadScreen.update(95);
 
     glUniform1f(mFadeShader, mFade);
+    mLoadScreen.update(100);
+
 
     return true;
-
 }
 
 void TextureModule::onOpen()

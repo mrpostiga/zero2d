@@ -6,10 +6,10 @@ LoadScreen::LoadScreen()
 
 LoadScreen::~LoadScreen()
 {
-    //dtor
+    glDisable(GL_BLEND);
 }
 
-void LoadScreen::update(unsigned int inPercent)
+void LoadScreen::update(int inPercent)
 {
     float percent = inPercent % 101;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

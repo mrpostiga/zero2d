@@ -17,7 +17,7 @@ class LoadScreen
         LoadScreen();
         virtual ~LoadScreen();
 
-        void update(unsigned int inPercent);
+        void update(int inPercent);
         void update(float inPercent);
 
         void setBackgroundImage(char* inBackgroundImage);
