@@ -8,6 +8,9 @@
 #include <cmath>
 #include <string>
 
+#include <iostream>
+using namespace std;
+
 class LoadScreen
 {
     public:
@@ -19,15 +22,18 @@ class LoadScreen
 
         void setBackgroundImage(char* inBackgroundImage);
         void setLoadImage(char* inLoadImage);
-        void setLoadLocation(float inX, float inY);
-        void setRange(float inRange);
+        void setLoadLocation(int inX, int inY);
 
         void setup();
 
     private:
         float mScreenRange;
-        float mLoadLocationX;
-        float mLoadLocationY;
+        int mLoadLocationX;
+        int mLoadLocationY;
+        int mLoadScreenLocationX;
+        int mLoadScreenLocationY;
+        int mLoadWidth;
+        int mLoadHeight;
 
         Matrix3D mProjection;
         Matrix3D mMVPM;

@@ -25,14 +25,13 @@ bool TextureModule::onLoad()
 {
     mLoadScreen.setBackgroundImage("dragon.png");
     mLoadScreen.setLoadImage("loading.png");
-    mLoadScreen.setLoadLocation(0.0f, -200.0f);
-    mLoadScreen.setRange(360.0f);
+    mLoadScreen.setLoadLocation(0, -200);
     mLoadScreen.setup();
 
-    for (int i = 0; i < 4000; ++i)
+    for (unsigned int i = 0; i < 101; ++i)
     {
-        mLoadScreen.update(10u);
-        SDL_Delay(1);
+        mLoadScreen.update(i);
+        SDL_Delay(15);
     }
 
     try

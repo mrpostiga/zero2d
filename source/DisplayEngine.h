@@ -79,6 +79,11 @@ class DisplayEngine
             return mAspectRatio;
         }
 
+        static inline int getDisplayHeight()
+        {
+            return mDisplay->h;
+        }
+
         static inline void render();
 
     private:
