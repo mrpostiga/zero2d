@@ -11,6 +11,7 @@ LoadScreen::~LoadScreen()
 
 void LoadScreen::update(unsigned int inPercent)
 {
+    float percent = inPercent % 101;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     mProgram.use();
@@ -18,19 +19,18 @@ void LoadScreen::update(unsigned int inPercent)
     mBackVBO.displayLinear(GL_QUADS, 0, 4);
 
     glBindTexture(GL_TEXTURE_2D, mLoadTexture);
+
+    glEnable(GL_SCISSOR_TEST);
+    glScissor(mLoadScreenLocationX, mLoadScreenLocationY,
+              int(mLoadWidth * (percent / 100.0f)), mLoadHeight);
     mLoadingBarVBO.displayLinear(GL_QUADS, 0, 4);
+
+    glDisable(GL_SCISSOR_TEST);
     DisplayEngine::render();
 }
 
 void LoadScreen::update(float inPercent)
 {
-    inPercent = fabs(inPercent);
-
-    if (inPercent > 1.0f)
-    {
-        inPercent = 1.0f;
-    }
-
     update(inPercent * 100);
 }
 
@@ -48,7 +48,13 @@ void LoadScreen::setup()
     GLfloat* texCoord = new GLfloat[8];
 
     float ratio = DisplayEngine::getAspectRatio();
+    mScreenRange = DisplayEngine::getDisplayHeight() / 2;
     mProjection.orthographic(mScreenRange, ratio);
+
+    mLoadScreenLocationX = mLoadLocationX + int(mScreenRange * ratio) - mLoadWidth / 2;
+    mLoadScreenLocationY = mLoadLocationY + int(mScreenRange) - mLoadHeight / 2;
+
+    cerr << mLoadScreenLocationX << ", " << mLoadScreenLocationY << endl;
 
     vertices[0] = mScreenRange * ratio;
     vertices[1] = mScreenRange;
@@ -83,14 +89,14 @@ void LoadScreen::setup()
     mProgram.setMatrix(mProjection);
 
 
-    vertices[0] = 100.0f;
-    vertices[1] = 10.0f;
-    vertices[2] = 100.0f;
-    vertices[3] = -10.0f;
-    vertices[4] = -100.0f;
-    vertices[5] = -10.0f;
-    vertices[6] = -100.0f;
-    vertices[7] = 10.0f;
+    vertices[0] = mLoadLocationX + (mLoadWidth / 2);
+    vertices[1] = mLoadLocationY + (mLoadHeight / 2);
+    vertices[2] = mLoadLocationX + (mLoadWidth / 2);
+    vertices[3] = mLoadLocationY - (mLoadHeight / 2);
+    vertices[4] = mLoadLocationX - (mLoadWidth / 2);
+    vertices[5] = mLoadLocationY - (mLoadHeight / 2);
+    vertices[6] = mLoadLocationX - (mLoadWidth / 2);
+    vertices[7] = mLoadLocationY + (mLoadHeight / 2);
 
 
     texCoord[0] = 1.0f;
@@ -128,16 +134,22 @@ void LoadScreen::setLoadImage(char* inLoadImage)
     glGenTextures(1, &mLoadTexture);
     std::string path = "data/images/";
     path += inLoadImage;
-    DisplayEngine::loadTexture(path.c_str(), mLoadTexture);
+    Surface load = DisplayEngine::loadImage(path.c_str());
+    mLoadWidth = load->w;
+    mLoadHeight = load->h;
+    //DisplayEngine::loadTexture(path.c_str(), mLoadTexture);
+    DisplayEngine::loadTexture(load, mLoadTexture);
 }
 
-void LoadScreen::setLoadLocation(float inX, float inY)
+/**********************************************
+* Sets the location for the loading bar.
+* Takes two int values because range is always set
+* to match the screen pixels, but the values should
+* be based on opengl's coordinate system (e.g. with
+* 0,0 at the center.
+***********************************************/
+void LoadScreen::setLoadLocation(int inX, int inY)
 {
     mLoadLocationX = inX;
     mLoadLocationY = inY;
-}
-
-void LoadScreen::setRange(float inRange)
-{
-    mScreenRange = inRange;
 }
