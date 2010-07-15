@@ -2,6 +2,9 @@
 
 LoadScreen::LoadScreen()
 {
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    DisplayEngine::render();
 }
 
 LoadScreen::~LoadScreen()
@@ -53,8 +56,6 @@ void LoadScreen::setup()
 
     mLoadScreenLocationX = mLoadLocationX + int(mScreenRange * ratio) - mLoadWidth / 2;
     mLoadScreenLocationY = mLoadLocationY + int(mScreenRange) - mLoadHeight / 2;
-
-    cerr << mLoadScreenLocationX << ", " << mLoadScreenLocationY << endl;
 
     vertices[0] = mScreenRange * ratio;
     vertices[1] = mScreenRange;
