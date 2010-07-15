@@ -39,7 +39,7 @@ using namespace std;
  *      for when the rest of the message arrives.
  */
 
-NetworkStream::NetworkStream() : mSocketIn(0), mSocketOut(0)
+NetworkStream::NetworkStream() : mSocket(0)
 {
     mPacket = SDLNet_AllocPacket(PACKET_SIZE);
 }
@@ -47,23 +47,31 @@ NetworkStream::NetworkStream() : mSocketIn(0), mSocketOut(0)
 NetworkStream::~NetworkStream()
 {
     SDLNet_FreePacket(mPacket);
-    if (mSocketIn) SDLNet_UDP_Close(mSocketIn);
+    if (mSocket) SDLNet_UDP_Close(mSocket);
 }
 
 void NetworkStream::listen(Uint16 inPort)
 {
-    mListenPort = inPort;
-    mSocketIn = SDLNet_UDP_Open(mListenPort);
-    mSocketOut = mSocketIn;
-    if (!mSocketIn)
+    if (!mSocket)
     {
-        cerr << "failed to listen on port " << inPort << endl;
+        mSocket = SDLNet_UDP_Open(inPort);
+        if (!mSocket)
+        {
+            cerr << "failed to listen on port " << inPort << endl;
+        }
     }
 }
 
 void NetworkStream::connect(const char* inAddress, Uint16 inPort)
 {
-    mTransmitPort = inPort;
+    if (!mSocket)
+    {
+        mSocket = SDLNet_UDP_Open(0);
+        if (!mSocket)
+        {
+            cerr << "failed to listen on port " << inPort << endl;
+        }
+    }
 
     if (SDLNet_ResolveHost(&mAddress, inAddress, inPort) == -1)
     {
@@ -83,12 +91,12 @@ void NetworkStream::sendData(const void* inData, size_t inLength)
     mPacket->len = inLength;
     mPacket->address.host = mAddress.host;
     mPacket->address.port = mAddress.port;
-    SDLNet_UDP_Send(mSocketOut, -1, mPacket);
+    SDLNet_UDP_Send(mSocket, -1, mPacket);
 }
 
 bool NetworkStream::receiveData(Uint8* inCapture)
 {
-    if (SDLNet_UDP_Recv(mSocketIn, mPacket))
+    if (SDLNet_UDP_Recv(mSocket, mPacket))
     {
         memcpy(inCapture, mPacket->data, mPacket->len);
         return true;
