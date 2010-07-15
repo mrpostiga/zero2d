@@ -34,7 +34,10 @@ class NetworkStream
         void sendData(const void* inData, size_t inLength);
         bool receiveData(Uint8* inCapture);
 
+        inline UDPpacket* getPacket() { return mPacket; }
+
     private:
+        Uint16 mFromPort;
         IPaddress mAddress;
         UDPsocket mSocketIn;
         UDPsocket mSocketOut;
