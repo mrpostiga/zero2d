@@ -2,10 +2,7 @@
 #define TESTMODULE_H
 
 #include "Module.h"
-#include "MatrixStack.h"
-#include "ShaderProgram.h"
-
-#include <iostream>
+#include "NetworkStream.h"
 
 class TestModule : public Module
 {
@@ -22,19 +19,10 @@ class TestModule : public Module
         virtual void onUnload();
 
     protected:
-        virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
 
     private:
-        float mRotation;
-        float mTime;
-        Uint32 mTickStart;
-        Matrix3D mProjection;
-        Matrix3D mMVPM;
-        MatrixStack mModelView;
-        ShaderProgram mSP;
-        ShaderVBO mSVBO;
-
-        GLuint mT;
+        Uint32 mTimer;
+        NetworkStream mNet;
 };
 
 #endif
