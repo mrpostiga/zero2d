@@ -48,7 +48,6 @@ NetworkStream::~NetworkStream()
 {
     SDLNet_FreePacket(mPacket);
     if (mSocketIn) SDLNet_UDP_Close(mSocketIn);
-    if (mSocketOut) SDLNet_UDP_Close(mSocketOut);
 }
 
 void NetworkStream::listen(Uint16 inPort)
