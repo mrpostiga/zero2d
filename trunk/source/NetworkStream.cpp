@@ -39,7 +39,7 @@ using namespace std;
  *      for when the rest of the message arrives.
  */
 
-NetworkStream::NetworkStream() : mFromPort(0)
+NetworkStream::NetworkStream() : mMyPort(0), mSocketIn(0), mSocketOut(0)
 {
     mPacket = SDLNet_AllocPacket(PACKET_SIZE);
 }
@@ -47,12 +47,14 @@ NetworkStream::NetworkStream() : mFromPort(0)
 NetworkStream::~NetworkStream()
 {
     SDLNet_FreePacket(mPacket);
+    if (mSocketIn) SDLNet_UDP_Close(mSocketIn);
+    if (mSocketOut) SDLNet_UDP_Close(mSocketOut);
 }
 
 void NetworkStream::listen(Uint16 inPort)
 {
-    mFromPort = SDL_Swap16(inPort);
-    mSocketIn = SDLNet_UDP_Open(mFromPort);
+    mMyPort = inPort;
+    mSocketIn = SDLNet_UDP_Open(mMyPort);
     if (!mSocketIn)
     {
         cerr << "failed to listen on port " << inPort << endl;
@@ -61,8 +63,8 @@ void NetworkStream::listen(Uint16 inPort)
 
 void NetworkStream::connect(const char* inAddress, Uint16 inPort)
 {
-    inPort = SDL_Swap16(inPort);
-    mSocketOut = SDLNet_UDP_Open(mFromPort);
+    mOtherPort = inPort;
+    mSocketOut = SDLNet_UDP_Open(mOtherPort);
     if (!mSocketOut)
     {
         cerr << "failed to open a socket out" << endl;

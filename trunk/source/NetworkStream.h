@@ -37,7 +37,8 @@ class NetworkStream
         inline UDPpacket* getPacket() { return mPacket; }
 
     private:
-        Uint16 mFromPort;
+        Uint16 mMyPort;
+        Uint16 mOtherPort;
         IPaddress mAddress;
         UDPsocket mSocketIn;
         UDPsocket mSocketOut;
