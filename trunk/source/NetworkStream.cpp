@@ -39,7 +39,7 @@ using namespace std;
  *      for when the rest of the message arrives.
  */
 
-NetworkStream::NetworkStream()
+NetworkStream::NetworkStream() : mFromPort(0)
 {
     mPacket = SDLNet_AllocPacket(PACKET_SIZE);
 }
@@ -62,7 +62,7 @@ void NetworkStream::listen(Uint16 inPort)
 void NetworkStream::connect(const char* inAddress, Uint16 inPort)
 {
     inPort = SDL_Swap16(inPort);
-    mSocketOut = SDLNet_UDP_Open(0);
+    mSocketOut = SDLNet_UDP_Open(mFromPort);
     if (!mSocketOut)
     {
         cerr << "failed to open a socket out" << endl;
