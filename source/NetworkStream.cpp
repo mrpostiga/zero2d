@@ -51,7 +51,7 @@ NetworkStream::~NetworkStream()
 
 void NetworkStream::listen(Uint16 inPort)
 {
-    mFromPort = inPort;
+    mFromPort = SDL_Swap16(inPort);
     mSocketIn = SDLNet_UDP_Open(mFromPort);
     if (!mSocketIn)
     {
@@ -61,6 +61,7 @@ void NetworkStream::listen(Uint16 inPort)
 
 void NetworkStream::connect(const char* inAddress, Uint16 inPort)
 {
+    inPort = SDL_Swap16(inPort);
     mSocketOut = SDLNet_UDP_Open(0);
     if (!mSocketOut)
     {
