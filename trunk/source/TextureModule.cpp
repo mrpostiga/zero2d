@@ -5,7 +5,7 @@
 using namespace std;
 
 #define NUM_POINTS 4
-#define NUM_PARTICLES 1000
+#define NUM_PARTICLES 100000
 
 float RV()
 {
