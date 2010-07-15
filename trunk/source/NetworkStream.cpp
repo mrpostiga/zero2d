@@ -51,7 +51,8 @@ NetworkStream::~NetworkStream()
 
 void NetworkStream::listen(Uint16 inPort)
 {
-    mSocketIn = SDLNet_UDP_Open(inPort);
+    mFromPort = inPort;
+    mSocketIn = SDLNet_UDP_Open(mFromPort);
     if (!mSocketIn)
     {
         cerr << "failed to listen on port " << inPort << endl;
