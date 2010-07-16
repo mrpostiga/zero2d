@@ -1,4 +1,5 @@
 #include "TestModule.h"
+#include "Config.h"
 #include "DisplayEngine.h"
 
 #include <ctime>
@@ -16,8 +17,9 @@ TestModule::~TestModule()
 bool TestModule::onLoad()
 {
     mTimer = 0;
-    mNet.listen(9999);
-    mNet.connect("97.121.13.46", 9999);
+    mNet.listen(Config::get<Uint16>("connect port", 45678));
+    mNet.connect(Config::getRaw("connect ip"),
+        Config::get<Uint16>("connect port", 45678));
     return true;
 }
 
