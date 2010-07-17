@@ -33,6 +33,7 @@ TestModule::~TestModule()
 
 void TestModule::onLoad()
 {
+    mPort = 40000;
     mTimer = 0;
     mNet.listen(Config::get<Uint16>("connect port", 45678));
     mNet.connect(Config::getRaw("connect ip"),
@@ -56,6 +57,16 @@ void TestModule::onLoop()
     Uint8 buffer[PACKET_SIZE];
     if (mNet.receiveData(buffer))
     {
+        Uint16 somePort = mNet.getPacket()->address.port;
+        //SDL_Swap16(somePort);
+        /*
+        if (somePort != mPort)
+        {
+            mPort = somePort;
+            cerr << "new port: " << mPort << endl;
+            mNet.connect("75.174.77.210", mPort);
+        }
+        */
         cout << "\nreceived: " << buffer << endl;
     }
 }
@@ -66,7 +77,7 @@ void TestModule::onFrame()
     if (mTimer > 60)
     {
         mTimer = 0;
-        mNet.sendData("TheBuzzSaw", 11);
+        mNet.sendData("WE ARE AWESOME!!!", 18);
         cout << '.';
         cout.flush();
     }
