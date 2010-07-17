@@ -19,10 +19,19 @@
 #define _MODULE_H_
 
 #include <SDL.h>
+#include <string>
 
 class Module
 {
     public:
+
+        class Exception
+        {
+            public:
+                Exception(const std::string& inReason);
+                const std::string reason;
+        };
+
         Module();
         virtual ~Module();
 
@@ -32,7 +41,7 @@ class Module
         inline Module* next() { return mNextModule; }
 
         /// module operation
-        virtual bool onLoad();
+        virtual void onLoad();
         virtual void onOpen();
         virtual void onLoop();
         virtual void onFrame();

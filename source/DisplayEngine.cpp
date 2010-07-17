@@ -70,12 +70,28 @@ void DisplayEngine::start(Module* inModule)
             currentModule = moduleStack.back();
             moduleStack.pop_back();
         }
-        else if (!currentModule->onLoad())
+
+        try
         {
-            cerr << "module failed to load" << endl;
-            currentModule = NULL;
-            break;
+            currentModule->onLoad();
         }
+        catch (const Module::Exception& me)
+        {
+            cerr << "module exception -- " << me.reason << endl;
+            currentModule = NULL;
+        }
+        catch (const Shader::Exception& se)
+        {
+            cerr << "shader exception -- " << se.reason << endl;
+            currentModule = NULL;
+        }
+        catch (...)
+        {
+            cerr << "unknown exception" << endl;
+            currentModule = NULL;
+        }
+
+        if (!currentModule) break;
 
         currentModule->onOpen();
 

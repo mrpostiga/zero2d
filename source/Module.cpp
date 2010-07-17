@@ -20,6 +20,10 @@
 #include <iostream>
 using namespace std;
 
+Module::Exception::Exception(const string& inReason) : reason(inReason)
+{
+}
+
 Module::Module() : mRunning(true), mDead(true), mNextModule(NULL)
 {
 }
@@ -28,9 +32,8 @@ Module::~Module()
 {
 }
 
-bool Module::onLoad()
+void Module::onLoad()
 {
-    return true;
 }
 
 void Module::onUnload()

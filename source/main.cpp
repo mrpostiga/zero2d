@@ -27,8 +27,8 @@ int main(int argc, char** argv)
     DisplayEngine::initialize();
     //SoundEngine::initialize();
     //Config::outputSettings();
-    DisplayEngine::start(new TestModule);
-    //DisplayEngine::start(new TextureModule);
+    //DisplayEngine::start(new TestModule);
+    DisplayEngine::start(new TextureModule);
     //SoundEngine::cleanup();
     Config::finalize();
     return 0;

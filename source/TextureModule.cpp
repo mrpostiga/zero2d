@@ -1,3 +1,20 @@
+/**
+ *  This file is part of Zero2D.
+ *
+ *  Zero2D is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Zero2D is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "TextureModule.h"
 #include "DisplayEngine.h"
 
@@ -21,138 +38,124 @@ TextureModule::~TextureModule()
 }
 
 
-bool TextureModule::onLoad()
+void TextureModule::onLoad()
 {
-    try
+    mLoadScreen.setBackgroundImage("dragon.png");
+    mLoadScreen.setLoadImage("loading.png");
+    mLoadScreen.setLoadLocation(0, -200);
+    mLoadScreen.setup();
+
+    mLoadScreen.update(0);
+
+    //glActiveTexture(GL_TEXTURE0);
+    glGenTextures(1, &mBackTexture);
+    DisplayEngine::loadTexture("data/images/dragon.png",
+        mBackTexture);
+    mLoadScreen.update(50);
+
+    mParticleProgram.attachShader("test2-particles.vs");
+    mLoadScreen.update(60);
+    mParticleProgram.attachShader("test2-particles.fs");
+    mLoadScreen.update(70);
+
+    GLfloat* vertices = new GLfloat[NUM_PARTICLES * 3];
+    GLfloat* colors = new GLfloat[NUM_PARTICLES * 3];
+    GLfloat* velocities = new GLfloat[NUM_PARTICLES * 3];
+    GLfloat* startTimes = new GLfloat[NUM_PARTICLES];
+    mLoadScreen.update(75);
+
+    srand(time(NULL));
+    for (size_t i = 0; i < NUM_PARTICLES; ++i)
     {
-        mLoadScreen.setBackgroundImage("dragon.png");
-        mLoadScreen.setLoadImage("loading.png");
-        mLoadScreen.setLoadLocation(0, -200);
-        mLoadScreen.setup();
+        size_t j = i * 3;
 
-        mLoadScreen.update(0);
+        vertices[j] = 0.0;
+        vertices[j + 1] = 0.0f;
+        vertices[j + 2] = 0.0f;
 
-        //glActiveTexture(GL_TEXTURE0);
-        glGenTextures(1, &mBackTexture);
-        DisplayEngine::loadTexture("data/images/dragon.png",
-            mBackTexture);
-        mLoadScreen.update(50);
+        colors[j] = RV();
+        colors[j + 1] = RV();
+        colors[j + 2] = RV();
 
-        mParticleProgram.attachShader("test2-particles.vs");
-        mLoadScreen.update(60);
-        mParticleProgram.attachShader("test2-particles.fs");
-        mLoadScreen.update(70);
+        velocities[j] = 2.0f * RV() - 1.0f;
+        velocities[j + 1] = 4.0f * RV();
+        velocities[j + 2] = 2.0f * RV() - 1.0f;
 
-        GLfloat* vertices = new GLfloat[NUM_PARTICLES * 3];
-        GLfloat* colors = new GLfloat[NUM_PARTICLES * 3];
-        GLfloat* velocities = new GLfloat[NUM_PARTICLES * 3];
-        GLfloat* startTimes = new GLfloat[NUM_PARTICLES];
-        mLoadScreen.update(75);
-
-        srand(time(NULL));
-        for (size_t i = 0; i < NUM_PARTICLES; ++i)
-        {
-            size_t j = i * 3;
-
-            vertices[j] = 0.0;
-            vertices[j + 1] = 0.0f;
-            vertices[j + 2] = 0.0f;
-
-            colors[j] = RV();
-            colors[j + 1] = RV();
-            colors[j + 2] = RV();
-
-            velocities[j] = 2.0f * RV() - 1.0f;
-            velocities[j + 1] = 4.0f * RV();
-            velocities[j + 2] = 2.0f * RV() - 1.0f;
-
-            startTimes[i] = RV() * 1.0f;
-        }
-        mLoadScreen.update(77);
-
-
-        mParticleProgram.addVariable("MCVertex");
-        mParticleProgram.addVariable("MColor");
-        mParticleProgram.addVariable("Velocity");
-        mParticleProgram.addVariable("StartTime");
-        mParticleProgram.bindAndLink();
-        mLoadScreen.update(80);
-
-        mParticleVBO.loadVAA(mParticleProgram.getBinding("MCVertex"), 3,
-            NUM_PARTICLES, vertices);
-        mParticleVBO.loadVAA(mParticleProgram.getBinding("MColor"), 3,
-            NUM_PARTICLES, colors);
-        mParticleVBO.loadVAA(mParticleProgram.getBinding("Velocity"), 3,
-            NUM_PARTICLES, velocities);
-        mParticleVBO.loadVAA(mParticleProgram.getBinding("StartTime"), 1,
-            NUM_PARTICLES, startTimes);
-        mLoadScreen.update(82);
-
-        mSpriteProgram.attachShader("sprite.vs");
-        mSpriteProgram.attachShader("sprite.fs");
-        mSpriteProgram.addVariable("CornerVertex");
-        mSpriteProgram.addVariable("TexCoord");
-        mSpriteProgram.bindAndLink();
-        mLoadScreen.update(85);
-
-        vertices[0] = 1024.0f;
-        vertices[1] = 1024.0f;
-        vertices[2] = 1024.0f;
-        vertices[3] = -1024.0f;
-        vertices[4] = -1024.0f;
-        vertices[5] = -1024.0f;
-        vertices[6] = -1024.0f;
-        vertices[7] = 1024.0f;
-
-        colors[0] = 1.0f;
-        colors[1] = 0.0f;
-        colors[2] = 1.0f;
-        colors[3] = 1.0f;
-        colors[4] = 0.0f;
-        colors[5] = 1.0f;
-        colors[6] = 0.0f;
-        colors[7] = 0.0f;
-
-        mBackVBO.loadVAA(mSpriteProgram.getBinding("CornerVertex"), 2, 4,
-            vertices);
-        mBackVBO.loadVAA(mSpriteProgram.getBinding("TexCoord"), 2, 4,
-            colors);
-        mLoadScreen.update(87);
-
-        delete [] vertices;
-        delete [] colors;
-        delete [] velocities;
-        delete [] startTimes;
-
-        Sprite::setProgram(&mSpriteProgram);
-        mSprite = new Sprite("pimple");
-        mLoadScreen.update(90);
-
-        GLint texLoc = mSpriteProgram.getUniformLocation("Texture");
-        glUniform1i(texLoc, 0);
-
-        GLint z = mSpriteProgram.getUniformLocation("z");
-        glUniform1f(z, 0.0f);
-
-        mFadeShader = mSpriteProgram.getUniformLocation("fade");
-        mFade = 1.0f;
-        mFading = false;
-
-        mT = mParticleProgram.getUniformLocation("Time");
-        mTickStart = SDL_GetTicks();
-        glPointSize(1.0f);
-
+        startTimes[i] = RV() * 1.0f;
     }
-    catch (ShaderException& se)
-    {
-        cerr << "shader exception -- " << se.reason << endl;
-        return false;
-    }
-    catch(...)
-    {
-        cerr << "unknown exception" << endl;
-        return false;
-    }
+    mLoadScreen.update(77);
+
+
+    mParticleProgram.addVariable("MCVertex");
+    mParticleProgram.addVariable("MColor");
+    mParticleProgram.addVariable("Velocity");
+    mParticleProgram.addVariable("StartTime");
+    mParticleProgram.bindAndLink();
+    mLoadScreen.update(80);
+
+    mParticleVBO.loadVAA(mParticleProgram.getBinding("MCVertex"), 3,
+        NUM_PARTICLES, vertices);
+    mParticleVBO.loadVAA(mParticleProgram.getBinding("MColor"), 3,
+        NUM_PARTICLES, colors);
+    mParticleVBO.loadVAA(mParticleProgram.getBinding("Velocity"), 3,
+        NUM_PARTICLES, velocities);
+    mParticleVBO.loadVAA(mParticleProgram.getBinding("StartTime"), 1,
+        NUM_PARTICLES, startTimes);
+    mLoadScreen.update(82);
+
+    mSpriteProgram.attachShader("sprite.vs");
+    mSpriteProgram.attachShader("sprite.fs");
+    mSpriteProgram.addVariable("CornerVertex");
+    mSpriteProgram.addVariable("TexCoord");
+    mSpriteProgram.bindAndLink();
+    mLoadScreen.update(85);
+
+    vertices[0] = 1024.0f;
+    vertices[1] = 1024.0f;
+    vertices[2] = 1024.0f;
+    vertices[3] = -1024.0f;
+    vertices[4] = -1024.0f;
+    vertices[5] = -1024.0f;
+    vertices[6] = -1024.0f;
+    vertices[7] = 1024.0f;
+
+    colors[0] = 1.0f;
+    colors[1] = 0.0f;
+    colors[2] = 1.0f;
+    colors[3] = 1.0f;
+    colors[4] = 0.0f;
+    colors[5] = 1.0f;
+    colors[6] = 0.0f;
+    colors[7] = 0.0f;
+
+    mBackVBO.loadVAA(mSpriteProgram.getBinding("CornerVertex"), 2, 4,
+        vertices);
+    mBackVBO.loadVAA(mSpriteProgram.getBinding("TexCoord"), 2, 4,
+        colors);
+    mLoadScreen.update(87);
+
+    delete [] vertices;
+    delete [] colors;
+    delete [] velocities;
+    delete [] startTimes;
+
+    Sprite::setProgram(&mSpriteProgram);
+    mSprite = new Sprite("pimple");
+    mLoadScreen.update(90);
+
+    GLint texLoc = mSpriteProgram.getUniformLocation("Texture");
+    glUniform1i(texLoc, 0);
+
+    GLint z = mSpriteProgram.getUniformLocation("z");
+    glUniform1f(z, 0.0f);
+
+    mFadeShader = mSpriteProgram.getUniformLocation("fade");
+    mFade = 1.0f;
+    mFading = false;
+
+    mT = mParticleProgram.getUniformLocation("Time");
+    mTickStart = SDL_GetTicks();
+    glPointSize(1.0f);
 
     mSpriteProgram.use();
     mLoadScreen.update(92);
@@ -177,9 +180,6 @@ bool TextureModule::onLoad()
 
     glUniform1f(mFadeShader, mFade);
     mLoadScreen.update(100);
-
-
-    return true;
 }
 
 void TextureModule::onOpen()
