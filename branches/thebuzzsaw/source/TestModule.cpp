@@ -33,11 +33,12 @@ TestModule::~TestModule()
 
 void TestModule::onLoad()
 {
-    mPort = 40000;
-    mTimer = 0;
-    mNet.listen(Config::get<Uint16>("connect port", 45678));
-    mNet.connect(Config::getRaw("connect ip"),
-        Config::get<Uint16>("connect port", 45678));
+    mCardProgram.attachShader("card.vs");
+    mCardProgram.attachShader("card.fs");
+    mCardProgram.addVariable("CardVertex");
+    mCardProgram.addVariable("CardTextureCoordinate");
+    mCardProgram.bindAndLink();
+
 }
 
 void TestModule::onUnload()
@@ -54,31 +55,8 @@ void TestModule::onClose()
 
 void TestModule::onLoop()
 {
-    Uint8 buffer[PACKET_SIZE];
-    if (mNet.receiveData(buffer))
-    {
-        Uint16 somePort = mNet.getPacket()->address.port;
-        //SDL_Swap16(somePort);
-        /*
-        if (somePort != mPort)
-        {
-            mPort = somePort;
-            cerr << "new port: " << mPort << endl;
-            mNet.connect("75.174.77.210", mPort);
-        }
-        */
-        cout << "\nreceived: " << buffer << endl;
-    }
 }
 
 void TestModule::onFrame()
 {
-    ++mTimer;
-    if (mTimer > 60)
-    {
-        mTimer = 0;
-        mNet.sendData("WE ARE AWESOME!!!", 18);
-        cout << '.';
-        cout.flush();
-    }
 }
