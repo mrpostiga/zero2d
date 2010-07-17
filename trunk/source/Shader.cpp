@@ -19,7 +19,6 @@
 #include "DisplayEngine.h"
 
 #include <cstdlib>
-#include <cstdio>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -52,22 +51,16 @@ void Shader::unloadAll()
 
 char* Shader::fileToBuffer(const char* inFile)
 {
-    /// TODO: convert to C++ equivalents, remove dependency on cstdio
-
     char *outBuffer;
-    FILE *fptr;
-    long length;
-
-    fptr = fopen(inFile, "r");
-    if (!fptr) return NULL;
-    fseek(fptr, 0, SEEK_END);
-    length = ftell(fptr);
+    ifstream fin(inFile);
+    if (fin.fail()) return NULL;
+    fin.seekg(0, ios::end);
+    size_t length = fin.tellg();
+    fin.seekg(0, ios::beg);
     outBuffer = new char[length + 1];
-    fseek(fptr, 0, SEEK_SET);
-    size_t v;
-    v = fread(outBuffer, length, 1, fptr);
-    fclose(fptr);
+    fin.read(outBuffer, length);
     outBuffer[length] = 0;
+    fin.close();
 
     return outBuffer;
 }
@@ -101,7 +94,9 @@ Shader::Shader(const char* inFile) : mHandle(0)
         GLchar log[2048];
         GLsizei length;
         glGetShaderInfoLog(mHandle, 2048, &length, log);
-        throw Exception(log);
+        string s("compiler errors\n");
+        s += log;
+        throw Exception(s);
     }
 
     delete [] source;
@@ -110,8 +105,4 @@ Shader::Shader(const char* inFile) : mHandle(0)
 Shader::~Shader()
 {
     if (mHandle) glDeleteShader(mHandle);
-}
-
-Shader::Exception::Exception(const string& inReason) : reason(inReason)
-{
 }

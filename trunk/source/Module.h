@@ -28,7 +28,7 @@ class Module
         class Exception
         {
             public:
-                Exception(const std::string& inReason);
+                Exception(const std::string& inReason) : reason(inReason) {}
                 const std::string reason;
         };
 
