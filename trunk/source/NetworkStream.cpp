@@ -99,6 +99,7 @@ bool NetworkStream::receiveData(Uint8* inCapture)
     if (SDLNet_UDP_Recv(mSocket, mPacket))
     {
         memcpy(inCapture, mPacket->data, mPacket->len);
+        cerr << "mPacket->address/port: " << mPacket->address.host << ", " << SDL_Swap16(mPacket->address.port) << endl;
         return true;
     }
 
