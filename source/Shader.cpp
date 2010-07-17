@@ -85,12 +85,12 @@ Shader::Shader(const char* inFile) : mHandle(0)
     {
         string e("could not open shader file: ");
         e += s;
-        throw Shader::Exception(e);
+        throw Exception(e);
     }
 
     mHandle = glCreateShader(shaderType);
     if (!mHandle)
-        throw Shader::Exception("unable to create shader (glCreateShader)");
+        throw Exception("unable to create shader (glCreateShader)");
 
     glShaderSource(mHandle, 1, (const GLchar**)&source, 0);
     glCompileShader(mHandle);
@@ -101,7 +101,7 @@ Shader::Shader(const char* inFile) : mHandle(0)
         GLchar log[2048];
         GLsizei length;
         glGetShaderInfoLog(mHandle, 2048, &length, log);
-        throw Shader::Exception(log);
+        throw Exception(log);
     }
 
     delete [] source;

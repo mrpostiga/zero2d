@@ -19,7 +19,7 @@
 #define TESTMODULE_H
 
 #include "Module.h"
-#include "NetworkStream.h"
+#include "ShaderProgram.h"
 
 class TestModule : public Module
 {
@@ -38,10 +38,7 @@ class TestModule : public Module
     protected:
 
     private:
-        Uint32 mTimer;
-        NetworkStream mNet;
-
-        Uint16 mPort;
+        ShaderProgram mCardProgram;
 };
 
 #endif
