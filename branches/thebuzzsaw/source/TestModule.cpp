@@ -21,6 +21,7 @@
 
 #include <ctime>
 #include <iostream>
+#include <string>
 using namespace std;
 
 TestModule::TestModule()
@@ -31,11 +32,23 @@ TestModule::~TestModule()
 {
 }
 
+void TestModule::loadCardImage(const char* inFile, GLuint inTexture)
+{
+    string s("data/images/");
+    s += inFile;
+    Surface back = DisplayEngine::blankSurface(512, 512);
+
+    Surface picture = DisplayEngine::loadImage(s.c_str());
+    SDL_BlitSurface(picture, NULL, back, NULL);
+    SDL_FreeSurface(picture);
+    DisplayEngine::loadTexture(back, inTexture);
+}
+
 void TestModule::onLoad()
 {
     glGenTextures(2, mTextures);
-    DisplayEngine::loadTexture("data/images/obj1.png", mTextures[0]);
-    DisplayEngine::loadTexture("data/images/obj2.png", mTextures[1]);
+    loadCardImage("ambush.gif", mTextures[0]);
+    loadCardImage("beldonseye.gif", mTextures[1]);
 
     mCardProgram.attachShader("card.vs");
     mCardProgram.attachShader("card.fs");
@@ -47,11 +60,11 @@ void TestModule::onLoad()
         mCardProgram.getUniformLocation("CardColor"));
     mCard.build(mCardProgram);
 
-    //mProjection.perspective(30.0f, DisplayEngine::getAspectRatio(), 1.0f, 1000.0f);
-    mProjection.orthographic(5.0f, DisplayEngine::getAspectRatio());
+    mProjection.perspective(30.0f, DisplayEngine::getAspectRatio(), 1.0f, 1000.0f);
+    //mProjection.orthographic(5.0f, DisplayEngine::getAspectRatio());
     mModelView.reset();
-    //mModelView.matrix().translate(0.0f, 0.0f, -5.0f);
-    //mModelView.matrix().rotateY(180.0f);
+    mModelView.matrix().translate(0.0f, 0.0f, -20.0f);
+    mRotation = 0.0f;
 }
 
 void TestModule::onUnload()
@@ -62,6 +75,10 @@ void TestModule::onUnload()
 void TestModule::onOpen()
 {
     glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glFrontFace(GL_CW);
+    glCullFace(GL_BACK);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glActiveTexture(GL_TEXTURE0);
@@ -70,12 +87,16 @@ void TestModule::onOpen()
 void TestModule::onClose()
 {
     glDisable(GL_BLEND);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_DEPTH_TEST);
 }
 
 void TestModule::onLoop()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     mModelView.push();
+    mModelView.matrix().rotateY(mRotation);
+    mModelView.matrix().scale(1.0f, 1.0f, 10.0f);
     (mMVPM = mProjection).multiply(mModelView.matrix());
     mCardProgram.setMatrix(mMVPM);
     mCard.display(mTextures[0], mTextures[1]);
@@ -84,4 +105,6 @@ void TestModule::onLoop()
 
 void TestModule::onFrame()
 {
+    mRotation += 2.0f;
+    if (mRotation > 180.0f) mRotation -= 360.0f;
 }

@@ -91,11 +91,11 @@ void ShaderProgram::setMatrix(const Matrix3D& inMatrix)
     glUniformMatrix4fv(mUniformMatrix, 1, GL_TRUE, inMatrix.array());
 }
 
-GLuint ShaderProgram::getBinding(const string& inName)
+GLuint ShaderProgram::getBinding(const string& inName) const
 {
     if (!mLink) throw Shader::Exception("cannot request binding before link");
 
-    map<string, GLuint>::iterator i = mBindings.find(inName);
+    map<string, GLuint>::const_iterator i = mBindings.find(inName);
 
     if (i == mBindings.end())
     {

@@ -32,7 +32,7 @@ class ShaderProgram
 
         void attachShader(const char* inFile);
         void setMatrix(const Matrix3D& inMatrix);
-        GLuint getBinding(const std::string& inName);
+        GLuint getBinding(const std::string& inName) const;
         void bindAndLink();
 
         inline void use() { glUseProgram(mHandle); }

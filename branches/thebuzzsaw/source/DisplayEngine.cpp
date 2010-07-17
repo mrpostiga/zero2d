@@ -388,7 +388,7 @@ Surface DisplayEngine::loadImage(const char* inFile)
 
     if (t == NULL)
     {
-        //cerr << "failed to load image: " << inFile << endl;
+        cerr << "failed to load image: " << inFile << endl;
         return NULL;
     }
 
@@ -419,6 +419,23 @@ bool DisplayEngine::printErrors(const char* inMessage, ostream& inStream)
         error = glGetError();
     }
     return isError;
+}
+
+Surface DisplayEngine::blankSurface(int inWidth, int inHeight)
+{
+    Surface t = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, inWidth, inHeight, 0,
+        mMask.red, mMask.green, mMask.blue, mMask.alpha);
+    SDL_SetAlpha(t, SDL_SRCALPHA, 0xff);
+
+    if (!t)
+    {
+        cerr << "failed to create blank surface" << endl;
+        return NULL;
+    }
+
+    Surface outSurface = SDL_DisplayFormatAlpha(t);
+    SDL_FreeSurface(t);
+    return outSurface;
 }
 
 bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,

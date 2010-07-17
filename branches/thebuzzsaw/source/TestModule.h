@@ -40,12 +40,14 @@ class TestModule : public Module
     protected:
 
     private:
+        void loadCardImage(const char* inFile, GLuint inTexture);
         MatrixStack mModelView;
         Matrix3D mProjection;
         Matrix3D mMVPM;
         ShaderProgram mCardProgram;
         CardModel mCard;
         GLuint mTextures[2];
+        float mRotation;
 };
 
 #endif
