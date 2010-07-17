@@ -55,6 +55,7 @@ class DisplayEngine
     public:
         static void start(Module* inModule);
         static void initialize();
+        static Surface blankSurface(int inWidth, int inHeight);
         static Surface loadImage(const char* inFile);
         static bool loadTexture(Surface inSurface, GLuint inTexture,
             bool inDelete = true);
