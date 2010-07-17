@@ -1,3 +1,20 @@
+/**
+ *  This file is part of Zero2D.
+ *
+ *  Zero2D is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Zero2D is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "Shader.h"
 #include "DisplayEngine.h"
 
@@ -68,12 +85,12 @@ Shader::Shader(const char* inFile) : mHandle(0)
     {
         string e("could not open shader file: ");
         e += s;
-        throw ShaderException(e);
+        throw Shader::Exception(e);
     }
 
     mHandle = glCreateShader(shaderType);
     if (!mHandle)
-        throw ShaderException("unable to create shader (glCreateShader)");
+        throw Shader::Exception("unable to create shader (glCreateShader)");
 
     glShaderSource(mHandle, 1, (const GLchar**)&source, 0);
     glCompileShader(mHandle);
@@ -84,7 +101,7 @@ Shader::Shader(const char* inFile) : mHandle(0)
         GLchar log[2048];
         GLsizei length;
         glGetShaderInfoLog(mHandle, 2048, &length, log);
-        throw ShaderException(log);
+        throw Shader::Exception(log);
     }
 
     delete [] source;
@@ -95,6 +112,6 @@ Shader::~Shader()
     if (mHandle) glDeleteShader(mHandle);
 }
 
-ShaderException::ShaderException(const string& inReason) : reason(inReason)
+Shader::Exception::Exception(const string& inReason) : reason(inReason)
 {
 }

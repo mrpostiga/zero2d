@@ -1,3 +1,20 @@
+/**
+ *  This file is part of Zero2D.
+ *
+ *  Zero2D is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Zero2D is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "ShaderProgram.h"
 
 #include <iostream>
@@ -30,7 +47,7 @@ void ShaderProgram::attachShader(const char* inFile)
         mCreate = true;
         mHandle = glCreateProgram();
         if (!mHandle)
-            throw ShaderException("unable to create program (glCreateProgram)");
+            throw Shader::Exception("unable to create program (glCreateProgram)");
     }
 
     Shader* s = Shader::load(inFile);
@@ -62,7 +79,7 @@ void ShaderProgram::bindAndLink()
     glGetProgramiv(mHandle, GL_LINK_STATUS, &linked);
 
     if (!linked)
-        throw ShaderException("failed to link program (glLinkProgram)");
+        throw Shader::Exception("failed to link program (glLinkProgram)");
 
     use();
 
@@ -76,7 +93,7 @@ void ShaderProgram::setMatrix(const Matrix3D& inMatrix)
 
 GLuint ShaderProgram::getBinding(const string& inName)
 {
-    if (!mLink) throw ShaderException("cannot request binding before link");
+    if (!mLink) throw Shader::Exception("cannot request binding before link");
 
     map<string, GLuint>::iterator i = mBindings.find(inName);
 
@@ -84,7 +101,7 @@ GLuint ShaderProgram::getBinding(const string& inName)
     {
         string s("request for non-existent binding: ");
         s += inName;
-        throw ShaderException(s);
+        throw Shader::Exception(s);
     }
 
     return i->second;
