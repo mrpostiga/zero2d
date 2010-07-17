@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Zero2D (ubu64)" />
+		<Option title="Dejarix (ubu64)" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -50,6 +50,8 @@
 		</Linker>
 		<Unit filename="../Camera.cpp" />
 		<Unit filename="../Camera.h" />
+		<Unit filename="../CardModel.cpp" />
+		<Unit filename="../CardModel.h" />
 		<Unit filename="../Config.cpp" />
 		<Unit filename="../Config.h" />
 		<Unit filename="../Control.cpp" />

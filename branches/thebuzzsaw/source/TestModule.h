@@ -20,6 +20,8 @@
 
 #include "Module.h"
 #include "ShaderProgram.h"
+#include "CardModel.h"
+#include "MatrixStack.h"
 
 class TestModule : public Module
 {
@@ -38,7 +40,12 @@ class TestModule : public Module
     protected:
 
     private:
+        MatrixStack mModelView;
+        Matrix3D mProjection;
+        Matrix3D mMVPM;
         ShaderProgram mCardProgram;
+        CardModel mCard;
+        GLuint mTextures[2];
 };
 
 #endif

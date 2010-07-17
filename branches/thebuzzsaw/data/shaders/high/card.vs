@@ -9,6 +9,6 @@ out vec2 TextureCoordinate;
 
 void main()
 {
-    tex = TexCoord;
-    gl_Position = MVPM * vec4(CornerVertex, z, 1);
+    TextureCoordinate = CardTextureCoordinate;
+    gl_Position = MVPM * vec4(CardVertex, 1);
 }
