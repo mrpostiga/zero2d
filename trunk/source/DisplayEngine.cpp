@@ -494,8 +494,8 @@ void DisplayEngine::openGLDriverInfo(ostream& inStream)
 {
     inStream << "Vendor: " << (char*)glGetString(GL_VENDOR) << endl;
     inStream << "Renderer: " << (char*)glGetString(GL_RENDERER) << endl;
-    inStream << "OpenGL Version: " << (char*)glGetString(GL_VERSION) << endl;
-    inStream << "Shader version: " << glGetString(GL_SHADING_LANGUAGE_VERSION)
+    inStream << "OpenGL version: " << (char*)glGetString(GL_VERSION) << endl;
+    inStream << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION)
         << endl;
 
     inStream << "\n---[ EXTENSIONS ]---" << endl;

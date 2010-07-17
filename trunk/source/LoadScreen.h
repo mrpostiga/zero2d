@@ -20,8 +20,8 @@ class LoadScreen
         void update(int inPercent);
         void update(float inPercent);
 
-        void setBackgroundImage(char* inBackgroundImage);
-        void setLoadImage(char* inLoadImage);
+        void setBackgroundImage(const char* inBackgroundImage);
+        void setLoadImage(const char* inLoadImage);
         void setLoadLocation(int inX, int inY);
 
         void setup();

@@ -66,6 +66,8 @@
 		<Unit filename="../GLee.h" />
 		<Unit filename="../GameServer.cpp" />
 		<Unit filename="../GameServer.h" />
+		<Unit filename="../IndexVBO.cpp" />
+		<Unit filename="../IndexVBO.h" />
 		<Unit filename="../LoadScreen.cpp" />
 		<Unit filename="../LoadScreen.h" />
 		<Unit filename="../LogFile.cpp" />
