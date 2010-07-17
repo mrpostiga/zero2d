@@ -15,35 +15,30 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SHADERVBO_H
-#define SHADERVBO_H
+#ifndef INDEXVBO_H
+#define INDEXVBO_H
 
 #include "OGL.h"
-#include "IndexVBO.h"
 
-#include <vector>
-
-class ShaderVBO
+class IndexVBO
 {
     public:
-        ShaderVBO();
-        ~ShaderVBO();
+        IndexVBO(GLenum inDraw = GL_TRIANGLES);
+        ~IndexVBO();
 
-        struct DataArray
+        void loadData(size_t inSize, const GLuint* inData, size_t inBuffer = 0,
+            GLenum inUsage = GL_STATIC_DRAW);
+
+        inline void draw() const
         {
-            GLuint VAindex; // vertex attribute index
-            GLuint VBOindex; // vertex buffer object index
-            GLuint valuesPerVertex;
-        };
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mBuffer);
+            glDrawElements(mDraw, mSize, GL_UNSIGNED_INT, 0);
+        }
 
-        void displayLinear(GLenum inMode, GLint inFirst, GLsizei inCount);
-        void displayIndexed(const IndexVBO& inVBO);
-        void loadVAA(GLuint inVAindex, GLuint inValuesPerVertex, GLuint inSize,
-            const GLfloat* inData, GLenum inUsage = GL_STATIC_DRAW);
-
-    protected:
     private:
-        std::vector<DataArray> mData;
+        GLenum mDraw;
+        GLuint mBuffer;
+        size_t mSize;
 };
 
 #endif

@@ -122,7 +122,7 @@ void LoadScreen::setup()
 
 }
 
-void LoadScreen::setBackgroundImage(char* inBackgroundImage)
+void LoadScreen::setBackgroundImage(const char* inBackgroundImage)
 {
     glGenTextures(1, &mBackTexture);
     std::string path = "data/images/";
@@ -130,7 +130,7 @@ void LoadScreen::setBackgroundImage(char* inBackgroundImage)
     DisplayEngine::loadTexture(path.c_str(), mBackTexture);
 }
 
-void LoadScreen::setLoadImage(char* inLoadImage)
+void LoadScreen::setLoadImage(const char* inLoadImage)
 {
     glGenTextures(1, &mLoadTexture);
     std::string path = "data/images/";
