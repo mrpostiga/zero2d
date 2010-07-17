@@ -26,7 +26,7 @@ class IndexVBO
         IndexVBO(GLenum inDraw = GL_TRIANGLES);
         ~IndexVBO();
 
-        void loadData(size_t inSize, const GLuint* inData, size_t inBuffer = 0,
+        void loadData(size_t inSize, const GLuint* inData,
             GLenum inUsage = GL_STATIC_DRAW);
 
         inline void draw() const

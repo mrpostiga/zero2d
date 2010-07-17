@@ -27,8 +27,7 @@ IndexVBO::~IndexVBO()
     glDeleteBuffers(1, &mBuffer);
 }
 
-void IndexVBO::loadData(size_t inSize, const GLuint* inData, size_t inBuffer,
-    GLenum inUsage)
+void IndexVBO::loadData(size_t inSize, const GLuint* inData, GLenum inUsage)
 {
     mSize = inSize;
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mBuffer);
