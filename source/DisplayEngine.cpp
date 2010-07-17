@@ -489,8 +489,6 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
             GL_LINEAR_MIPMAP_LINEAR);
     }
 
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
     printErrors("Post-texture errors:\n", mLogFile);
 
 
