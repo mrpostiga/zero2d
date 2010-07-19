@@ -20,7 +20,8 @@
 
 #include "Module.h"
 #include "MatrixStack.h"
-#include "ShaderProgram.h"
+#include "SpriteProgram.h"
+#include "ParticleProgram.h"
 #include "Sprite.h"
 #include "Camera.h"
 #include "LoadScreen.h"
@@ -48,13 +49,10 @@ class TextureModule : public Module
         virtual void onMouseWheel(bool inUp, bool inDown);
 
     private:
-        GLuint mT;
-
         int animation[8];
         int mCounter;
         int mCurrentIndex;
 
-        GLint mFadeShader;
         float mFade;
         bool mFading;
 
@@ -62,9 +60,9 @@ class TextureModule : public Module
         Matrix3D mProjection;
         Matrix3D mMVPM;
         MatrixStack mModelView;
-        ShaderProgram mParticleProgram;
+        ParticleProgram mParticleProgram;
         ShaderVBO mParticleVBO;
-        ShaderProgram mSpriteProgram;
+        SpriteProgram mSpriteProgram;
         ShaderVBO mBackVBO;
         GLuint mBackTexture;
         Sprite* mSprite;

@@ -17,13 +17,12 @@
 
 #include "Sprite.h"
 #include "DisplayEngine.h"
+#include "SpriteProgram.h"
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
 using namespace std;
-
-ShaderProgram* Sprite::mShaderProgram = NULL;
 
 Sprite::Sprite(const char* inKey) : mKey(inKey)
 {
@@ -208,12 +207,9 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
 
     try
     {
-        if (!mShaderProgram) throw Shader::Exception("no program pointer");
-
-        mSVBO.loadVAA(mShaderProgram->getBinding("CornerVertex"), 2,
-            mFrames.size() * 8, vertices);
-        mSVBO.loadVAA(mShaderProgram->getBinding("TexCoord"), 2,
-            mFrames.size() * 8, coordinates);
+        mSVBO.loadVAA(SpriteProgram::VERTEX, 2, mFrames.size() * 8, vertices);
+        mSVBO.loadVAA(SpriteProgram::TEXTURE, 2, mFrames.size() * 8,
+            coordinates);
     }
     catch (Shader::Exception& se)
     {

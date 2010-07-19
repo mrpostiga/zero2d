@@ -17,6 +17,9 @@
 
 #include "LoadScreen.h"
 
+#include <iostream>
+using namespace std;
+
 LoadScreen::LoadScreen()
 {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -58,12 +61,6 @@ void LoadScreen::setup()
 {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-    mProgram.attachShader("sprite.vs");
-    mProgram.attachShader("sprite.fs");
-    mProgram.addVariable("CornerVertex");
-    mProgram.addVariable("TexCoord");
-    mProgram.bindAndLink();
-
     GLfloat* vertices = new GLfloat[8];
     GLfloat* texCoord = new GLfloat[8];
 
@@ -93,17 +90,10 @@ void LoadScreen::setup()
     texCoord[6] = 0.0f;
     texCoord[7] = 0.0f;
 
-    mBackVBO.loadVAA(mProgram.getBinding("CornerVertex"), 2, 4,
-        vertices);
-    mBackVBO.loadVAA(mProgram.getBinding("TexCoord"), 2, 4,
-        texCoord);
+    mBackVBO.loadVAA(SpriteProgram::VERTEX, 2, 4, vertices);
+    mBackVBO.loadVAA(SpriteProgram::TEXTURE, 2, 4, texCoord);
 
-    GLint texLoc = mProgram.getUniformLocation("Texture");
-    glUniform1i(texLoc, 0);
-
-    GLint z = mProgram.getUniformLocation("z");
-    glUniform1f(z, 0.0f);
-
+    mProgram.setZ(0.0f);
     mProgram.setMatrix(mProjection);
 
 
@@ -126,16 +116,13 @@ void LoadScreen::setup()
     texCoord[6] = 0.0f;
     texCoord[7] = 0.0f;
 
-    mLoadingBarVBO.loadVAA(mProgram.getBinding("CornerVertex"), 2, 4,
-        vertices);
-    mLoadingBarVBO.loadVAA(mProgram.getBinding("TexCoord"), 2, 4,
-        texCoord);
+    mLoadingBarVBO.loadVAA(SpriteProgram::VERTEX, 2, 4, vertices);
+    mLoadingBarVBO.loadVAA(SpriteProgram::TEXTURE, 2, 4, texCoord);
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    GLint fade = mProgram.getUniformLocation("fade");
-    glUniform1f(fade, 1.0);
+    mProgram.setFade(1.0f);
 
 }
 
