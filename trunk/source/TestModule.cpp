@@ -33,7 +33,6 @@ TestModule::~TestModule()
 
 void TestModule::onLoad()
 {
-    mPort = 40000;
     mTimer = 0;
     mNet.listen(Config::get<Uint16>("connect port", 45678));
     mNet.connect(Config::getRaw("connect ip"),

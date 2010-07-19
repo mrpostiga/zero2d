@@ -40,8 +40,6 @@ class TestModule : public Module
     private:
         Uint32 mTimer;
         NetworkStream mNet;
-
-        Uint16 mPort;
 };
 
 #endif

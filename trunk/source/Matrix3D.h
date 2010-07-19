@@ -49,6 +49,8 @@ class Matrix3D
         /// matrix operators
         Matrix3D& operator=(const Matrix3D& inMatrix);
         void multiply(const Matrix3D& inMatrix);
+        void inverse(Matrix3D& inMatrix);
+        Matrix3D inverse();
 
         inline float* array() { return mData; }
         inline const float* array() const { return mData; }
@@ -57,12 +59,12 @@ class Matrix3D
 
         inline float& operator()(size_t inRow, size_t inCol)
         {
-            return mData[inRow * 4 + inCol];
+            return mData[inCol * 4 + inRow];
         }
 
         inline float operator()(size_t inRow, size_t inCol) const
         {
-            return mData[inRow * 4 + inCol];
+            return mData[inCol * 4 + inRow];
         }
 
         inline bool operator==(const Matrix3D& inMatrix) const
@@ -92,6 +94,16 @@ class Matrix3D
             memcpy(mData, inMatrix.mData, 16 * sizeof(float));
         }
 
+        inline float& at(size_t inRow, size_t inCol)
+        {
+            return mData[inCol * 4 + inRow];
+        }
+
+        inline float at(size_t inRow, size_t inCol) const
+        {
+            return mData[inCol * 4 + inRow];
+        }
+
         float mData[16];
 
         static const float mIdentity[16];
@@ -100,4 +112,3 @@ class Matrix3D
 std::ostream& operator<<(std::ostream& inStream, const Matrix3D& inMatrix);
 
 #endif
-
