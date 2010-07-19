@@ -21,14 +21,35 @@
 #include "TestModule.h"
 #include "TextureModule.h"
 
+#include <iostream>
+using namespace std;
+
 int main(int argc, char** argv)
 {
     Config::initialize(argc, argv);
     DisplayEngine::initialize();
     //SoundEngine::initialize();
     //Config::outputSettings();
-    //DisplayEngine::start(new TestModule);
-    DisplayEngine::start(new TextureModule);
+
+    Module* m;
+
+    try
+    {
+        m = new TextureModule;
+        //m = new TestModule;
+    }
+    catch (const Shader::Exception& se)
+    {
+        cerr << "shader exception -- " << se.reason << endl;
+        m = NULL;
+    }
+    catch (...)
+    {
+        cerr << "unknown exception" << endl;
+        m = NULL;
+    }
+
+    if (m) DisplayEngine::start(m);
     //SoundEngine::cleanup();
     Config::finalize();
     return 0;
