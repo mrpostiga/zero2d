@@ -15,38 +15,35 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SHADERPROGRAM_H
-#define SHADERPROGRAM_H
+#ifndef PARTICLEPROGRAM_H
+#define PARTICLEPROGRAM_H
 
-#include "Shader.h"
-#include "ShaderVBO.h"
-#include "Matrix3D.h"
+#include "ShaderProgram.h"
 
-#include <map>
-
-class ShaderProgram
+class ParticleProgram : public ShaderProgram
 {
     public:
-        ShaderProgram(size_t inCapacity = 2);
-        virtual ~ShaderProgram();
+        ParticleProgram();
+        virtual ~ParticleProgram();
 
-        void setMatrix(const Matrix3D& inMatrix);
-        inline void use() { glUseProgram(mHandle); }
+        enum Bindings
+        {
+            VERTEX = 0,
+            COLOR = 1,
+            VELOCITY = 2,
+            START_TIME = 3
+        };
+
+        inline void setTime(float inTime)
+        {
+            glUniform1f(mUniformTime, inTime);
+        }
 
     protected:
-        void attachShader(const char* inFile);
-        void linkAndBind();
-        virtual void bindUniforms() = 0;
-
-        inline GLuint handle() { return mHandle; }
+        virtual void bindUniforms();
 
     private:
-        GLuint mHandle;
-        Shader** mShaders;
-        size_t mCapacity;
-        size_t mSize;
-        GLint mUniformMatrix;
-        bool mLink;
+        GLint mUniformTime;
 };
 
 #endif

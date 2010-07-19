@@ -19,14 +19,11 @@
 #define LOADSCREEN_H
 
 #include "DisplayEngine.h"
-#include "ShaderProgram.h"
+#include "SpriteProgram.h"
 #include "Matrix3D.h"
 
 #include <cmath>
 #include <string>
-
-#include <iostream>
-using namespace std;
 
 class LoadScreen
 {
@@ -58,8 +55,8 @@ class LoadScreen
         GLuint mLoadTexture;
 
         ShaderVBO mLoadingBarVBO;
-        ShaderProgram mProgram;
+        SpriteProgram mProgram;
         ShaderVBO mBackVBO;
 };
 
-#endif // LOADSCREEN_H
+#endif

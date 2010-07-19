@@ -53,11 +53,6 @@ void TextureModule::onLoad()
         mBackTexture);
     mLoadScreen.update(50);
 
-    mParticleProgram.attachShader("test2-particles.vs");
-    mLoadScreen.update(60);
-    mParticleProgram.attachShader("test2-particles.fs");
-    mLoadScreen.update(70);
-
     GLfloat* vertices = new GLfloat[NUM_PARTICLES * 3];
     GLfloat* colors = new GLfloat[NUM_PARTICLES * 3];
     GLfloat* velocities = new GLfloat[NUM_PARTICLES * 3];
@@ -85,30 +80,16 @@ void TextureModule::onLoad()
     }
     mLoadScreen.update(77);
 
-
-    mParticleProgram.addVariable("MCVertex");
-    mParticleProgram.addVariable("MColor");
-    mParticleProgram.addVariable("Velocity");
-    mParticleProgram.addVariable("StartTime");
-    mParticleProgram.bindAndLink();
     mLoadScreen.update(80);
 
-    mParticleVBO.loadVAA(mParticleProgram.getBinding("MCVertex"), 3,
-        NUM_PARTICLES, vertices);
-    mParticleVBO.loadVAA(mParticleProgram.getBinding("MColor"), 3,
-        NUM_PARTICLES, colors);
-    mParticleVBO.loadVAA(mParticleProgram.getBinding("Velocity"), 3,
-        NUM_PARTICLES, velocities);
-    mParticleVBO.loadVAA(mParticleProgram.getBinding("StartTime"), 1,
-        NUM_PARTICLES, startTimes);
-    mLoadScreen.update(82);
+    mParticleVBO.loadVAA(ParticleProgram::VERTEX, 3, NUM_PARTICLES, vertices);
+    mParticleVBO.loadVAA(ParticleProgram::COLOR, 3, NUM_PARTICLES, colors);
+    mParticleVBO.loadVAA(ParticleProgram::VELOCITY, 3, NUM_PARTICLES,
+        velocities);
+    mParticleVBO.loadVAA(ParticleProgram::START_TIME, 1, NUM_PARTICLES,
+        startTimes);
 
-    mSpriteProgram.attachShader("sprite.vs");
-    mSpriteProgram.attachShader("sprite.fs");
-    mSpriteProgram.addVariable("CornerVertex");
-    mSpriteProgram.addVariable("TexCoord");
-    mSpriteProgram.bindAndLink();
-    mLoadScreen.update(85);
+    mLoadScreen.update(82);
 
     vertices[0] = 1024.0f;
     vertices[1] = 1024.0f;
@@ -128,10 +109,8 @@ void TextureModule::onLoad()
     colors[6] = 0.0f;
     colors[7] = 0.0f;
 
-    mBackVBO.loadVAA(mSpriteProgram.getBinding("CornerVertex"), 2, 4,
-        vertices);
-    mBackVBO.loadVAA(mSpriteProgram.getBinding("TexCoord"), 2, 4,
-        colors);
+    mBackVBO.loadVAA(SpriteProgram::VERTEX, 2, 4, vertices);
+    mBackVBO.loadVAA(SpriteProgram::TEXTURE, 2, 4, colors);
     mLoadScreen.update(87);
 
     delete [] vertices;
@@ -139,25 +118,17 @@ void TextureModule::onLoad()
     delete [] velocities;
     delete [] startTimes;
 
-    Sprite::setProgram(&mSpriteProgram);
     mSprite = new Sprite("pimple");
     mLoadScreen.update(90);
 
-    GLint texLoc = mSpriteProgram.getUniformLocation("Texture");
-    glUniform1i(texLoc, 0);
-
-    GLint z = mSpriteProgram.getUniformLocation("z");
-    glUniform1f(z, 0.0f);
-
-    mFadeShader = mSpriteProgram.getUniformLocation("fade");
     mFade = 1.0f;
     mFading = false;
 
-    mT = mParticleProgram.getUniformLocation("Time");
     mTickStart = SDL_GetTicks();
     glPointSize(1.0f);
 
     mSpriteProgram.use();
+    mSpriteProgram.setFade(1.0f);
     mLoadScreen.update(92);
 
     float ratio = DisplayEngine::getAspectRatio();
@@ -177,8 +148,6 @@ void TextureModule::onLoad()
     mCurrentIndex = 0;
     mRotation = 0;
     mLoadScreen.update(95);
-
-    glUniform1f(mFadeShader, mFade);
     mLoadScreen.update(100);
 }
 
@@ -187,7 +156,6 @@ void TextureModule::onOpen()
     glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glUniform1f(mFadeShader, 1.0);
     mModelView.reset();
 }
 
@@ -221,7 +189,7 @@ void TextureModule::onFrame()
 {
     mCamera.update();
     mParticleProgram.use();
-    glUniform1f(mT, float(SDL_GetTicks() - mTickStart) * 0.0006f);
+    mParticleProgram.setTime(float(SDL_GetTicks() - mTickStart) * 0.0006f);
 
     if (mCounter >= 4)
     {
@@ -244,7 +212,7 @@ void TextureModule::onFrame()
     }
 
     mSpriteProgram.use();
-    glUniform1f(mFadeShader, mFade);
+    mSpriteProgram.setFade(mFade);
 
     //mRotation += 1.0f;
     //if (mRotation > 180.0f) mRotation -= 360.0f;

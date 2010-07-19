@@ -18,8 +18,8 @@
 #ifndef SPRITE_H
 #define SPRITE_H
 
-#include "ShaderProgram.h"
 #include "Vector2D.h"
+#include "ShaderVBO.h"
 
 #include <string>
 #include <vector>
@@ -58,14 +58,7 @@ class Sprite
 
         void draw(size_t inIndex, bool inFacingRight);
 
-        static inline void setProgram(ShaderProgram* inProgram)
-        {
-            mShaderProgram = inProgram;
-        }
-
     private:
-        static ShaderProgram* mShaderProgram;
-
         ShaderVBO mSVBO;
         const std::string mKey;
         std::string mName;
