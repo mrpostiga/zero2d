@@ -66,6 +66,8 @@
 		<Unit filename="../GLee.h" />
 		<Unit filename="../GameServer.cpp" />
 		<Unit filename="../GameServer.h" />
+		<Unit filename="../LoadScreen.cpp" />
+		<Unit filename="../LoadScreen.h" />
 		<Unit filename="../LogFile.cpp" />
 		<Unit filename="../LogFile.h" />
 		<Unit filename="../LuaMachine.cpp" />
@@ -82,6 +84,8 @@
 		<Unit filename="../NetworkStream.cpp" />
 		<Unit filename="../NetworkStream.h" />
 		<Unit filename="../OGL.h" />
+		<Unit filename="../ParticleProgram.cpp" />
+		<Unit filename="../ParticleProgram.h" />
 		<Unit filename="../Shader.cpp" />
 		<Unit filename="../Shader.h" />
 		<Unit filename="../ShaderProgram.cpp" />
@@ -92,6 +96,8 @@
 		<Unit filename="../SoundEngine.h" />
 		<Unit filename="../Sprite.cpp" />
 		<Unit filename="../Sprite.h" />
+		<Unit filename="../SpriteProgram.cpp" />
+		<Unit filename="../SpriteProgram.h" />
 		<Unit filename="../TestModule.cpp" />
 		<Unit filename="../TestModule.h" />
 		<Unit filename="../TextureModule.cpp" />
