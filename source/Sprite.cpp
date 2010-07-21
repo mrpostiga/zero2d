@@ -86,7 +86,7 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
 
     size_t numStates;
     fin >> numStates >> c;
-    mStates.resize(numStates);
+    mStateTree.resize(numStates);
     size_t currentState = 0;
     size_t currentSize = 0;
     size_t currentDuration = 0;
@@ -99,7 +99,8 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
             case 's':
             {
                 fin >> currentState >> currentSize;
-                mStates[currentState].animation = new SubState[currentSize];
+                mStateTree[currentState] = new State(currentSize);
+                //mStates[currentState].animation = new SubState[currentSize];
                 currentAnimation = 0;
                 break;
             }
@@ -112,10 +113,12 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
 
             case 'f':
             {
-                SubState ss;
-                ss.duration = currentDuration;
-                fin >> ss.frame;
-                mStates[currentState].animation[currentAnimation] = ss;
+                //SubState ss;
+                //ss.duration = currentDuration;
+                size_t frame;
+                fin >> frame;
+                mStateTree[currentState]->setFrame(currentAnimation, frame, currentDuration);
+                //mStates[currentState].animation[currentAnimation] = ss;
                 ++currentAnimation;
                 break;
             }
@@ -233,9 +236,9 @@ Sprite::~Sprite()
         glDeleteTextures(1, &mSheets[i].texture);
     }
 
-    for (size_t i = 0; i < mStates.size(); ++i)
+    for (size_t i = 0; i < mStateTree.size(); ++i)
     {
-        delete [] mStates[i].animation;
+        delete mStateTree[i];
     }
 }
 

@@ -29,17 +29,17 @@ SpriteInstance::~SpriteInstance()
 void SpriteInstance::update()
 {
     ++mCurrentDuration;
-    const Sprite::State& s = mSprite->getState(mCurrentState);
-    if (mCurrentDuration > s.animation[mCurrentFrame].duration)
+    State* s = mSprite->getState(mCurrentState);
+    if (mCurrentDuration > s->getFrame(mCurrentFrame).duration)
     {
         mCurrentDuration = 0;
         ++mCurrentFrame;
-        if (mCurrentFrame >= s.size) mCurrentFrame = 0;
+        if (mCurrentFrame >= s->getNumFrames()) mCurrentFrame = 0;
     }
 }
 
 void SpriteInstance::display()
 {
-    const Sprite::State& s = mSprite->getState(mCurrentState);
-    mSprite->draw(s.animation[mCurrentFrame].frame, mFacingRight);
+    State* s = mSprite->getState(mCurrentState);
+    mSprite->draw(s->getFrame(mCurrentFrame).frameIndex, mFacingRight);
 }
