@@ -78,7 +78,6 @@ void TextureModule::onLoad()
 
         startTimes[i] = RV() * 1.0f;
     }
-    mLoadScreen.update(77);
 
     mLoadScreen.update(80);
 
@@ -147,7 +146,6 @@ void TextureModule::onLoad()
     mCounter = 0;
     mCurrentIndex = 0;
     mRotation = 0;
-    mLoadScreen.update(95);
     mLoadScreen.update(100);
 }
 
