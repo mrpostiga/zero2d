@@ -20,6 +20,7 @@
 
 #include "Vector2D.h"
 #include "ShaderVBO.h"
+#include "State.h"
 
 #include <string>
 #include <vector>
@@ -44,19 +45,8 @@ class Sprite
             Pixel size;
         };
 
-        struct SubState
-        {
-            size_t frame;
-            unsigned int duration;
-        };
 
-        struct State
-        {
-            size_t size;
-            SubState* animation;
-        };
-
-        const State& getState(size_t inIndex) { return mStates[inIndex]; }
+        State* getState(size_t inIndex) { return mStateTree[inIndex]; }
 
         void draw(size_t inIndex, bool inFacingRight);
 
@@ -67,7 +57,7 @@ class Sprite
 
         std::vector<Frame> mFrames;
         std::vector<Sheet> mSheets;
-        std::vector<State> mStates;
+        std::vector<State*> mStateTree;
 };
 
 #endif
