@@ -43,3 +43,10 @@ void SpriteInstance::display()
     State* s = mSprite->getState(mCurrentState);
     mSprite->draw(s->getFrame(mCurrentFrame).frameIndex, mFacingRight);
 }
+
+void SpriteInstance::changeState(size_t inNewState)
+{
+    mCurrentFrame = 0;
+    mCurrentDuration = 0;
+    mCurrentState = inNewState;
+}

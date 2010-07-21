@@ -28,6 +28,7 @@ class SpriteInstance
 
         void update();
         void display();
+        void changeState(size_t inNewState);
 
     protected:
     private:
