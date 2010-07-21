@@ -230,9 +230,34 @@ void TextureModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
             break;
         }
 
+        case SDLK_PAGEDOWN:
+        {
+            mSpriteInstance->changeState(1);
+            break;
+        }
+
+
         default:
         {
             break;
         }
     }
 }
+
+void TextureModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+{
+    switch (inSym)
+    {
+        case SDLK_PAGEDOWN:
+        {
+            mSpriteInstance->changeState(0);
+            break;
+        }
+
+        default:
+        {
+            break;
+        }
+    }
+}
+
