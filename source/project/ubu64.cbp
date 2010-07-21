@@ -98,6 +98,8 @@
 		<Unit filename="../SoundEngine.h" />
 		<Unit filename="../Sprite.cpp" />
 		<Unit filename="../Sprite.h" />
+		<Unit filename="../SpriteInstance.cpp" />
+		<Unit filename="../SpriteInstance.h" />
 		<Unit filename="../SpriteProgram.cpp" />
 		<Unit filename="../SpriteProgram.h" />
 		<Unit filename="../TestModule.cpp" />

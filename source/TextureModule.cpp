@@ -49,8 +49,7 @@ void TextureModule::onLoad()
 
     //glActiveTexture(GL_TEXTURE0);
     glGenTextures(1, &mBackTexture);
-    DisplayEngine::loadTexture("data/images/dragon.png",
-        mBackTexture);
+    DisplayEngine::loadTexture("data/images/dragon.png", mBackTexture);
     mLoadScreen.update(50);
 
     GLfloat* vertices = new GLfloat[NUM_PARTICLES * 3];
@@ -117,7 +116,7 @@ void TextureModule::onLoad()
     delete [] velocities;
     delete [] startTimes;
 
-    mSprite = new Sprite("pimple");
+    mSpriteInstance = new SpriteInstance(new Sprite("pimple"));
     mLoadScreen.update(90);
 
     mFade = 1.0f;
@@ -135,16 +134,6 @@ void TextureModule::onLoad()
     //mProjection.perspective(30.0f, ratio, 1.0f, 100.0f);
     //mModelView.matrix().translate(0.0f, 0.0f, -5.0f);
 
-    animation[0] = 2;
-    animation[1] = 3;
-    animation[2] = 4;
-    animation[3] = 3;
-    animation[4] = 5;
-    animation[5] = 6;
-    animation[6] = 7;
-    animation[7] = 6;
-    mCounter = 0;
-    mCurrentIndex = 0;
     mRotation = 0;
     mLoadScreen.update(100);
 }
@@ -172,7 +161,7 @@ void TextureModule::onLoop()
     //glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, mBackTexture);
     mBackVBO.displayLinear(GL_QUADS, 0, 4);
-    mSprite->draw(animation[mCurrentIndex], true);
+    mSpriteInstance->display();
 
     mParticleProgram.use();
     mModelView.matrix().scale(60.0f);
@@ -186,18 +175,9 @@ void TextureModule::onLoop()
 void TextureModule::onFrame()
 {
     mCamera.update();
+    mSpriteInstance->update();
     mParticleProgram.use();
     mParticleProgram.setTime(float(SDL_GetTicks() - mTickStart) * 0.0006f);
-
-    if (mCounter >= 4)
-    {
-        mCounter = 0;
-        mCurrentIndex = (mCurrentIndex + 1) % 8;
-    }
-    else
-    {
-        ++mCounter;
-    }
 
     if (mFading)
     {
@@ -224,7 +204,7 @@ void TextureModule::onClose()
 
 void TextureModule::onUnload()
 {
-    delete mSprite;
+    delete mSpriteInstance;
     glDeleteTextures(1, &mBackTexture);
 }
 

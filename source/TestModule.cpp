@@ -56,7 +56,7 @@ void TestModule::onLoop()
     Uint8 buffer[PACKET_SIZE];
     if (mNet.receiveData(buffer))
     {
-        Uint16 somePort = mNet.getPacket()->address.port;
+        //Uint16 somePort = mNet.getPacket()->address.port;
         //SDL_Swap16(somePort);
         /*
         if (somePort != mPort)
