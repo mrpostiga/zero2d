@@ -20,9 +20,9 @@
 
 #include "Module.h"
 #include "MatrixStack.h"
+#include "SpriteInstance.h"
 #include "SpriteProgram.h"
 #include "ParticleProgram.h"
-#include "Sprite.h"
 #include "Camera.h"
 #include "LoadScreen.h"
 
@@ -65,7 +65,7 @@ class TextureModule : public Module
         SpriteProgram mSpriteProgram;
         ShaderVBO mBackVBO;
         GLuint mBackTexture;
-        Sprite* mSprite;
+        SpriteInstance* mSpriteInstance;
         Uint32 mTickStart;
         Camera mCamera;
 

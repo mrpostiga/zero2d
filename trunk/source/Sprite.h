@@ -56,6 +56,8 @@ class Sprite
             SubState* animation;
         };
 
+        const State& getState(size_t inIndex) { return mStates[inIndex]; }
+
         void draw(size_t inIndex, bool inFacingRight);
 
     private:
