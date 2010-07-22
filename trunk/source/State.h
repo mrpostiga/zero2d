@@ -3,6 +3,8 @@
 
 #include <cstdlib>
 
+#define NUM_STATES 12
+
 /*********************************
 *   Maintains mappings from this state to other states
 *   according to what events happen from this state
@@ -34,7 +36,7 @@ class State
 
     protected:
     private:
-        State* mEventMappings[12];
+        State* mEventMappings[NUM_STATES];
         size_t mSize;
         FrameRate* mAnimation;
 
