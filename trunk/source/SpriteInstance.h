@@ -30,6 +30,7 @@ class SpriteInstance
         void display();
         void changeState(size_t inNewState);
 
+        void faceRight(bool inRight);
         void onEvent(State::Event inEvent);
 
     protected:
@@ -38,7 +39,6 @@ class SpriteInstance
         bool mFacingRight;
         size_t mCurrentFrame;
         size_t mCurrentDuration;
-        //size_t mCurrentState;
         State* mCurrentState;
 };
 

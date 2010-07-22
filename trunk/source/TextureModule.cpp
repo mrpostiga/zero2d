@@ -242,6 +242,20 @@ void TextureModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
             break;
         }
 
+        case SDLK_LEFT:
+        {
+            mSpriteInstance->faceRight(false);
+            mSpriteInstance->onEvent(State::TILT_FORWARD);
+            break;
+        }
+
+        case SDLK_RIGHT:
+        {
+            mSpriteInstance->faceRight(true);
+            mSpriteInstance->onEvent(State::TILT_FORWARD);
+            break;
+        }
+
 
         default:
         {
@@ -261,6 +275,18 @@ void TextureModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         }
 
         case SDLK_PAGEUP:
+        {
+            mSpriteInstance->onEvent(State::ON_END);
+            break;
+        }
+
+        case SDLK_LEFT:
+        {
+            mSpriteInstance->onEvent(State::ON_END);
+            break;
+        }
+
+        case SDLK_RIGHT:
         {
             mSpriteInstance->onEvent(State::ON_END);
             break;

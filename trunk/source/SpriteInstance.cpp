@@ -29,7 +29,6 @@ SpriteInstance::~SpriteInstance()
 void SpriteInstance::update()
 {
     ++mCurrentDuration;
-    //State* s = mSprite->getState(mCurrentState);
     if (mCurrentDuration > mCurrentState->getFrame(mCurrentFrame).duration)
     {
         mCurrentDuration = 0;
@@ -40,7 +39,6 @@ void SpriteInstance::update()
 
 void SpriteInstance::display()
 {
-    //State* s = mSprite->getState(mCurrentState);
     mSprite->draw(mCurrentState->getFrame(mCurrentFrame).frameIndex, mFacingRight);
 }
 
@@ -48,7 +46,6 @@ void SpriteInstance::changeState(size_t inNewState)
 {
     mCurrentFrame = 0;
     mCurrentDuration = 0;
-    //mCurrentState = inNewState;
     mCurrentState = mSprite->getState(inNewState);
 }
 
@@ -62,4 +59,9 @@ void SpriteInstance::onEvent(State::Event inEvent)
         mCurrentDuration = 0;
         mCurrentState = newState;
     }
+}
+
+void SpriteInstance::faceRight(bool inRight)
+{
+    mFacingRight = inRight;
 }
