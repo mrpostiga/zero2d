@@ -46,7 +46,7 @@ void TextureModule::onLoad()
 
     mLoadScreen.update(0);
 
-    mLuaMachine.addFunction("z2d.Test", luaTest);
+    mLuaMachine.addFunction("z2dTest", luaTest);
     mLuaMachine.loadFile("data/scripts/test.lua");
 
     //glActiveTexture(GL_TEXTURE0);
