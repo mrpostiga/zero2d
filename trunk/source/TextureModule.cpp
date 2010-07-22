@@ -259,7 +259,6 @@ void TextureModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
             break;
         }
 
-
         default:
         {
             break;
@@ -271,24 +270,9 @@ void TextureModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     switch (inSym)
     {
-        case SDLK_PAGEDOWN:
-        {
-            mSpriteInstance->onEvent(State::ON_END);
-            break;
-        }
-
         case SDLK_PAGEUP:
-        {
-            mSpriteInstance->onEvent(State::ON_END);
-            break;
-        }
-
+        case SDLK_PAGEDOWN:
         case SDLK_LEFT:
-        {
-            mSpriteInstance->onEvent(State::ON_END);
-            break;
-        }
-
         case SDLK_RIGHT:
         {
             mSpriteInstance->onEvent(State::ON_END);
@@ -309,8 +293,11 @@ int TextureModule::luaTest(LuaState inState)
 
     if (argc)
     {
-        const char* s = lua_tostring(inState, 1);
-        cout << "Lua input: " << s << endl;
+        for (int i = 0; i < argc; ++i)
+        {
+            const char* s = lua_tostring(inState, i + 1);
+            cout << "Lua function parameter: " << s << endl;
+        }
     }
 
     return 0;
