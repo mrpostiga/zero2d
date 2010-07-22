@@ -60,6 +60,8 @@ class Sprite
         std::vector<Frame> mFrames;
         std::vector<Sheet> mSheets;
         std::vector<State*> mStateTree;
+
+        void setupStateTree();
 };
 
 #endif
