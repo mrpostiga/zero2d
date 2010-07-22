@@ -37,7 +37,6 @@ TextureModule::~TextureModule()
 {
 }
 
-
 void TextureModule::onLoad()
 {
     mLoadScreen.setBackgroundImage("dragon.png");
@@ -46,6 +45,9 @@ void TextureModule::onLoad()
     mLoadScreen.setup();
 
     mLoadScreen.update(0);
+
+    mLuaMachine.addFunction("z2d.Test", luaTest);
+    mLuaMachine.loadFile("data/scripts/test.lua");
 
     //glActiveTexture(GL_TEXTURE0);
     glGenTextures(1, &mBackTexture);
@@ -299,3 +301,16 @@ void TextureModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
     }
 }
 
+/// Lua interfacing
+int TextureModule::luaTest(LuaState inState)
+{
+    int argc = lua_gettop(inState);
+
+    if (argc)
+    {
+        const char* s = lua_tostring(inState, 1);
+        cout << "Lua input: " << s << endl;
+    }
+
+    return 0;
+}

@@ -25,6 +25,8 @@
 #include <iostream>
 #include <string>
 
+typedef lua_State* LuaState;
+
 class LuaMachine
 {
     public:
@@ -45,7 +47,7 @@ class LuaMachine
 
         static LogFile mLogFile;
 
-        lua_State* mLuaState;
+        LuaState mLuaState;
         int mStatus;
         std::string mError;
 };
