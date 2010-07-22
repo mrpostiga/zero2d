@@ -35,13 +35,11 @@ LuaMachine::~LuaMachine()
 
 void LuaMachine::reportErrors()
 {
-    if (mStatus)
-    {
-        mError = "-- ";
-        mError += lua_tostring(mLuaState, -1);
-        mLogFile.addLine(mError);
-        lua_pop(mLuaState, 1); // remove error message
-    }
+    // should only be called if mStatus != 0
+    mError = "-- ";
+    mError += lua_tostring(mLuaState, -1);
+    mLogFile.addLine(mError);
+    lua_pop(mLuaState, 1); // remove error message
 }
 
 void LuaMachine::execute()

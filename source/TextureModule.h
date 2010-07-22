@@ -25,6 +25,7 @@
 #include "ParticleProgram.h"
 #include "Camera.h"
 #include "LoadScreen.h"
+#include "LuaMachine.h"
 
 #include "OGL.h"
 
@@ -69,8 +70,12 @@ class TextureModule : public Module
         SpriteInstance* mSpriteInstance;
         Uint32 mTickStart;
         Camera mCamera;
+        LuaMachine mLuaMachine;
 
         LoadScreen mLoadScreen;
+
+        /// Lua interfacing
+        static int luaTest(LuaState inState);
 };
 
 #endif
