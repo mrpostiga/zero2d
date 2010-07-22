@@ -33,7 +33,7 @@ class LuaMachine
         LuaMachine();
         virtual ~LuaMachine();
 
-        void loadFile(const char* inFile);
+        void runFile(const char* inFile);
         void runCommand(const char* inCommand);
 
         inline void addFunction(const char* inName, lua_CFunction inFunction)

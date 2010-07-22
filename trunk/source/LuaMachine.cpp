@@ -48,7 +48,7 @@ void LuaMachine::execute()
     if (mStatus) reportErrors();
 }
 
-void LuaMachine::loadFile(const char* inFile)
+void LuaMachine::runFile(const char* inFile)
 {
     mStatus = luaL_loadfile(mLuaState, inFile);
     if (mStatus)
