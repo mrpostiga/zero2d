@@ -31,9 +31,6 @@
 				</Linker>
 			</Target>
 		</Build>
-		<Compiler>
-			<Add option="-Wall" />
-		</Compiler>
 		<Linker>
 			<Add library="mingw32" />
 			<Add library="SDLmain" />
@@ -60,6 +57,8 @@
 		<Unit filename="..\Entity.h" />
 		<Unit filename="..\EntityGarbageCollector.cpp" />
 		<Unit filename="..\EntityGarbageCollector.h" />
+		<Unit filename="..\Fighter.cpp" />
+		<Unit filename="..\Fighter.h" />
 		<Unit filename="..\GLee.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -99,8 +98,12 @@
 		<Unit filename="..\SoundEngine.h" />
 		<Unit filename="..\Sprite.cpp" />
 		<Unit filename="..\Sprite.h" />
+		<Unit filename="..\SpriteInstance.cpp" />
+		<Unit filename="..\SpriteInstance.h" />
 		<Unit filename="..\SpriteProgram.cpp" />
 		<Unit filename="..\SpriteProgram.h" />
+		<Unit filename="..\State.cpp" />
+		<Unit filename="..\State.h" />
 		<Unit filename="..\TestModule.cpp" />
 		<Unit filename="..\TestModule.h" />
 		<Unit filename="..\TextureModule.cpp" />

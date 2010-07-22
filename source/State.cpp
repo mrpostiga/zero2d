@@ -7,6 +7,11 @@ State::State(size_t inNumFrames)
 {
     mAnimation = new FrameRate[inNumFrames];
     mSize = inNumFrames;
+
+    for (int i = 0; i < NUM_STATES; ++i)
+    {
+        mEventMappings[i] = NULL;
+    }
 }
 
 State::~State()

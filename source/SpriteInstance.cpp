@@ -18,7 +18,7 @@
 #include "SpriteInstance.h"
 
 SpriteInstance::SpriteInstance(Sprite* inSprite) : mSprite(inSprite),
-    mFacingRight(false), mCurrentFrame(0), mCurrentDuration(0), mCurrentState(0)
+    mFacingRight(false), mCurrentFrame(0), mCurrentDuration(0), mCurrentState(mSprite->getState(Sprite::STAND))
 {
 }
 
@@ -29,24 +29,37 @@ SpriteInstance::~SpriteInstance()
 void SpriteInstance::update()
 {
     ++mCurrentDuration;
-    State* s = mSprite->getState(mCurrentState);
-    if (mCurrentDuration > s->getFrame(mCurrentFrame).duration)
+    //State* s = mSprite->getState(mCurrentState);
+    if (mCurrentDuration > mCurrentState->getFrame(mCurrentFrame).duration)
     {
         mCurrentDuration = 0;
         ++mCurrentFrame;
-        if (mCurrentFrame >= s->getNumFrames()) mCurrentFrame = 0;
+        if (mCurrentFrame >= mCurrentState->getNumFrames()) mCurrentFrame = 0;
     }
 }
 
 void SpriteInstance::display()
 {
-    State* s = mSprite->getState(mCurrentState);
-    mSprite->draw(s->getFrame(mCurrentFrame).frameIndex, mFacingRight);
+    //State* s = mSprite->getState(mCurrentState);
+    mSprite->draw(mCurrentState->getFrame(mCurrentFrame).frameIndex, mFacingRight);
 }
 
 void SpriteInstance::changeState(size_t inNewState)
 {
     mCurrentFrame = 0;
     mCurrentDuration = 0;
-    mCurrentState = inNewState;
+    //mCurrentState = inNewState;
+    mCurrentState = mSprite->getState(inNewState);
+}
+
+void SpriteInstance::onEvent(State::Event inEvent)
+{
+    State* newState = mCurrentState->onEvent(inEvent);
+
+    if (newState != NULL)
+    {
+        mCurrentFrame = 0;
+        mCurrentDuration = 0;
+        mCurrentState = newState;
+    }
 }

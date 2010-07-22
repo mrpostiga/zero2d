@@ -100,7 +100,6 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
             {
                 fin >> currentState >> currentSize;
                 mStateTree[currentState] = new State(currentSize);
-                //mStates[currentState].animation = new SubState[currentSize];
                 currentAnimation = 0;
                 break;
             }
@@ -118,7 +117,6 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
                 size_t frame;
                 fin >> frame;
                 mStateTree[currentState]->setFrame(currentAnimation, frame, currentDuration);
-                //mStates[currentState].animation[currentAnimation] = ss;
                 ++currentAnimation;
                 break;
             }
@@ -227,6 +225,10 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
 
     delete [] coordinates;
     delete [] vertices;
+
+    //now build the state tree
+    mStateTree[0]->setStateMapping(State::TILT_FORWARD, mStateTree[1]);
+    mStateTree[1]->setStateMapping(State::ON_END, mStateTree[0]);
 }
 
 Sprite::~Sprite()
@@ -242,6 +244,10 @@ Sprite::~Sprite()
     }
 }
 
+/*************************************
+*   Draw the passed in frame
+*
+**************************************/
 void Sprite::draw(size_t inIndex, bool inFacingRight)
 {
     glActiveTexture(GL_TEXTURE0);

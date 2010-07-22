@@ -232,7 +232,13 @@ void TextureModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         case SDLK_PAGEDOWN:
         {
-            mSpriteInstance->changeState(1);
+            mSpriteInstance->onEvent(State::TILT_FORWARD);
+            break;
+        }
+
+        case SDLK_PAGEUP:
+        {
+            mSpriteInstance->onEvent(State::ATTACK);
             break;
         }
 
@@ -250,7 +256,13 @@ void TextureModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
     {
         case SDLK_PAGEDOWN:
         {
-            mSpriteInstance->changeState(0);
+            mSpriteInstance->onEvent(State::ON_END);
+            break;
+        }
+
+        case SDLK_PAGEUP:
+        {
+            mSpriteInstance->onEvent(State::ON_END);
             break;
         }
 
