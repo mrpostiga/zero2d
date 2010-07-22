@@ -227,8 +227,13 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
     delete [] vertices;
 
     //now build the state tree
-    mStateTree[0]->setStateMapping(State::TILT_FORWARD, mStateTree[1]);
-    mStateTree[1]->setStateMapping(State::ON_END, mStateTree[0]);
+    setupStateTree();
+}
+
+void Sprite::setupStateTree()
+{
+    mStateTree[0]->setStateMapping(State::TILT_FORWARD, mStateTree[1], false);
+    mStateTree[1]->setStateMapping(State::ON_END, mStateTree[0], false);
 }
 
 Sprite::~Sprite()

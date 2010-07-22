@@ -30,13 +30,14 @@ class State
 
         State* onEvent(Event inEvent);
 
-        void setStateMapping(Event inEvent, State* inState);
+        void setStateMapping(Event inEvent, State* inState, bool inCallLua);
 
         void setFrame(size_t inFrame, size_t inFrameIndex, unsigned int inFrameDuration);
 
     protected:
     private:
         State* mEventMappings[NUM_STATES];
+        bool mCallLuaOnEvent[NUM_STATES];
         size_t mSize;
         FrameRate* mAnimation;
 
