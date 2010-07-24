@@ -9,6 +9,7 @@ Fighter::Fighter(char* inSprite)
 
     mSpriteProgram.use();
     mSpriteProgram.setFade(1.0f);
+    mSpeed = 2.5f;
 }
 
 Fighter::~Fighter()
@@ -25,6 +26,7 @@ void Fighter::onCollision(Entity* inEntity)
 void Fighter::move()
 {
     mPosition += mMomentum;
+    mSpriteInstance->update();
 }
 
 void Fighter::display(Matrix3D& inMVPM)

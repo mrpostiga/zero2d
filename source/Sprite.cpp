@@ -233,6 +233,7 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
 void Sprite::setupStateTree()
 {
     mStateTree[0]->setStateMapping(State::TILT_FORWARD, mStateTree[1], false);
+    mStateTree[0]->setStateMapping(State::TILT_BACK, mStateTree[1], false);
     mStateTree[1]->setStateMapping(State::ON_END, mStateTree[0], false);
 }
 

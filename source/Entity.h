@@ -21,6 +21,7 @@
 #include "Vector2D.h"
 #include "Matrix3D.h"
 #include "Sprite.h"
+#include "ShaderProgram.h"
 
 
 class Entity
@@ -65,12 +66,16 @@ class Entity
             mPosition = inPosition;
         }
 
+        inline void setProgram(ShaderProgram* inProgram) { mProgram = inProgram; }
+
         inline Type getWhatIAm() { return mWhatAmI; }
         inline bool isAlive() { return mAlive; }
         inline void die() { mAlive = false;}
 
     protected:
         Type mWhatAmI;
+
+        ShaderProgram* mProgram;
 
         Matrix3D mTranslation;
         //Matrix3D mRotation;
