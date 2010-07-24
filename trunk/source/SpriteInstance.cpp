@@ -18,7 +18,7 @@
 #include "SpriteInstance.h"
 
 SpriteInstance::SpriteInstance(Sprite* inSprite) : mSprite(inSprite),
-    mFacingRight(false), mCurrentFrame(0), mCurrentDuration(0), mCurrentState(mSprite->getState(Sprite::STAND))
+    mFacingRight(false), mCurrentFrame(0), mCurrentDuration(0), mCurrentState(mSprite->getState(State::STAND))
 {
 }
 

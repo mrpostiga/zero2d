@@ -45,7 +45,6 @@ class Sprite
             Pixel size;
         };
 
-        enum CurrentState { STAND = 0, RUN = 1 };
 
 
         State* getState(size_t inIndex) { return mStateTree[inIndex]; }

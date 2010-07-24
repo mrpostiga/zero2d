@@ -30,10 +30,9 @@ class Control
         Control(Entity* inEntity);
         virtual ~Control();
 
-        enum Type { CHARACTER };
         virtual void update() = 0;
 
-        Type getWhatIAm();
+        Entity::Type getWhatIAm();
         virtual void setGameDead();
         virtual bool isGameDead();
         Entity* getEntity();
@@ -41,12 +40,7 @@ class Control
     protected:
         Entity* mEntity;
 
-        Type mWhatAmI;
         bool mGameDead;
-
-        //AI turrets have to move differently than player turrets,
-        //these controls are meant to provide that functionality
-
 
 };
 
@@ -65,9 +59,9 @@ inline Entity* Control::getEntity()
     return mEntity;
 }
 
-inline Control::Type Control::getWhatIAm()
+inline Entity::Type Control::getWhatIAm()
 {
-    return mWhatAmI;
+    return mEntity->getWhatIAm();
 }
 
 #endif

@@ -3,18 +3,27 @@
 
 #include "Entity.h"
 
-#include "State.h"
-#include <vector>
+
+#include "SpriteInstance.h"
+#include "SpriteProgram.h"
 
 class Fighter : public Entity
 {
     public:
-        Fighter();
+        Fighter(char* inSprite);
         virtual ~Fighter();
 
+        virtual void onCollision(Entity* inEntity);
+        virtual void move();
+        virtual void display(Matrix3D& inMVPM);
+        virtual void changeDirection(float inDirection);
+
+        inline SpriteInstance* getSpriteInstance() { return mSpriteInstance; }
     protected:
     private:
-        std::vector<State> mStateTree;
+        SpriteInstance* mSpriteInstance;
+        SpriteProgram mSpriteProgram;
+
 };
 
 #endif // FIGHTER_H

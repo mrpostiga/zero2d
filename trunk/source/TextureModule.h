@@ -26,6 +26,7 @@
 #include "Camera.h"
 #include "LoadScreen.h"
 #include "LuaMachine.h"
+#include "PlayerControl.h"
 
 #include "OGL.h"
 
@@ -71,6 +72,8 @@ class TextureModule : public Module
         Uint32 mTickStart;
         Camera mCamera;
         LuaMachine mLuaMachine;
+        PlayerControl* mPlayerControl;
+
 
         LoadScreen mLoadScreen;
 

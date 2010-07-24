@@ -31,6 +31,8 @@ class SpriteInstance
         void changeState(size_t inNewState);
 
         void faceRight(bool inRight);
+        bool getFaceRight() { return mFacingRight; }
+        inline void flip() { mFacingRight = !mFacingRight; }
         void onEvent(State::Event inEvent);
 
     protected:
