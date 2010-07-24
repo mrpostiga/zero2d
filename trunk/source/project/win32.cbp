@@ -87,7 +87,8 @@
 		<Unit filename="..\OGL.h" />
 		<Unit filename="..\ParticleProgram.cpp" />
 		<Unit filename="..\ParticleProgram.h" />
-		<Unit filename="..\Point2D.h" />
+		<Unit filename="..\PlayerControl.cpp" />
+		<Unit filename="..\PlayerControl.h" />
 		<Unit filename="..\Shader.cpp" />
 		<Unit filename="..\Shader.h" />
 		<Unit filename="..\ShaderProgram.cpp" />
