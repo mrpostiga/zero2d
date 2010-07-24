@@ -32,8 +32,8 @@ void Fighter::display(Matrix3D& inMVPM)
     mModelView.loadIdentity();
     mModelView.translate(mPosition[0], mPosition[1], 0);
     mModelView.rotateZ(mRotation);
-    mSpriteProgram.setMatrix(inMVPM * mModelView);
     mSpriteProgram.use();
+    mSpriteProgram.setMatrix(inMVPM * mModelView);
 
     mSpriteInstance->display();
 }
