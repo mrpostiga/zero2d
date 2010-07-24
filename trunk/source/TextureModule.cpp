@@ -161,9 +161,9 @@ void TextureModule::onLoop()
 
     mModelView.matrix().multiply(mCamera.matrix());
     (mMVPM = mProjection).multiply(mModelView.matrix());
-    mSpriteProgram.setMatrix(mMVPM);
 
     mSpriteProgram.use();
+    mSpriteProgram.setMatrix(mMVPM);
     //glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, mBackTexture);
     mBackVBO.displayLinear(GL_QUADS, 0, 4);
