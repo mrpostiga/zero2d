@@ -120,6 +120,7 @@ void TextureModule::onLoad()
     delete [] startTimes;
 
     mSpriteInstance = new SpriteInstance(new Sprite("pimple"));
+    //mSpriteInstance = new SpriteInstance(new Sprite("pimple"));
     mLoadScreen.update(90);
 
     mFade = 1.0f;
@@ -136,6 +137,8 @@ void TextureModule::onLoad()
     mProjection.orthographic(360.0f, ratio);
     //mProjection.perspective(30.0f, ratio, 1.0f, 100.0f);
     //mModelView.matrix().translate(0.0f, 0.0f, -5.0f);
+
+    mPlayerControl = new PlayerControl(new Fighter("pimple"));
 
     mRotation = 0;
     mLoadScreen.update(100);
@@ -164,7 +167,8 @@ void TextureModule::onLoop()
     //glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, mBackTexture);
     mBackVBO.displayLinear(GL_QUADS, 0, 4);
-    mSpriteInstance->display();
+    mPlayerControl->getEntity()->display(mMVPM);
+    //mSpriteInstance->display();
 
     mParticleProgram.use();
     mModelView.matrix().scale(60.0f);
@@ -178,7 +182,8 @@ void TextureModule::onLoop()
 void TextureModule::onFrame()
 {
     mCamera.update();
-    mSpriteInstance->update();
+    //mSpriteInstance->update();
+    mPlayerControl->update();
     mParticleProgram.use();
     mParticleProgram.setTime(float(SDL_GetTicks() - mTickStart) * 0.0006f);
 
@@ -235,27 +240,30 @@ void TextureModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         case SDLK_PAGEDOWN:
         {
-            mSpriteInstance->onEvent(State::TILT_FORWARD);
+            //mSpriteInstance->onEvent(State::TILT_FORWARD);
             break;
         }
 
         case SDLK_PAGEUP:
         {
-            mSpriteInstance->onEvent(State::ATTACK);
+            //mSpriteInstance->onEvent(State::ATTACK);
+            mPlayerControl->onEvent(State::ATTACK);
             break;
         }
 
         case SDLK_LEFT:
         {
-            mSpriteInstance->faceRight(false);
-            mSpriteInstance->onEvent(State::TILT_FORWARD);
+            //mSpriteInstance->faceRight(false);
+            //mSpriteInstance->onEvent(State::TILT_FORWARD);
+            mPlayerControl->onEvent(State::TILT_BACK);
             break;
         }
 
         case SDLK_RIGHT:
         {
-            mSpriteInstance->faceRight(true);
-            mSpriteInstance->onEvent(State::TILT_FORWARD);
+            //mSpriteInstance->faceRight(true);
+            //mSpriteInstance->onEvent(State::TILT_FORWARD);
+            mPlayerControl->onEvent(State::TILT_FORWARD);
             break;
         }
 
@@ -270,12 +278,31 @@ void TextureModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     switch (inSym)
     {
-        case SDLK_PAGEUP:
         case SDLK_PAGEDOWN:
+        {
+            //mSpriteInstance->onEvent(State::ON_END);
+            mPlayerControl->onEvent(State::ON_END);
+            break;
+        }
+
+        case SDLK_PAGEUP:
+        {
+            //mSpriteInstance->onEvent(State::ON_END);
+            mPlayerControl->onEvent(State::ON_END);
+            break;
+        }
+
         case SDLK_LEFT:
+        {
+            //mSpriteInstance->onEvent(State::ON_END);
+            mPlayerControl->onEvent(State::ON_END);
+            break;
+        }
+
         case SDLK_RIGHT:
         {
-            mSpriteInstance->onEvent(State::ON_END);
+            //mSpriteInstance->onEvent(State::ON_END);
+            mPlayerControl->onEvent(State::ON_END);
             break;
         }
 

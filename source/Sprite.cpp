@@ -86,7 +86,7 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
 
     size_t numStates;
     fin >> numStates >> c;
-    mStateTree.resize(numStates);
+    mStateTree.resize(numStates, NULL);
     size_t currentState = 0;
     size_t currentSize = 0;
     size_t currentDuration = 0;

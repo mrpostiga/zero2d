@@ -21,6 +21,13 @@ class State
         State(size_t inNumFrames);
         virtual ~State();
 
+        /*******
+        *   These enums are defined both here and in the lua initialization
+        *   script 'api.lua'.  If you change them in one place, make sure
+        *   you change them in the other as well!!!
+        *********/
+        enum States { STAND = 0, RUN = 1 };
+
         enum Event { ON_END = 0, DEFEND = 1, JUMP = 2, TILT_FORWARD = 3,
             TILT_BACK = 4, TILT_UP = 5, TILT_DOWN = 6, SMASH_FORWARD = 7,
             SMASH_BACK = 8, SMASH_UP = 9, SMASH_DOWN = 10, ATTACK = 11 };

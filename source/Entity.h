@@ -29,15 +29,14 @@ class Entity
         Entity();
         virtual ~Entity();
 
-        enum Type { CHARACTER, HITBOX };
-        enum State { GROUNDED, AIRBORNE, GLIDING };
+        enum Type { FIGHTER, HITBOX };
 
         virtual void onCollision(Entity* inEntity) = 0;
         virtual void update();
         virtual void move() = 0;
-        virtual void display() = 0;
+        virtual void display(Matrix3D& inMVPM) = 0;
         virtual void changeDirection(float inDirection) = 0;
-        virtual void changeSpeed(float inSpeed) = 0;
+        virtual void changeSpeed(float inSpeed) { mSpeed = inSpeed; }
 
         inline void setGameDead() { mGameDead = true; }
         inline void setRenderDead() { mRenderDead = true; }
@@ -48,6 +47,12 @@ class Entity
         inline const Point& getMomentum() const
         {
             return mMomentum;
+        }
+
+        void setMomentum(Point inMomentum)
+        {
+            mMomentum = inMomentum;
+            mMomentum.normalizeTo(mSpeed);
         }
 
         inline const Point& getPosition() const
@@ -68,13 +73,17 @@ class Entity
         Type mWhatAmI;
 
         Matrix3D mTranslation;
-        Matrix3D mRotation;
+        //Matrix3D mRotation;
+        float mRotation;
+        Matrix3D mModelView;
 
         bool volatile mGameDead;
         bool volatile mRenderDead;
 
         Point mMomentum;
         Point mPosition;
+
+        float mSpeed;
 
         bool mAlive;
 };
