@@ -66,6 +66,8 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../GLee.h" />
+		<Unit filename="../GameController.cpp" />
+		<Unit filename="../GameController.h" />
 		<Unit filename="../GameServer.cpp" />
 		<Unit filename="../GameServer.h" />
 		<Unit filename="../HUD.cpp" />

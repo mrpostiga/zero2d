@@ -24,7 +24,7 @@ using namespace std;
 HUD::HUD(SpriteProgram& inProgram)
 {
     mProgram = &inProgram;
-    mProjection.orthographic(1.0f, DisplayEngine::getAspectRatio());
+    mProjection.orthographic(HUD_RANGE, DisplayEngine::getAspectRatio());
 }
 
 HUD::~HUD()
@@ -47,8 +47,12 @@ void HUD::display()
         i != mWidgets.end(); ++i)
     {
         Widget* w = *i;
-        Matrix3D MVPM(mProjection);
-        MVPM.multiply(w->matrix());
-        w->display();
+        if (w->isVisible())
+        {
+            Matrix3D MVPM(mProjection);
+            MVPM.multiply(w->matrix());
+            mProgram->setMatrix(MVPM);
+            w->display();
+        }
     }
 }

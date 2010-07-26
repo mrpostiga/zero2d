@@ -19,8 +19,7 @@
 #include "Shader.h"
 #include "Module.h"
 #include "Config.h"
-#include "NetworkStream.h"
-#include "GameServer.h"
+#include "GameController.h"
 
 #include "OGL.h"
 #include <SDL_image.h>
@@ -194,6 +193,8 @@ void DisplayEngine::initialize()
         cerr << "-- error on SDLNet_Init -- " << SDLNet_GetError() << endl;
         exit(1);
     }
+
+    GameController::loadAll();
 
 
 #ifdef __WIN32__
@@ -370,6 +371,7 @@ void DisplayEngine::initialize()
 
 void DisplayEngine::cleanup()
 {
+    GameController::unloadAll();
     Shader::unloadAll();
 
 #ifndef __APPLE__
