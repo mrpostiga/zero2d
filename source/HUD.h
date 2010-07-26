@@ -23,6 +23,8 @@
 
 #include <list>
 
+#define HUD_RANGE 16.0f
+
 class HUD
 {
     public:
