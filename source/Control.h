@@ -31,6 +31,7 @@ class Control
         virtual ~Control();
 
         virtual void update() = 0;
+        virtual void onEvent(State::Event inEvent) = 0;
 
         Entity::Type getWhatIAm();
         virtual void setGameDead();

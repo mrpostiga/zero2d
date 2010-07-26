@@ -46,6 +46,13 @@ void TextureModule::onLoad()
 
     mLoadScreen.update(0);
 
+    //set all the inputs
+    for (int i = 0; i < SDLK_LAST; ++i)
+    {
+        mInputs[i].player = NULL;
+    }
+
+
     mLuaMachine.addFunction("zero2d_api_test", luaTest);
     mLuaMachine.runFile("data/scripts/api.lua");
     mLuaMachine.runFile("data/scripts/test.lua");
@@ -140,9 +147,102 @@ void TextureModule::onLoad()
 
     mPlayerControl = new PlayerControl(new Fighter("pimple"));
 
+    setupInputs();
+
     mRotation = 0;
     mLoadScreen.update(100);
 }
+
+void TextureModule::setupInputs()
+{
+    ifstream input;
+    input.open("data/key_config.txt");
+    string nextLine;
+    string event;
+    char equals;
+    int value;
+    SDLKey key;
+    stringstream parse;
+
+    getline(input, nextLine);
+    while (!input.eof())
+    {
+        parse << nextLine;
+        parse >> event >> equals >> value;
+        key = (SDLKey)value;
+        cerr << "key: " << event << " value: " << SDL_GetKeyName(key) << endl;
+        parse.clear();
+        getline(input, nextLine);
+
+        mInputs[value].event = getEvent(event);
+        mInputs[value].player = mPlayerControl;
+
+    }
+}
+
+State::Event TextureModule::getEvent(string inEvent)
+{
+    State::Event result = State::ON_END;
+
+    if (inEvent == "attack")
+    {
+        result = State::ATTACK;
+    }
+    else if (inEvent == "defend")
+    {
+        result = State::DEFEND;
+    }
+    else if (inEvent == "jump")
+    {
+        result = State::JUMP;
+    }
+    else if (inEvent == "tilt-right")
+    {
+        result = State::TILT_RIGHT;
+    }
+    else if (inEvent == "tilt-left")
+    {
+        result = State::TILT_LEFT;
+    }
+    else if (inEvent == "tilt-up")
+    {
+        result = State::TILT_UP;
+    }
+    else if (inEvent == "tilt-down")
+    {
+        result = State::TILT_DOWN;
+    }
+    else if (inEvent == "smash-right")
+    {
+        result = State::SMASH_RIGHT;
+    }
+    else if (inEvent == "smash-left")
+    {
+        result = State::SMASH_LEFT;
+    }
+    else if (inEvent == "smash-down")
+    {
+        result = State::SMASH_DOWN;
+    }
+    else if (inEvent == "smash-up")
+    {
+        result = State::SMASH_UP;
+    }
+
+    return result;
+}
+
+SDLKey TextureModule::getBinding(string inBinding)
+{
+    int key = 0;
+
+    stringstream ss;
+    //ss << value;
+    //ss >> key;
+
+    return (SDLKey)key;
+}
+
 
 void TextureModule::onOpen()
 {
@@ -157,7 +257,7 @@ void TextureModule::onLoop()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     mModelView.push();
-    //mModelView.matrix().rotateZ(mRotation);
+    mModelView.matrix().rotateZ(mRotation);
 
     mModelView.matrix().multiply(mCamera.matrix());
     (mMVPM = mProjection).multiply(mModelView.matrix());
@@ -223,6 +323,11 @@ void TextureModule::onMouseWheel(bool inUp, bool inDown)
 
 void TextureModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
+    if (mInputs[inSym].player != NULL)
+    {
+        mInputs[inSym].player->onEvent(mInputs[inSym].event);
+    }
+
     switch (inSym)
     {
         case SDLK_ESCAPE:
@@ -276,6 +381,11 @@ void TextureModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
 void TextureModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
+    if (mInputs[inSym].player != NULL)
+    {
+        mInputs[inSym].player->onEvent(State::ON_END);
+    }
+
     switch (inSym)
     {
         case SDLK_PAGEDOWN:
