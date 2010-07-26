@@ -1,0 +1,2 @@
+tilt-right = 100
+tilt-left = 97
