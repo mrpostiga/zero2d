@@ -20,22 +20,16 @@ void PlayerControl::onEvent(State::Event inEvent)
     SpriteInstance* sprite = ((Fighter*)mEntity)->getSpriteInstance();
     switch (inEvent)
     {
-        case State::TILT_FORWARD:
+        case State::TILT_RIGHT:
         {
-            if (!sprite->getFaceRight())
-            {
-                sprite->flip();
-            }
+            sprite->faceRight(true);
             mEntity->setMomentum(Point(1.0f, 0.0f));
             break;
         }
 
-        case State::TILT_BACK:
+        case State::TILT_LEFT:
         {
-            if (sprite->getFaceRight())
-            {
-                sprite->flip();
-            }
+            sprite->faceRight(false);
             mEntity->setMomentum(Point(-1.0f, 0.0f));
             break;
         }

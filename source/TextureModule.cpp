@@ -255,7 +255,7 @@ void TextureModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         {
             //mSpriteInstance->faceRight(false);
             //mSpriteInstance->onEvent(State::TILT_FORWARD);
-            mPlayerControl->onEvent(State::TILT_BACK);
+            mPlayerControl->onEvent(State::TILT_LEFT);
             break;
         }
 
@@ -263,7 +263,7 @@ void TextureModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         {
             //mSpriteInstance->faceRight(true);
             //mSpriteInstance->onEvent(State::TILT_FORWARD);
-            mPlayerControl->onEvent(State::TILT_FORWARD);
+            mPlayerControl->onEvent(State::TILT_RIGHT);
             break;
         }
 

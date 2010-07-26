@@ -28,9 +28,9 @@ class State
         *********/
         enum States { STAND = 0, RUN = 1 };
 
-        enum Event { ON_END = 0, DEFEND = 1, JUMP = 2, TILT_FORWARD = 3,
-            TILT_BACK = 4, TILT_UP = 5, TILT_DOWN = 6, SMASH_FORWARD = 7,
-            SMASH_BACK = 8, SMASH_UP = 9, SMASH_DOWN = 10, ATTACK = 11 };
+        enum Event { ON_END = 0, DEFEND = 1, JUMP = 2, TILT_RIGHT = 3,
+            TILT_LEFT = 4, TILT_UP = 5, TILT_DOWN = 6, SMASH_RIGHT = 7,
+            SMASH_LEFT = 8, SMASH_UP = 9, SMASH_DOWN = 10, ATTACK = 11 };
 
         inline size_t getNumFrames() { return mSize; }
         inline FrameRate getFrame(size_t inIndex) { return mAnimation[inIndex]; }
