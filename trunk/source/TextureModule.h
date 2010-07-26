@@ -27,6 +27,9 @@
 #include "LoadScreen.h"
 #include "LuaMachine.h"
 #include "PlayerControl.h"
+#include <sstream>
+#include <fstream>
+#include "Config.h"
 
 #include "OGL.h"
 
@@ -36,6 +39,12 @@ class TextureModule : public Module
     public:
         TextureModule();
         virtual ~TextureModule();
+
+        struct Inputs
+        {
+            State::Event event;
+            Control* player;
+        };
 
         /// module operation
         virtual void onLoad();
@@ -52,9 +61,15 @@ class TextureModule : public Module
         virtual void onMouseWheel(bool inUp, bool inDown);
 
     private:
+        void setupInputs();
+        State::Event getEvent(std::string inEvent);
+        SDLKey getBinding(std::string inBinding);
+
         int animation[8];
         int mCounter;
         int mCurrentIndex;
+
+        Inputs mInputs[SDLK_LAST];
 
         float mFade;
         bool mFading;
