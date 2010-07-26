@@ -19,66 +19,66 @@
 
 using namespace std;
 
-int GameController::_count = 0;
-GameController* GameController::_controllers[MAX_CONTROLLERS];
+int GameController::mCount = 0;
+GameController* GameController::mControllers[MAX_CONTROLLERS];
 
 void GameController::loadAll()
 {
-    _count = SDL_NumJoysticks();
-    for (int i = 0; i < _count; ++i)
+    mCount = SDL_NumJoysticks();
+    for (int i = 0; i < mCount; ++i)
     {
-        _controllers[i] = new GameController(i);
+        mControllers[i] = new GameController(i);
     }
 }
 
 void GameController::unloadAll()
 {
-    for (int i = 0; i < _count; ++i)
+    for (int i = 0; i < mCount; ++i)
     {
-        delete _controllers[i];
+        delete mControllers[i];
     }
 }
 
-GameController::GameController(int inIndex) : _binding(NULL), _name("none"),
-    _index(inIndex), _axes(0), _buttons(0), _balls(0)
+GameController::GameController(int inIndex) : mBinding(NULL), mName("none"),
+    mIndex(inIndex), mAxes(0), mButtons(0), mBalls(0)
 {
-    if (SDL_NumJoysticks() > _index) _binding = SDL_JoystickOpen(inIndex);
+    if (SDL_NumJoysticks() > mIndex) mBinding = SDL_JoystickOpen(inIndex);
 
-    if (_binding)
+    if (mBinding)
     {
-        _name = SDL_JoystickName(_index);
-        _axes = SDL_JoystickNumAxes(_binding);
-        _buttons = SDL_JoystickNumButtons(_binding);
-        _balls = SDL_JoystickNumBalls(_binding);
+        mName = SDL_JoystickName(mIndex);
+        mAxes = SDL_JoystickNumAxes(mBinding);
+        mButtons = SDL_JoystickNumButtons(mBinding);
+        mBalls = SDL_JoystickNumBalls(mBinding);
     }
 
     for (int i = 0; i < MAX_BUTTONS; ++i)
     {
-        _buttonPresses[i] = false;
+        mButtonPresses[i] = false;
     }
 }
 
 GameController::~GameController()
 {
-    if (SDL_JoystickOpened(_index)) SDL_JoystickClose(_binding);
+    if (SDL_JoystickOpened(mIndex)) SDL_JoystickClose(mBinding);
 }
 
 void GameController::moveAxis(Uint8 inAxis, Sint16 inValue)
 {
-    _axisPositions[inAxis] = inValue;
+    mAxisPositions[inAxis] = inValue;
 }
 
 void GameController::moveHat(Uint8 inHat, Uint8 inPosition)
 {
-    _hatPositions[inHat] = inPosition;
+    mHatPositions[inHat] = inPosition;
 }
 
 void GameController::buttonDown(Uint8 inButton)
 {
-    _buttonPresses[inButton] = true;
+    mButtonPresses[inButton] = true;
 }
 
 void GameController::buttonUp(Uint8 inButton)
 {
-    _buttonPresses[inButton] = false;
+    mButtonPresses[inButton] = false;
 }

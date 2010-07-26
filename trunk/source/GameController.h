@@ -15,8 +15,8 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GAMECONTROLLER_H_
-#define _GAMECONTROLLER_H_
+#ifndef GAMECONTROLLER_H
+#define GAMECONTROLLER_H
 
 #include <SDL.h>
 typedef SDL_Joystick* Joystick;
@@ -35,16 +35,18 @@ class GameController
 
         static void loadAll();
         static void unloadAll();
-        static int count();
-        static GameController* get(Uint8 inIndex);
+        static inline int count() { return mCount; }
+        static inline GameController* get(Uint8 inIndex)
+        {
+            return mControllers[inIndex];
+        }
 
-        bool isActive();
-        const std::string& getName();
-        int getAxes();
-        int getButtons();
-        int getBalls();
-
-        Sint16 getAxis(Uint8 inAxis);
+        inline bool isActive() { return mBinding != NULL; }
+        inline const std::string& getName() const { return mName; }
+        inline int getAxes() { return mAxes; }
+        inline int getButtons() { return mButtons; }
+        inline int getBalls() { return mBalls; }
+        inline Sint16 getAxis(Uint8 inAxis) { return mAxisPositions[inAxis]; }
 
         /// event handlers
         void moveAxis(Uint8 inAxis, Sint16 inValue);
@@ -55,59 +57,19 @@ class GameController
     private:
         GameController(int inIndex);
 
-        static int _count;
-        static GameController* _controllers[MAX_CONTROLLERS];
+        static int mCount;
+        static GameController* mControllers[MAX_CONTROLLERS];
 
-        Joystick _binding;
-        std::string _name;
-        int _index;
-        int _axes;
-        int _buttons;
-        int _balls;
+        Joystick mBinding;
+        std::string mName;
+        int mIndex;
+        int mAxes;
+        int mButtons;
+        int mBalls;
 
-        Sint16 _axisPositions[MAX_AXES];
-        Uint8 _hatPositions[MAX_HATS];
-        bool _buttonPresses[MAX_BUTTONS];
+        Sint16 mAxisPositions[MAX_AXES];
+        Uint8 mHatPositions[MAX_HATS];
+        bool mButtonPresses[MAX_BUTTONS];
 };
-
-inline int GameController::count()
-{
-    return _count;
-}
-
-inline GameController* GameController::get(Uint8 inIndex)
-{
-    return _controllers[inIndex];
-}
-
-inline bool GameController::isActive()
-{
-    return _binding != NULL;
-}
-
-inline const std::string& GameController::getName()
-{
-    return _name;
-}
-
-inline int GameController::getAxes()
-{
-    return _axes;
-}
-
-inline int GameController::getButtons()
-{
-    return _buttons;
-}
-
-inline int GameController::getBalls()
-{
-    return _balls;
-}
-
-inline Sint16 GameController::getAxis(Uint8 inAxis)
-{
-    return _axisPositions[inAxis];
-}
 
 #endif
