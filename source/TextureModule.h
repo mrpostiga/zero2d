@@ -33,6 +33,8 @@
 
 #include "OGL.h"
 
+#define NUM_JOYSTICKS 32
+
 
 class TextureModule : public Module
 {
@@ -69,7 +71,8 @@ class TextureModule : public Module
         int mCounter;
         int mCurrentIndex;
 
-        Inputs mInputs[SDLK_LAST];
+        Inputs mKeyboardInputs[SDLK_LAST];
+        Inputs mJoystickInputs[NUM_JOYSTICKS];
 
         float mFade;
         bool mFading;

@@ -49,7 +49,7 @@ void TextureModule::onLoad()
     //set all the inputs
     for (int i = 0; i < SDLK_LAST; ++i)
     {
-        mInputs[i].player = NULL;
+        mKeyboardInputs[i].player = NULL;
     }
 
 
@@ -174,8 +174,8 @@ void TextureModule::setupInputs()
         parse.clear();
         getline(input, nextLine);
 
-        mInputs[value].event = getEvent(event);
-        mInputs[value].player = mPlayerControl;
+        mKeyboardInputs[value].event = getEvent(event);
+        mKeyboardInputs[value].player = mPlayerControl;
 
     }
 }
@@ -323,9 +323,9 @@ void TextureModule::onMouseWheel(bool inUp, bool inDown)
 
 void TextureModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
-    if (mInputs[inSym].player != NULL)
+    if (mKeyboardInputs[inSym].player != NULL)
     {
-        mInputs[inSym].player->onEvent(mInputs[inSym].event);
+        mKeyboardInputs[inSym].player->onEvent(mKeyboardInputs[inSym].event);
     }
 
     switch (inSym)
@@ -381,9 +381,9 @@ void TextureModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
 void TextureModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
-    if (mInputs[inSym].player != NULL)
+    if (mKeyboardInputs[inSym].player != NULL)
     {
-        mInputs[inSym].player->onEvent(State::ON_END);
+        mKeyboardInputs[inSym].player->onEvent(State::ON_END);
     }
 
     switch (inSym)
