@@ -343,35 +343,6 @@ void TextureModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
             break;
         }
 
-        case SDLK_PAGEDOWN:
-        {
-            //mSpriteInstance->onEvent(State::TILT_FORWARD);
-            break;
-        }
-
-        case SDLK_PAGEUP:
-        {
-            //mSpriteInstance->onEvent(State::ATTACK);
-            mPlayerControl->onEvent(State::ATTACK);
-            break;
-        }
-
-        case SDLK_LEFT:
-        {
-            //mSpriteInstance->faceRight(false);
-            //mSpriteInstance->onEvent(State::TILT_FORWARD);
-            mPlayerControl->onEvent(State::TILT_LEFT);
-            break;
-        }
-
-        case SDLK_RIGHT:
-        {
-            //mSpriteInstance->faceRight(true);
-            //mSpriteInstance->onEvent(State::TILT_FORWARD);
-            mPlayerControl->onEvent(State::TILT_RIGHT);
-            break;
-        }
-
         default:
         {
             break;
@@ -388,39 +359,32 @@ void TextureModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
     switch (inSym)
     {
-        case SDLK_PAGEDOWN:
-        {
-            //mSpriteInstance->onEvent(State::ON_END);
-            mPlayerControl->onEvent(State::ON_END);
-            break;
-        }
-
-        case SDLK_PAGEUP:
-        {
-            //mSpriteInstance->onEvent(State::ON_END);
-            mPlayerControl->onEvent(State::ON_END);
-            break;
-        }
-
-        case SDLK_LEFT:
-        {
-            //mSpriteInstance->onEvent(State::ON_END);
-            mPlayerControl->onEvent(State::ON_END);
-            break;
-        }
-
-        case SDLK_RIGHT:
-        {
-            //mSpriteInstance->onEvent(State::ON_END);
-            mPlayerControl->onEvent(State::ON_END);
-            break;
-        }
 
         default:
         {
             break;
         }
     }
+}
+
+void TextureModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)
+{
+    cerr << "joystick: " << inWhich << " axis: " << inAxis << " value: " << inValue << endl;
+}
+
+void TextureModule::onJoyButtonDown(Uint8 inWhich, Uint8 inButton)
+{
+    cerr << "joystick: " << inWhich << "button: " << inButton << endl;
+}
+
+void TextureModule::onJoyButtonUp(Uint8 inWhich, Uint8 inButton)
+{
+
+}
+
+void TextureModule::onJoyHat(Uint8 inWhich, Uint8 inHat, Uint8 inValue)
+{
+    cerr << "joystick: " << inWhich << " hat: " << inHat << " value: " << inValue << endl;
 }
 
 /// Lua interfacing
