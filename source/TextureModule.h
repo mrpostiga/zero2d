@@ -34,6 +34,8 @@
 #include "OGL.h"
 
 #define NUM_JOYSTICKS 32
+#define NUM_AXES 4
+#define NUM_JOYSTICK_BUTTONS 12
 
 
 class TextureModule : public Module
@@ -46,6 +48,13 @@ class TextureModule : public Module
         {
             State::Event event;
             Control* player;
+        };
+
+        struct JoystickInputs
+        {
+            Control* player;
+            State::Event axis[NUM_AXES];
+            State::Event button[NUM_JOYSTICK_BUTTONS];
         };
 
         /// module operation
@@ -69,14 +78,13 @@ class TextureModule : public Module
     private:
         void setupInputs();
         State::Event getEvent(std::string inEvent);
-        SDLKey getBinding(std::string inBinding);
 
         int animation[8];
         int mCounter;
         int mCurrentIndex;
 
         Inputs mKeyboardInputs[SDLK_LAST];
-        Inputs mJoystickInputs[NUM_JOYSTICKS];
+        JoystickInputs mJoystickInputs[NUM_JOYSTICKS];
 
         float mFade;
         bool mFading;

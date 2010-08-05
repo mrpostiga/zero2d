@@ -1,5 +1,8 @@
 #include "PlayerControl.h"
 
+#include <iostream>
+using namespace std;
+
 PlayerControl::PlayerControl(Entity* inEntity) : Control(inEntity)
 {
     //ctor

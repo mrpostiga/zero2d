@@ -3,7 +3,7 @@
 
 #include <cstdlib>
 
-#define NUM_STATES 12
+#define NUM_STATES 16
 
 /*********************************
 *   Maintains mappings from this state to other states
@@ -28,9 +28,23 @@ class State
         *********/
         enum States { STAND = 0, RUN = 1 };
 
-        enum Event { ON_END = 0, DEFEND = 1, JUMP = 2, TILT_RIGHT = 3,
-            TILT_LEFT = 4, TILT_UP = 5, TILT_DOWN = 6, SMASH_RIGHT = 7,
-            SMASH_LEFT = 8, SMASH_UP = 9, SMASH_DOWN = 10, ATTACK = 11 };
+        enum Event {
+            DO_NOTHING = 0,
+            ON_END = 1,
+            ATTACK = 2,
+            DEFEND = 3,
+            JUMP = 4,
+            TILT_RIGHT = 5,
+            TILT_LEFT = 6,
+            TILT_UP = 7,
+            TILT_DOWN = 8,
+            TILT_RIGHT_ATTACK = 9,
+            TILT_LEFT_ATTACK = 10,
+            TILT_UP_ATTACK = 11,
+            SMASH_RIGHT = 12,
+            SMASH_LEFT = 13,
+            SMASH_UP = 14,
+            SMASH_DOWN = 15 };
 
         inline size_t getNumFrames() { return mSize; }
         inline FrameRate getFrame(size_t inIndex) { return mAnimation[inIndex]; }
