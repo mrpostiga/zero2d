@@ -3,6 +3,8 @@ tilt-left = 97
 tilt-right = 275
 tilt-left = 276
 tilt-right = 48
+
+# Begin Joystick Input
 tilt-right = j 0 a 0
 tilt-right = j 0 a 2
 tilt-right = j 0 b 4

@@ -183,11 +183,17 @@ void TextureModule::setupInputs()
     getline(input, nextLine);
     while (!input.eof())
     {
+        if (nextLine.size() < 1 || nextLine[0] == '#')
+        {
+            getline(input, nextLine);
+            continue;
+        }
+
         parse << nextLine;
         parse >> event >> equals;
-        parse.ignore(1);// >> value;
+        parse.ignore(1);
         translatedEvent = getEvent(event);
-        //cerr << "next letter: " << (char)parse.peek() << endl;
+
         if (parse.peek() == 'j')
         {
             int joystick;
@@ -205,13 +211,19 @@ void TextureModule::setupInputs()
                 //a joystick axis
                 parse >> axis;
                 cerr << " axis: " << axis;
-                mJoystickInputs[joystick].axis[axis] = translatedEvent;
+                if (axis < NUM_AXES)
+                {
+                    mJoystickInputs[joystick].axis[axis] = translatedEvent;
+                }
             }
             else if (garbage == 'b')
             {
                 //a button on the joystick
                 parse >> button;
-                mJoystickInputs[joystick].button[button - 1] = translatedEvent;
+                if (button < NUM_JOYSTICK_BUTTONS)
+                {
+                    mJoystickInputs[joystick].button[button - 1] = translatedEvent;
+                }
                 cerr << " button: " << button;
             }
             cerr << endl;
