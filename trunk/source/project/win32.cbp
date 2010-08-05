@@ -63,8 +63,12 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="..\GLee.h" />
+		<Unit filename="..\GameController.cpp" />
+		<Unit filename="..\GameController.h" />
 		<Unit filename="..\GameServer.cpp" />
 		<Unit filename="..\GameServer.h" />
+		<Unit filename="..\HUD.cpp" />
+		<Unit filename="..\HUD.h" />
 		<Unit filename="..\IndexVBO.cpp" />
 		<Unit filename="..\IndexVBO.h" />
 		<Unit filename="..\LoadScreen.cpp" />
@@ -113,6 +117,8 @@
 		<Unit filename="..\Thread.h" />
 		<Unit filename="..\Vector2D.h" />
 		<Unit filename="..\Vector3D.h" />
+		<Unit filename="..\Widget.cpp" />
+		<Unit filename="..\Widget.h" />
 		<Unit filename="..\glee.h" />
 		<Unit filename="..\main.cpp" />
 		<Extensions>

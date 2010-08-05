@@ -46,12 +46,6 @@ void TextureModule::onLoad()
 
     mLoadScreen.update(0);
 
-    //set all the inputs
-    for (int i = 0; i < SDLK_LAST; ++i)
-    {
-        mKeyboardInputs[i].player = NULL;
-    }
-
 
     mLuaMachine.addFunction("zero2d_api_test", luaTest);
     mLuaMachine.runFile("data/scripts/api.lua");
@@ -126,7 +120,7 @@ void TextureModule::onLoad()
     delete [] velocities;
     delete [] startTimes;
 
-    mSpriteInstance = new SpriteInstance(new Sprite("pimple"));
+    //mSpriteInstance = new SpriteInstance(new Sprite("pimple"));
     //mSpriteInstance = new SpriteInstance(new Sprite("pimple"));
     mLoadScreen.update(90);
 
@@ -159,23 +153,81 @@ void TextureModule::setupInputs()
     input.open("data/key_config.txt");
     string nextLine;
     string event;
+    State::Event translatedEvent;
     char equals;
+    char garbage;
     int value;
     SDLKey key;
     stringstream parse;
+
+    //set all the inputs
+    for (int i = 0; i < SDLK_LAST; ++i)
+    {
+        mKeyboardInputs[i].player = NULL;
+    }
+
+    for (int i = 0; i < NUM_JOYSTICKS; ++i)
+    {
+        mJoystickInputs[i].player = NULL;
+        for (int j = 0; j < NUM_AXES; ++j)
+        {
+            mJoystickInputs[i].axis[j] = State::DO_NOTHING;
+        }
+        for (int j = 0; j < NUM_JOYSTICK_BUTTONS; ++j)
+        {
+            mJoystickInputs[i].button[j] = State::DO_NOTHING;
+        }
+    }
+
 
     getline(input, nextLine);
     while (!input.eof())
     {
         parse << nextLine;
-        parse >> event >> equals >> value;
-        key = (SDLKey)value;
-        cerr << "key: " << event << " value: " << SDL_GetKeyName(key) << endl;
+        parse >> event >> equals;
+        parse.ignore(1);// >> value;
+        translatedEvent = getEvent(event);
+        //cerr << "next letter: " << (char)parse.peek() << endl;
+        if (parse.peek() == 'j')
+        {
+            int joystick;
+            int axis;
+            int button;
+
+            cerr << "joystick: ";
+            parse >> garbage >> joystick;
+            cerr << joystick;
+            //parse.ignore(1);
+
+            parse >> garbage;
+            if (garbage == 'a')
+            {
+                //a joystick axis
+                parse >> axis;
+                cerr << " axis: " << axis;
+                mJoystickInputs[joystick].axis[axis] = translatedEvent;
+            }
+            else if (garbage == 'b')
+            {
+                //a button on the joystick
+                parse >> button;
+                mJoystickInputs[joystick].button[button - 1] = translatedEvent;
+                cerr << " button: " << button;
+            }
+            cerr << endl;
+            mJoystickInputs[joystick].player = mPlayerControl;
+        }
+        else
+        {
+            parse >> value;
+            key = (SDLKey)value;
+            cerr << "key: " << event << " value: " << SDL_GetKeyName(key) << endl;
+            mKeyboardInputs[value].event = translatedEvent;
+            mKeyboardInputs[value].player = mPlayerControl;
+        }
         parse.clear();
         getline(input, nextLine);
 
-        mKeyboardInputs[value].event = getEvent(event);
-        mKeyboardInputs[value].player = mPlayerControl;
 
     }
 }
@@ -230,17 +282,6 @@ State::Event TextureModule::getEvent(string inEvent)
     }
 
     return result;
-}
-
-SDLKey TextureModule::getBinding(string inBinding)
-{
-    int key = 0;
-
-    stringstream ss;
-    //ss << value;
-    //ss >> key;
-
-    return (SDLKey)key;
 }
 
 
@@ -369,22 +410,79 @@ void TextureModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
 void TextureModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)
 {
-    cerr << "joystick: " << inWhich << " axis: " << inAxis << " value: " << inValue << endl;
+    if ((float)abs(inValue) > float(32767.0 * 0.15))
+    {
+        //cerr << "joystick: " << (int)inWhich << " axis: " << (int)inAxis << " value: " << inValue << endl;
+        if (mJoystickInputs[inWhich].player != NULL)
+        {
+            switch (mJoystickInputs[inWhich].axis[inAxis])
+            {
+                case State::TILT_RIGHT:
+                case State::TILT_LEFT:
+                {
+                    if (inValue > 0)
+                    {
+                        mJoystickInputs[inWhich].player->onEvent(State::TILT_RIGHT);
+                    }
+                    else
+                    {
+                        mJoystickInputs[inWhich].player->onEvent(State::TILT_LEFT);
+                    }
+
+                    break;
+                }
+
+                default:
+                {
+                    //mJoystickInputs[inWhich].player->onEvent(mJoystickInputs[inWhich].axis[inAxis]);
+                }
+            }
+        }
+
+    }
+    else
+    {
+        //some movement instructions need a stop command
+        switch (mJoystickInputs[inWhich].axis[inAxis])
+        {
+            case State::TILT_LEFT:
+            case State::TILT_RIGHT:
+            {
+                mJoystickInputs[inWhich].player->onEvent(State::ON_END);
+                break;
+            }
+
+            default:
+            {
+                break;
+            }
+        }
+    }
+
 }
 
 void TextureModule::onJoyButtonDown(Uint8 inWhich, Uint8 inButton)
 {
-    cerr << "joystick: " << inWhich << "button: " << inButton << endl;
+    //cerr << "joystick: " << (int)inWhich << "button: " << (int)inButton << endl;
+
+    if (mJoystickInputs[inWhich].player != NULL)
+    {
+        mJoystickInputs[inWhich].player->onEvent(mJoystickInputs[inWhich].button[inButton]);
+    }
 }
 
 void TextureModule::onJoyButtonUp(Uint8 inWhich, Uint8 inButton)
 {
+    if (mJoystickInputs[inWhich].player != NULL)
+    {
+        mJoystickInputs[inWhich].player->onEvent(State::ON_END);
+    }
 
 }
 
 void TextureModule::onJoyHat(Uint8 inWhich, Uint8 inHat, Uint8 inValue)
 {
-    cerr << "joystick: " << inWhich << " hat: " << inHat << " value: " << inValue << endl;
+    cerr << "joystick: " << (int)inWhich << " hat: " << (int)inHat << " value: " << (int)inValue << endl;
 }
 
 /// Lua interfacing
