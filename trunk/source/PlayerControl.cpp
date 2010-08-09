@@ -18,6 +18,16 @@ void PlayerControl::update()
     mEntity->update();
 }
 
+/********************************************
+*   Special function for player controls to handle the difference
+*   between a left/right input and a characters forward/back facing
+*   This is not needed for any other type of control
+********************************************/
+void PlayerControl::onHorizontalDirectionEvent(State::Event inEvent)
+{
+
+}
+
 void PlayerControl::onEvent(State::Event inEvent)
 {
     SpriteInstance* sprite = ((Fighter*)mEntity)->getSpriteInstance();
