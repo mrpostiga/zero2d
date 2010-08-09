@@ -79,6 +79,7 @@ class TextureModule : public Module
 
     private:
         void setupInputs();
+        State::Event getEndEvent(State::Event inEvent);
         State::Event getEvent(std::string inEvent);
 
         int animation[8];

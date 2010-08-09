@@ -259,7 +259,7 @@ void TextureModule::setupInputs()
 
 State::Event TextureModule::getEvent(string inEvent)
 {
-    State::Event result = State::ON_END;
+    State::Event result = State::END_TILT;
 
     if (inEvent == "attack")
     {
@@ -420,11 +420,62 @@ void TextureModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
     }
 }
 
+State::Event TextureModule::getEndEvent(State::Event inEvent)
+{
+    State::Event thisEvent = State::DO_NOTHING;
+    switch (inEvent)
+    {
+        case State::ATTACK:
+        {
+            thisEvent = State::END_ATTACK;
+            break;
+        }
+
+        case State::DEFEND:
+        {
+            thisEvent = State::END_DEFEND;
+            break;
+        }
+
+        case State::JUMP:
+        {
+            thisEvent = State::END_JUMP;
+            break;
+        }
+
+        case State::SPECIAL:
+        {
+            thisEvent = State::END_SPECIAL;
+            break;
+        }
+
+        case State::TILT_RIGHT:
+        case State::TILT_LEFT:
+        case State::SMASH_RIGHT:
+        case State::SMASH_LEFT:
+        case State::TILT_UP:
+        case State::TILT_DOWN:
+        case State::SMASH_UP:
+        case State::SMASH_DOWN:
+        {
+            thisEvent = State::END_TILT;
+            break;
+        }
+
+        default:
+        {
+            break;
+        }
+    }
+
+    return thisEvent;
+}
+
 void TextureModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     if (mKeyboardInputs[inSym].player != NULL)
     {
-        mKeyboardInputs[inSym].player->onEvent(State::ON_END);
+        mKeyboardInputs[inSym].player->onEvent(getEndEvent(mKeyboardInputs[inSym].event));
     }
 
     switch (inSym)
@@ -441,7 +492,6 @@ void TextureModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)
 {
     if ((float)abs(inValue) > float(32767.0 * 0.15))
     {
-        //cerr << "joystick: " << (int)inWhich << " axis: " << (int)inAxis << " value: " << inValue << endl;
         if (mJoystickInputs[inWhich].player != NULL)
         {
             switch (mJoystickInputs[inWhich].axis[inAxis])
@@ -477,7 +527,7 @@ void TextureModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)
             case State::TILT_LEFT:
             case State::TILT_RIGHT:
             {
-                mJoystickInputs[inWhich].player->onEvent(State::ON_END);
+                mJoystickInputs[inWhich].player->onEvent(getEndEvent(mJoystickInputs[inWhich].axis[inAxis]));
                 break;
             }
 
@@ -492,8 +542,6 @@ void TextureModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)
 
 void TextureModule::onJoyButtonDown(Uint8 inWhich, Uint8 inButton)
 {
-    //cerr << "joystick: " << (int)inWhich << "button: " << (int)inButton << endl;
-
     if (mJoystickInputs[inWhich].player != NULL)
     {
         mJoystickInputs[inWhich].player->onEvent(mJoystickInputs[inWhich].button[inButton]);
@@ -504,7 +552,7 @@ void TextureModule::onJoyButtonUp(Uint8 inWhich, Uint8 inButton)
 {
     if (mJoystickInputs[inWhich].player != NULL)
     {
-        mJoystickInputs[inWhich].player->onEvent(State::ON_END);
+        mJoystickInputs[inWhich].player->onEvent(getEndEvent(mJoystickInputs[inWhich].button[inButton]));
     }
 
 }
