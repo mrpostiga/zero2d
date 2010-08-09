@@ -177,6 +177,10 @@ void TextureModule::setupInputs()
         {
             mJoystickInputs[i].button[j] = State::DO_NOTHING;
         }
+        for (int j = 0; j < NUM_HAT_POSITIONS; ++j)
+        {
+            mJoystickInputs[i].hat[j] = State::DO_NOTHING;
+        }
     }
 
 
@@ -199,6 +203,7 @@ void TextureModule::setupInputs()
             int joystick;
             int axis;
             int button;
+            int hat;
 
             cerr << "joystick: ";
             parse >> garbage >> joystick;
@@ -225,6 +230,14 @@ void TextureModule::setupInputs()
                     mJoystickInputs[joystick].button[button - 1] = translatedEvent;
                 }
                 cerr << " button: " << button;
+            }
+            else if (garbage == 'h')
+            {
+                parse >> hat;
+                if (hat < NUM_HAT_POSITIONS)
+                {
+                    mJoystickInputs[joystick].hat[hat] = translatedEvent;
+                }
             }
             cerr << endl;
             mJoystickInputs[joystick].player = mPlayerControl;
@@ -291,6 +304,10 @@ State::Event TextureModule::getEvent(string inEvent)
     else if (inEvent == "smash-up")
     {
         result = State::SMASH_UP;
+    }
+    else
+    {
+        cerr << "returning on_end" <<endl;
     }
 
     return result;
@@ -494,6 +511,10 @@ void TextureModule::onJoyButtonUp(Uint8 inWhich, Uint8 inButton)
 
 void TextureModule::onJoyHat(Uint8 inWhich, Uint8 inHat, Uint8 inValue)
 {
+    if (mJoystickInputs[inWhich].player != NULL)
+    {
+        mJoystickInputs[inWhich].player->onEvent(mJoystickInputs[inWhich].hat[inValue]);
+    }
     cerr << "joystick: " << (int)inWhich << " hat: " << (int)inHat << " value: " << (int)inValue << endl;
 }
 

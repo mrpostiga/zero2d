@@ -9,3 +9,6 @@ tilt-right = j 0 a 0
 tilt-right = j 0 a 2
 tilt-right = j 0 b 4
 tilt-left = j 0 b 3
+tilt-right = j 0 h 2
+tilt-left = j 0 h 8
+on-end = j 0 h 0
