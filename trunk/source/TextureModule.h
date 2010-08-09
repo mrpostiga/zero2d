@@ -36,6 +36,7 @@
 #define NUM_JOYSTICKS 32
 #define NUM_AXES 4
 #define NUM_JOYSTICK_BUTTONS 12
+#define NUM_HAT_POSITIONS 13
 
 
 class TextureModule : public Module
@@ -55,6 +56,7 @@ class TextureModule : public Module
             Control* player;
             State::Event axis[NUM_AXES];
             State::Event button[NUM_JOYSTICK_BUTTONS];
+            State::Event hat[NUM_HAT_POSITIONS];
         };
 
         /// module operation
