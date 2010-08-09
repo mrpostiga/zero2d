@@ -281,6 +281,7 @@ void DisplayEngine::initialize()
 
     if (Config::get<int>("full screen", 0) == 1) flags |= SDL_FULLSCREEN;
 
+    SDL_WM_SetCaption("Zero2D - Development Build", "Zero2D");
     mDisplay = SDL_SetVideoMode(width, height,
         Config::get<int>("bits per pixel", 24), flags);
 
@@ -363,8 +364,6 @@ void DisplayEngine::initialize()
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     //glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-
-    SDL_WM_SetCaption("Zero2D version 0.0.1", "Zero2D");
 
     openGLDriverInfo(mLogFile);
 }

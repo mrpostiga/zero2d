@@ -51,34 +51,9 @@ GameController::GameController(int inIndex) : mBinding(NULL), mName("none"),
         mButtons = SDL_JoystickNumButtons(mBinding);
         mBalls = SDL_JoystickNumBalls(mBinding);
     }
-
-    for (int i = 0; i < MAX_BUTTONS; ++i)
-    {
-        mButtonPresses[i] = false;
-    }
 }
 
 GameController::~GameController()
 {
     if (SDL_JoystickOpened(mIndex)) SDL_JoystickClose(mBinding);
-}
-
-void GameController::moveAxis(Uint8 inAxis, Sint16 inValue)
-{
-    mAxisPositions[inAxis] = inValue;
-}
-
-void GameController::moveHat(Uint8 inHat, Uint8 inPosition)
-{
-    mHatPositions[inHat] = inPosition;
-}
-
-void GameController::buttonDown(Uint8 inButton)
-{
-    mButtonPresses[inButton] = true;
-}
-
-void GameController::buttonUp(Uint8 inButton)
-{
-    mButtonPresses[inButton] = false;
 }
