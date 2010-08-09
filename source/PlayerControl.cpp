@@ -47,9 +47,16 @@ void PlayerControl::onEvent(State::Event inEvent)
             break;
         }
 
-        case State::ON_END:
+        case State::END_TILT:
         {
             mEntity->setMomentum(Point(0.0f, 0.0f));
+            break;
+        }
+
+        case State::DO_NOTHING:
+        {
+            return;
+            break;
         }
 
         default:

@@ -3,7 +3,7 @@
 
 #include <cstdlib>
 
-#define NUM_STATES 17
+#define NUM_STATES 21
 
 /*********************************
 *   Maintains mappings from this state to other states
@@ -37,23 +37,28 @@ class State
         *   DO NOT MODIFY THEM
         *******************************/
         enum Event {
-            DO_NOTHING = 0,
-            ON_END = 1,
-            ON_ANIMATION_END = 2,
-            ATTACK = 3,
-            DEFEND = 4,
-            JUMP = 5,
-            TILT_RIGHT = 6,
-            TILT_LEFT = 7,
-            TILT_UP = 8,
-            TILT_DOWN = 9,
-            TILT_RIGHT_ATTACK = 10,
-            TILT_LEFT_ATTACK = 11,
-            TILT_UP_ATTACK = 12,
-            SMASH_RIGHT = 13,
-            SMASH_LEFT = 14,
-            SMASH_UP = 15,
-            SMASH_DOWN = 16,
+            ON_ANIMATION_END = 0,
+            ATTACK = 1,
+            SPECIAL = 2,
+            DEFEND = 3,
+            JUMP = 4,
+            END_ATTACK = 5,
+            END_SPECIAL = 6,
+            END_DEFEND = 7,
+            END_JUMP = 8,
+            END_TILT = 9,
+            TILT_FORWARD = 10,
+            TILT_BACK = 11,
+            TILT_UP = 12,
+            TILT_DOWN = 13,
+            SMASH_FORWARD = 14,
+            SMASH_BACK = 15,
+            SMASH_UP = 16,
+            SMASH_DOWN = 17,
+            GOT_HIT = 18,
+            GOT_GRABBED = 19,
+            GOT_RELEASED = 20,
+            DO_NOTHING,
             TILT_LEFT,
             TILT_RIGHT,
             SMASH_LEFT,
