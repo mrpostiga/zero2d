@@ -3,7 +3,7 @@
 
 #include <cstdlib>
 
-#define NUM_STATES 16
+#define NUM_STATES 17
 
 /*********************************
 *   Maintains mappings from this state to other states
@@ -28,23 +28,36 @@ class State
         *********/
         enum States { STAND = 0, RUN = 1 };
 
+
+        /****************************
+        *   Events to control the state tree
+        *   The extra left/right events at the end
+        *   are special for player controls only and are excluded
+        *   from the array on purpose
+        *   DO NOT MODIFY THEM
+        *******************************/
         enum Event {
             DO_NOTHING = 0,
             ON_END = 1,
-            ATTACK = 2,
-            DEFEND = 3,
-            JUMP = 4,
-            TILT_RIGHT = 5,
-            TILT_LEFT = 6,
-            TILT_UP = 7,
-            TILT_DOWN = 8,
-            TILT_RIGHT_ATTACK = 9,
-            TILT_LEFT_ATTACK = 10,
-            TILT_UP_ATTACK = 11,
-            SMASH_RIGHT = 12,
-            SMASH_LEFT = 13,
-            SMASH_UP = 14,
-            SMASH_DOWN = 15 };
+            ON_ANIMATION_END = 2,
+            ATTACK = 3,
+            DEFEND = 4,
+            JUMP = 5,
+            TILT_RIGHT = 6,
+            TILT_LEFT = 7,
+            TILT_UP = 8,
+            TILT_DOWN = 9,
+            TILT_RIGHT_ATTACK = 10,
+            TILT_LEFT_ATTACK = 11,
+            TILT_UP_ATTACK = 12,
+            SMASH_RIGHT = 13,
+            SMASH_LEFT = 14,
+            SMASH_UP = 15,
+            SMASH_DOWN = 16,
+            TILT_LEFT,
+            TILT_RIGHT,
+            SMASH_LEFT,
+            SMASH_RIGHT };
 
         inline size_t getNumFrames() { return mSize; }
         inline FrameRate getFrame(size_t inIndex) { return mAnimation[inIndex]; }
