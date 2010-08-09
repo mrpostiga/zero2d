@@ -46,13 +46,6 @@ class GameController
         inline int getAxes() { return mAxes; }
         inline int getButtons() { return mButtons; }
         inline int getBalls() { return mBalls; }
-        inline Sint16 getAxis(Uint8 inAxis) { return mAxisPositions[inAxis]; }
-
-        /// event handlers
-        void moveAxis(Uint8 inAxis, Sint16 inValue);
-        void moveHat(Uint8 inHat, Uint8 inPosition);
-        void buttonDown(Uint8 inButton);
-        void buttonUp(Uint8 inButton);
 
     private:
         GameController(int inIndex);
@@ -66,10 +59,6 @@ class GameController
         int mAxes;
         int mButtons;
         int mBalls;
-
-        Sint16 mAxisPositions[MAX_AXES];
-        Uint8 mHatPositions[MAX_HATS];
-        bool mButtonPresses[MAX_BUTTONS];
 };
 
 #endif
