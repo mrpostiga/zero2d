@@ -503,13 +503,17 @@ void TextureModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)
                 case State::TILT_RIGHT:
                 case State::TILT_LEFT:
                 {
+                    double total = sizeof(Sint16) * 8;
+                    total = pow(2.0, total) / 2.0 - 2;
+                    //cerr << "total value: " << total << endl;
+                    float rate = fabs((float)inValue / total);
                     if (inValue > 0)
                     {
-                        mJoystickInputs[inWhich].player->onEvent(State::TILT_RIGHT);
+                        mJoystickInputs[inWhich].player->onEvent(State::TILT_RIGHT, rate);
                     }
                     else
                     {
-                        mJoystickInputs[inWhich].player->onEvent(State::TILT_LEFT);
+                        mJoystickInputs[inWhich].player->onEvent(State::TILT_LEFT, rate);
                     }
 
                     break;

@@ -9,7 +9,7 @@ Fighter::Fighter(const char* inSprite)
 
     mSpriteProgram.use();
     mSpriteProgram.setFade(1.0f);
-    mSpeed = 2.5f;
+    mMaxSpeed = 2.5f;
 }
 
 Fighter::~Fighter()
@@ -43,4 +43,34 @@ void Fighter::display(Matrix3D& inMVPM)
 void Fighter::changeDirection(float inDirection)
 {
 
+}
+
+void Fighter::moveForward(float inRate)
+{
+    inRate = (inRate > 1.0f) ? 1.0f : inRate;
+
+    mCurrentSpeed = mMaxSpeed * inRate;
+
+    mMomentum[0] = mCurrentSpeed;
+
+    if (!mSpriteInstance->getFaceRight())
+    {
+        mMomentum[0] *= -1;
+    }
+}
+
+void Fighter::moveBack(float inRate)
+{
+    inRate = (inRate > 1.0f) ? 1.0f : inRate;
+
+    mCurrentSpeed = mMaxSpeed * inRate;
+
+    mMomentum[0] = mCurrentSpeed;
+
+    mSpriteInstance->faceRight(!mSpriteInstance->getFaceRight());
+
+    if (!mSpriteInstance->getFaceRight())
+    {
+        mMomentum[0] *= -1;
+    }
 }

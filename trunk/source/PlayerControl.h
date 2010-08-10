@@ -14,7 +14,7 @@ class PlayerControl : public Control
         virtual void update();
 
         void onHorizontalDirectionEvent(State::Event inEvent);
-        void onEvent(State::Event inEvent);
+        void onEvent(State::Event inEvent, float inValue = 1.0);
 
     protected:
     private:

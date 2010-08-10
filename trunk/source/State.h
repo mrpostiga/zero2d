@@ -26,7 +26,9 @@ class State
         *   script 'api.lua'.  If you change them in one place, make sure
         *   you change them in the other as well!!!
         *********/
-        enum States { STAND = 0, RUN = 1 };
+        enum States {
+            STAND = 0,
+            RUN = 1 };
 
 
         /****************************

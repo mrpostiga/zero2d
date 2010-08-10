@@ -232,8 +232,8 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
 
 void Sprite::setupStateTree()
 {
-    mStateTree[0]->setStateMapping(State::TILT_RIGHT, mStateTree[1], false);
-    mStateTree[0]->setStateMapping(State::TILT_LEFT, mStateTree[1], false);
+    mStateTree[0]->setStateMapping(State::TILT_FORWARD, mStateTree[1], false);
+    mStateTree[0]->setStateMapping(State::TILT_BACK, mStateTree[1], false);
     mStateTree[1]->setStateMapping(State::END_TILT, mStateTree[0], false);
 }
 

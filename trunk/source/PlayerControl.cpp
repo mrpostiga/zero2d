@@ -28,22 +28,44 @@ void PlayerControl::onHorizontalDirectionEvent(State::Event inEvent)
 
 }
 
-void PlayerControl::onEvent(State::Event inEvent)
+void PlayerControl::onEvent(State::Event inEvent, float inValue)
 {
     SpriteInstance* sprite = ((Fighter*)mEntity)->getSpriteInstance();
+    Fighter* fighter = ((Fighter*)mEntity);
     switch (inEvent)
     {
         case State::TILT_RIGHT:
         {
-            sprite->faceRight(true);
-            mEntity->setMomentum(Point(1.0f, 0.0f));
+            if (sprite->getFaceRight())
+            {
+                fighter->moveForward(inValue);
+                inEvent = State::TILT_FORWARD;
+            }
+            else
+            {
+                fighter->moveBack(inValue);
+                inEvent = State::TILT_BACK;
+            }
+            //sprite->faceRight(true);
+            //mEntity->setMomentum(Point(1.0f, 0.0f));
             break;
         }
 
         case State::TILT_LEFT:
         {
-            sprite->faceRight(false);
-            mEntity->setMomentum(Point(-1.0f, 0.0f));
+            if (!sprite->getFaceRight())
+            {
+                fighter->moveForward(inValue);
+                inEvent = State::TILT_FORWARD;
+            }
+            else
+            {
+                fighter->moveBack(inValue);
+                inEvent = State::TILT_BACK;
+            }
+
+            //sprite->faceRight(false);
+            //mEntity->setMomentum(Point(-1.0f, 0.0f));
             break;
         }
 
