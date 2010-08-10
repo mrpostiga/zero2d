@@ -10,7 +10,7 @@
 class Fighter : public Entity
 {
     public:
-        Fighter(char* inSprite);
+        Fighter(const char* inSprite);
         virtual ~Fighter();
 
         virtual void onCollision(Entity* inEntity);

@@ -256,7 +256,6 @@ Sprite::~Sprite()
 **************************************/
 void Sprite::draw(size_t inIndex, bool inFacingRight)
 {
-    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, mSheets[mFrames[inIndex].sheet].texture);
     GLint target = inIndex * 8;
     if (inFacingRight) target += 4;

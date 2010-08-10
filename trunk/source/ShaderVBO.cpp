@@ -17,6 +17,9 @@
 
 #include "ShaderVBO.h"
 
+#include <iostream>
+using namespace std;
+
 ShaderVBO::ShaderVBO()
 {
 }
@@ -78,7 +81,31 @@ void ShaderVBO::loadVAA(GLuint inVAindex, GLuint inValuesPerVertex,
     da.valuesPerVertex = inValuesPerVertex;
     glGenBuffers(1, &da.VBOindex);
     glBindBuffer(GL_ARRAY_BUFFER, da.VBOindex);
-    glBufferData(GL_ARRAY_BUFFER, inSize * sizeof(GLfloat) * inValuesPerVertex,
+    glBufferData(GL_ARRAY_BUFFER, inSize * sizeof(GLfloat) * da.valuesPerVertex,
         inData, inUsage);
     mData.push_back(da);
+}
+
+void ShaderVBO::reloadVAA(GLuint inVAindex, GLuint inSize,
+    const GLfloat* inData, GLenum inUsage)
+{
+    DataArray* da = NULL;
+    for (size_t i = 0; i < mData.size(); ++i)
+    {
+        if (mData[i].VAindex == inVAindex)
+        {
+            da = &mData[i];
+            break;
+        }
+    }
+
+    if (!da)
+    {
+        cerr << "reloadVAA failed" << endl;
+        return;
+    }
+
+    glBindBuffer(GL_ARRAY_BUFFER, da->VBOindex);
+    glBufferData(GL_ARRAY_BUFFER, inSize * sizeof(GLfloat)
+        * da->valuesPerVertex, inData, inUsage);
 }

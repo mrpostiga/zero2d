@@ -29,6 +29,12 @@ HUD::HUD(SpriteProgram& inProgram)
 
 HUD::~HUD()
 {
+    for (list<Widget*>::iterator i = mWidgets.begin();
+        i != mWidgets.end(); ++i)
+    {
+        Widget* w = *i;
+        delete w;
+    }
 }
 
 void HUD::add(Widget* inWidget)

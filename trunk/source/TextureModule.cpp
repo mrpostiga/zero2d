@@ -51,7 +51,10 @@ void TextureModule::onLoad()
     mLuaMachine.runFile("data/scripts/api.lua");
     mLuaMachine.runFile("data/scripts/test.lua");
 
-    //glActiveTexture(GL_TEXTURE0);
+    mTextPic.loadFont("data/fonts/DejaVuSans.ttf", 16);
+    mTextPic.setText("TheBuzzSaw");
+    mTextPic.setScale(20.0f);
+
     glGenTextures(1, &mBackTexture);
     DisplayEngine::loadTexture("data/images/dragon.png", mBackTexture);
     mLoadScreen.update(50);
@@ -333,12 +336,13 @@ void TextureModule::onLoop()
     (mMVPM = mProjection).multiply(mModelView.matrix());
 
     mSpriteProgram.use();
+    glActiveTexture(GL_TEXTURE0);
+
     mSpriteProgram.setMatrix(mMVPM);
-    //glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, mBackTexture);
     mBackVBO.displayLinear(GL_QUADS, 0, 4);
     mPlayerControl->getEntity()->display(mMVPM);
-    //mSpriteInstance->display();
+    mTextPic.display();
 
     mParticleProgram.use();
     mModelView.matrix().scale(60.0f);
