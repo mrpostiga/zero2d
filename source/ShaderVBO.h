@@ -40,6 +40,8 @@ class ShaderVBO
         void displayIndexed(const IndexVBO& inVBO);
         void loadVAA(GLuint inVAindex, GLuint inValuesPerVertex, GLuint inSize,
             const GLfloat* inData, GLenum inUsage = GL_STATIC_DRAW);
+        void reloadVAA(GLuint inVAindex, GLuint inSize, const GLfloat* inData,
+            GLenum inUsage = GL_STATIC_DRAW);
 
     protected:
     private:

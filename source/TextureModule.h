@@ -27,11 +27,12 @@
 #include "LoadScreen.h"
 #include "LuaMachine.h"
 #include "PlayerControl.h"
+#include "Config.h"
+#include "OGL.h"
+#include "TextPic.h"
+
 #include <sstream>
 #include <fstream>
-#include "Config.h"
-
-#include "OGL.h"
 
 #define NUM_JOYSTICKS 32
 #define NUM_AXES 4
@@ -106,7 +107,7 @@ class TextureModule : public Module
         Camera mCamera;
         LuaMachine mLuaMachine;
         PlayerControl* mPlayerControl;
-
+        TextPic mTextPic;
 
         LoadScreen mLoadScreen;
 

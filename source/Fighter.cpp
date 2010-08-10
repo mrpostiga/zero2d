@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 
-Fighter::Fighter(char* inSprite)
+Fighter::Fighter(const char* inSprite)
 {
     mSpriteInstance = new SpriteInstance(new Sprite(inSprite));
 

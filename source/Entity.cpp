@@ -17,7 +17,8 @@
 
 #include "Entity.h"
 
-Entity::Entity() : mGameDead(false), mRenderDead(false), mAlive(true), mRotation(0)
+Entity::Entity() : mRotation(0.0f), mGameDead(false), mRenderDead(false),
+    mAlive(true)
 {
 }
 
