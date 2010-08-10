@@ -18,6 +18,9 @@ class Fighter : public Entity
         virtual void display(Matrix3D& inMVPM);
         virtual void changeDirection(float inDirection);
 
+        virtual void moveForward(float inRate);
+        virtual void moveBack(float inRate);
+
         inline SpriteInstance* getSpriteInstance() { return mSpriteInstance; }
     protected:
     private:

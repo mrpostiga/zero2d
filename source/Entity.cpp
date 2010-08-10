@@ -31,3 +31,4 @@ void Entity::update()
     //mControl->update();
     move();
 }
+

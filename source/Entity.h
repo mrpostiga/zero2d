@@ -37,13 +37,15 @@ class Entity
         virtual void move() = 0;
         virtual void display(Matrix3D& inMVPM) = 0;
         virtual void changeDirection(float inDirection) = 0;
-        virtual void changeSpeed(float inSpeed) { mSpeed = inSpeed; }
+        virtual void changeSpeed(float inSpeed) { mMaxSpeed = inSpeed; }
 
         inline void setGameDead() { mGameDead = true; }
         inline void setRenderDead() { mRenderDead = true; }
 
         inline bool isGameDead() { return mGameDead; }
         inline bool isRenderDead() { return mRenderDead; }
+
+
 
         inline const Point& getMomentum() const
         {
@@ -53,7 +55,7 @@ class Entity
         void setMomentum(Point inMomentum)
         {
             mMomentum = inMomentum;
-            mMomentum.normalizeTo(mSpeed);
+            mMomentum.normalizeTo(mCurrentSpeed);
         }
 
         inline const Point& getPosition() const
@@ -88,7 +90,8 @@ class Entity
         Point mMomentum;
         Point mPosition;
 
-        float mSpeed;
+        float mMaxSpeed;
+        float mCurrentSpeed;
 
         bool mAlive;
 };
