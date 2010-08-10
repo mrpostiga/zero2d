@@ -60,12 +60,20 @@
 		<Unit filename="../Entity.h" />
 		<Unit filename="../EntityGarbageCollector.cpp" />
 		<Unit filename="../EntityGarbageCollector.h" />
+		<Unit filename="../Fighter.cpp" />
+		<Unit filename="../Fighter.h" />
 		<Unit filename="../GLee.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../GLee.h" />
+		<Unit filename="../GameController.cpp" />
+		<Unit filename="../GameController.h" />
 		<Unit filename="../GameServer.cpp" />
 		<Unit filename="../GameServer.h" />
+		<Unit filename="../HUD.cpp" />
+		<Unit filename="../HUD.h" />
+		<Unit filename="../IndexVBO.cpp" />
+		<Unit filename="../IndexVBO.h" />
 		<Unit filename="../LoadScreen.cpp" />
 		<Unit filename="../LoadScreen.h" />
 		<Unit filename="../LogFile.cpp" />
@@ -86,6 +94,8 @@
 		<Unit filename="../OGL.h" />
 		<Unit filename="../ParticleProgram.cpp" />
 		<Unit filename="../ParticleProgram.h" />
+		<Unit filename="../PlayerControl.cpp" />
+		<Unit filename="../PlayerControl.h" />
 		<Unit filename="../Shader.cpp" />
 		<Unit filename="../Shader.h" />
 		<Unit filename="../ShaderProgram.cpp" />
@@ -96,16 +106,24 @@
 		<Unit filename="../SoundEngine.h" />
 		<Unit filename="../Sprite.cpp" />
 		<Unit filename="../Sprite.h" />
+		<Unit filename="../SpriteInstance.cpp" />
+		<Unit filename="../SpriteInstance.h" />
 		<Unit filename="../SpriteProgram.cpp" />
 		<Unit filename="../SpriteProgram.h" />
+		<Unit filename="../State.cpp" />
+		<Unit filename="../State.h" />
 		<Unit filename="../TestModule.cpp" />
 		<Unit filename="../TestModule.h" />
+		<Unit filename="../TextPic.cpp" />
+		<Unit filename="../TextPic.h" />
 		<Unit filename="../TextureModule.cpp" />
 		<Unit filename="../TextureModule.h" />
 		<Unit filename="../Thread.cpp" />
 		<Unit filename="../Thread.h" />
 		<Unit filename="../Vector2D.h" />
 		<Unit filename="../Vector3D.h" />
+		<Unit filename="../Widget.cpp" />
+		<Unit filename="../Widget.h" />
 		<Unit filename="../main.cpp" />
 		<Extensions>
 			<code_completion />
