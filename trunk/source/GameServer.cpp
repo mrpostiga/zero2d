@@ -34,7 +34,7 @@ GameServer::~GameServer()
 void GameServer::run()
 {
     NetworkStream net;
-    net.listen(Config::get<Uint16>("server port", 9421));
+    net.openSocket(Config::get<Uint16>("server port", 9421));
 
     Uint8 buffer[PACKET_SIZE];
 

@@ -39,40 +39,47 @@ using namespace std;
  *      for when the rest of the message arrives.
  */
 
-NetworkStream::NetworkStream() : mSocket(0)
+NetworkStream::NetworkStream() : mCopied(false), mSocket(0)
 {
     mPacket = SDLNet_AllocPacket(PACKET_SIZE);
+}
+
+NetworkStream::NetworkStream(const NetworkStream& inStream) : mCopied(true)
+{
+    mPacket = SDLNet_AllocPacket(PACKET_SIZE);
+    mSocket = inStream.mSocket;
 }
 
 NetworkStream::~NetworkStream()
 {
     SDLNet_FreePacket(mPacket);
-    if (mSocket) SDLNet_UDP_Close(mSocket);
+    if (!mCopied && mSocket) SDLNet_UDP_Close(mSocket);
 }
 
-void NetworkStream::listen(Uint16 inPort)
+bool NetworkStream::openSocket(Uint16 inPort)
 {
-    if (!mSocket)
+    if (mSocket)
+    {
+        // TODO: throw exception
+        cerr << "ERROR -- socket already open" << endl;
+        return false;
+    }
+    else
     {
         mSocket = SDLNet_UDP_Open(inPort);
         if (!mSocket)
         {
-            cerr << "failed to listen on port " << inPort << endl;
+            cerr << "failed to open socket on port " << inPort << endl;
+            return false;
         }
     }
+
+    return true;
 }
 
 void NetworkStream::connect(const char* inAddress, Uint16 inPort)
 {
-    if (!mSocket)
-    {
-        mSocket = SDLNet_UDP_Open(0);
-        if (!mSocket)
-        {
-            cerr << "failed to listen on port " << inPort << endl;
-        }
-    }
-
+    // TODO: throw exception if socket is not open
     if (SDLNet_ResolveHost(&mAddress, inAddress, inPort) == -1)
     {
         cerr << "failed to resolve host -- " << inAddress << " on port "

@@ -59,7 +59,7 @@ class Widget
         MouseState mLastState;
 
         Matrix3D mMatrix;
-        Point mLocation;
+        Point mPosition;
         Point mSize;
         Point mObjectUL;
         Point mObjectLR;

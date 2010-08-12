@@ -34,7 +34,7 @@ TestModule::~TestModule()
 void TestModule::onLoad()
 {
     mTimer = 0;
-    mNet.listen(Config::get<Uint16>("connect port", 45678));
+    mNet.openSocket(Config::get<Uint16>("connect port", 45678));
     mNet.connect(Config::getRaw("connect ip"),
         Config::get<Uint16>("connect port", 45678));
 }

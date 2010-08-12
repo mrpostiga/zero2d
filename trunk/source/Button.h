@@ -15,33 +15,26 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NETWORKSTREAM_H
-#define NETWORKSTREAM_H
+#ifndef BUTTON_H
+#define BUTTON_H
 
-#include <SDL.h>
-#include <SDL_net.h>
+#include "Widget.h"
+#include "ShaderVBO.h"
 
-#define PACKET_SIZE 1024
-
-class NetworkStream
+class Button : public Widget
 {
     public:
-        NetworkStream();
-        NetworkStream(const NetworkStream& inStream);
-        ~NetworkStream();
+        Button(const char* inFile, Point inPosition = Point(0.0f),
+            Point inSize = Point(0.0f));
+        virtual ~Button();
 
-        bool openSocket(Uint16 inPort = 0);
-        void connect(const char* inAddress, Uint16 inPort);
-        void sendData(const void* inData, size_t inLength);
-        bool receiveData(Uint8* inCapture);
-
-        inline UDPpacket* getPacket() { return mPacket; }
+        virtual void display();
+        virtual void onMouseStateChange();
 
     private:
-        bool mCopied;
-        IPaddress mAddress;
-        UDPsocket mSocket;
-        UDPpacket* mPacket;
+        GLint mFirst;
+        GLuint mTexture;
+        ShaderVBO mVBO;
 };
 
 #endif
