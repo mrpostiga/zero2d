@@ -30,6 +30,8 @@
 #include "Config.h"
 #include "OGL.h"
 #include "TextPic.h"
+#include "HUD.h"
+#include "Button.h"
 
 #include <sstream>
 #include <fstream>
@@ -108,6 +110,7 @@ class TextureModule : public Module
         LuaMachine mLuaMachine;
         PlayerControl* mPlayerControl;
         TextPic mTextPic;
+        HUD mHUD;
 
         LoadScreen mLoadScreen;
 
