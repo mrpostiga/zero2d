@@ -29,7 +29,7 @@ float RV()
     return (float)rand() / RAND_MAX;
 }
 
-TextureModule::TextureModule()
+TextureModule::TextureModule() : mHUD(mSpriteProgram)
 {
 }
 
@@ -54,6 +54,8 @@ void TextureModule::onLoad()
     mTextPic.loadFont("data/fonts/DejaVuSans.ttf", 16);
     mTextPic.setText("TheBuzzSaw");
     mTextPic.setScale(20.0f);
+
+    mHUD.add(new Button("new_game.png", Point(0.0f), Point(32.0f, 8.0f)));
 
     glGenTextures(1, &mBackTexture);
     DisplayEngine::loadTexture("data/images/dragon.png", mBackTexture);
@@ -343,6 +345,7 @@ void TextureModule::onLoop()
     mBackVBO.displayLinear(GL_QUADS, 0, 4);
     mPlayerControl->getEntity()->display(mMVPM);
     mTextPic.display();
+    mHUD.display();
 
     mParticleProgram.use();
     mModelView.matrix().scale(60.0f);

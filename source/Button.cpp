@@ -85,6 +85,7 @@ Button::~Button()
 
 void Button::display()
 {
+    glBindTexture(GL_TEXTURE_2D, mTexture);
     mVBO.displayLinear(GL_QUADS, mFirst, 4);
 }
 
