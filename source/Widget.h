@@ -24,7 +24,7 @@
 class Widget
 {
     public:
-        enum MouseState { OUT = 0, HOVER = 1, PRESS = 2 };
+        enum MouseState { OUTSIDE = 0, HOVER = 1, PRESS = 2 };
 
         class EventListener
         {
