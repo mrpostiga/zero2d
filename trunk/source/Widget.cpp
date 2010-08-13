@@ -17,7 +17,7 @@
 
 #include "Widget.h"
 
-Widget::Widget() : mCurrentState(OUT), mLastState(OUT), mEnabled(true),
+Widget::Widget() : mCurrentState(OUTSIDE), mLastState(OUTSIDE), mEnabled(true),
     mVisible(true), mCanFocus(false), mListener(NULL)
 {
 }
