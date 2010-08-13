@@ -37,6 +37,7 @@
 #include <sstream>
 using namespace std;
 
+Pixel DisplayEngine::mDisplaySize;
 Surface DisplayEngine::mDisplay = NULL;
 Surface DisplayEngine::mWindowIcon = NULL;
 SDL_Rect** DisplayEngine::mModes = NULL;
@@ -279,6 +280,8 @@ void DisplayEngine::initialize()
     SDL_WM_SetCaption("Zero2D - Development Build", "Zero2D");
     mDisplay = SDL_SetVideoMode(width, height,
         Config::get<int>("bits per pixel", 24), flags);
+    mDisplaySize[0] = mDisplay->w;
+    mDisplaySize[1] = mDisplay->h;
 
 
     logStream << endl << "current SDL OpenGL settings" << endl << endl;

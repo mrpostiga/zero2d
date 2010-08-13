@@ -15,14 +15,13 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _DISPLAYENGINE_H_
-#define _DISPLAYENGINE_H_
+#ifndef DISPLAYENGINE_H
+#define DISPLAYENGINE_H
 
 #include "Vector2D.h"
 #include "LogFile.h"
 
 #include <SDL.h>
-
 
 #include "OGL.h"
 typedef SDL_Surface* Surface;
@@ -63,9 +62,6 @@ class DisplayEngine
 
         static int processKey(SDLKey inSym, SDLMod inMod);
 
-        static Surface mDisplay;
-        static unsigned int mFPS;
-
         static bool printErrors(const char* inMessage,
             std::ostream& inStream = mLogFile);
 
@@ -84,12 +80,17 @@ class DisplayEngine
             return mDisplay->h;
         }
 
+        static inline Pixel getDisplaySize()
+        {
+            return mDisplaySize;
+        }
+
         static inline void render();
 
     private:
         static void cleanup();
 
-
+        static Pixel mDisplaySize;
         static Surface mWindowIcon;
         static SDL_Rect** mModes;
         static unsigned int mNextFrame;
@@ -98,7 +99,8 @@ class DisplayEngine
         static ColorMask mMask;
         static std::string mShaderFolder;
         static float mAspectRatio;
-
+        static Surface mDisplay;
+        static unsigned int mFPS;
 
         static LogFile mLogFile;
 };

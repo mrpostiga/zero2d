@@ -62,3 +62,17 @@ void HUD::display()
         }
     }
 }
+
+void HUD::updateMouse(int inX, int inY, bool inLeft)
+{
+    for (list<Widget*>::iterator i = mWidgets.begin();
+        i != mWidgets.end(); ++i)
+    {
+        Widget* w = *i;
+
+        if (w->contains(inX, inY))
+            w->changeMouseState(inLeft ? Widget::PRESS : Widget::HOVER);
+        else
+            w->changeMouseState(Widget::OUTSIDE);
+    }
+}

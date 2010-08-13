@@ -393,9 +393,25 @@ void TextureModule::onUnload()
     glDeleteTextures(1, &mBackTexture);
 }
 
+void TextureModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
+    bool inLeft, bool inRight, bool inMiddle)
+{
+    mHUD.updateMouse(inX, inY, inLeft);
+}
+
 void TextureModule::onMouseWheel(bool inUp, bool inDown)
 {
     mCamera.zoom(inUp ? 0.1f : -0.1f);
+}
+
+void TextureModule::onLButtonDown(int inX, int inY)
+{
+    mHUD.updateMouse(inX, inY, true);
+}
+
+void TextureModule::onLButtonUp(int inX, int inY)
+{
+    mHUD.updateMouse(inX, inY, false);
 }
 
 void TextureModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)

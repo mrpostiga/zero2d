@@ -33,6 +33,7 @@ class HUD
 
         void add(Widget* inWidget);
         void remove(Widget* inWidget);
+        void updateMouse(int inX, int inY, bool inLeft);
         void display();
 
     private:

@@ -16,6 +16,8 @@
  */
 
 #include "Widget.h"
+#include "HUD.h"
+#include "DisplayEngine.h"
 
 Widget::Widget() : mCurrentState(OUTSIDE), mLastState(OUTSIDE), mEnabled(true),
     mVisible(true), mCanFocus(false), mListener(NULL)
@@ -48,7 +50,30 @@ void Widget::changeMouseState(MouseState inState)
     onMouseStateChange();
 }
 
-void Widget::registerEventListener(EventListener* inListener)
+void Widget::registerMouseEventListener(MouseEventListener* inListener)
 {
     mListener = inListener;
+}
+
+void Widget::convertObjectToPixel()
+{
+    Pixel displaySize(DisplayEngine::getDisplaySize());
+    Pixel center(displaySize[0] / 2, displaySize[1] / 2);
+
+    float portion;
+
+    portion = mObjectUL[0] / HUD_RANGE;
+    mPixelUL[0] = center[0] + int(portion * float(center[0]));
+    portion = mObjectUL[1] / HUD_RANGE;
+    mPixelUL[1] = center[1] - int(portion * float(center[1]));
+
+    portion = mObjectLR[0] / HUD_RANGE;
+    mPixelLR[0] = center[0] + int(portion * float(center[0]));
+    portion = mObjectLR[1] / HUD_RANGE;
+    mPixelLR[1] = center[1] - int(portion * float(center[1]));
+}
+
+void Widget::convertPixelToObject()
+{
+    // to be implemented
 }
