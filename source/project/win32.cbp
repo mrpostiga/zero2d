@@ -111,6 +111,8 @@
 		<Unit filename="..\State.h" />
 		<Unit filename="..\TestModule.cpp" />
 		<Unit filename="..\TestModule.h" />
+		<Unit filename="..\TextPic.cpp" />
+		<Unit filename="..\TextPic.h" />
 		<Unit filename="..\TextureModule.cpp" />
 		<Unit filename="..\TextureModule.h" />
 		<Unit filename="..\Thread.cpp" />

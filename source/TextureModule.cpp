@@ -525,6 +525,7 @@ void TextureModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)
                 default:
                 {
                     //mJoystickInputs[inWhich].player->onEvent(mJoystickInputs[inWhich].axis[inAxis]);
+                    break;
                 }
             }
         }
