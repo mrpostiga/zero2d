@@ -100,7 +100,7 @@ void Button::onMouseStateChange()
             case Widget::OUTSIDE: { mFirst = 0; break; }
             case Widget::HOVER: { mFirst = 4; break; }
             case Widget::PRESS: { mFirst = 8; break; }
-            default: {}
+            default: { break; }
         }
     }
 }
