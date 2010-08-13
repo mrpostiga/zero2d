@@ -212,9 +212,9 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
         mSVBO.loadVAA(SpriteProgram::TEXTURE, 2, mFrames.size() * 8,
             coordinates);
     }
-    catch (Shader::Exception& se)
+    catch (const CoreException& ce)
     {
-        cerr << "sprite shader exception -- " << se.reason << endl;
+        cerr << ce.type << " -- " << ce.reason << endl;
         exit(1);
     }
     catch (...)

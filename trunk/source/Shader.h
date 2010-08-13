@@ -19,6 +19,7 @@
 #define SHADER_H
 
 #include "OGL.h"
+#include "CoreException.h"
 
 #include <string>
 #include <map>
@@ -28,12 +29,7 @@ class Shader
     public:
         virtual ~Shader();
 
-        class Exception
-        {
-            public:
-                Exception(const std::string& inReason) : reason(inReason) {}
-                const std::string reason;
-        };
+        ADD_EXCEPTION_CLASS("shader exception");
 
         inline GLuint handle() { return mHandle; }
 
