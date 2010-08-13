@@ -26,7 +26,7 @@ class Widget
     public:
         enum MouseState { OUTSIDE = 0, HOVER = 1, PRESS = 2 };
 
-        class EventListener
+        class MouseEventListener
         {
             public:
                 virtual void onWidgetMouseHover() {}
@@ -40,7 +40,13 @@ class Widget
         virtual void onMouseStateChange();
 
         void changeMouseState(MouseState inState);
-        void registerEventListener(EventListener* inListener);
+        void registerMouseEventListener(MouseEventListener* inListener);
+
+        inline bool contains(int inX, int inY)
+        {
+            return inX >= mPixelUL[0] && inX <= mPixelLR[0]
+                && inY >= mPixelUL[1] && inY <= mPixelLR[1];
+        }
 
         inline bool isEnabled() { return mEnabled; }
         inline bool isDisabled() { return !mEnabled; }
@@ -55,6 +61,9 @@ class Widget
         inline const Matrix3D& matrix() const { return mMatrix; }
 
     protected:
+        void convertObjectToPixel();
+        void convertPixelToObject();
+
         MouseState mCurrentState;
         MouseState mLastState;
 
@@ -71,7 +80,7 @@ class Widget
         bool mVisible;
         bool mCanFocus;
 
-        EventListener* mListener;
+        MouseEventListener* mListener;
 };
 
 #endif

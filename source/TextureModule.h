@@ -74,7 +74,11 @@ class TextureModule : public Module
 
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         virtual void onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+        virtual void onMouseMove(int inX, int inY, int inRelX, int inRelY,
+            bool inLeft, bool inRight, bool inMiddle);
         virtual void onMouseWheel(bool inUp, bool inDown);
+        virtual void onLButtonDown(int inX, int inY);
+        virtual void onLButtonUp(int inX, int inY);
         virtual void onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue);
         virtual void onJoyButtonDown(Uint8 inWhich, Uint8 inButton);
         virtual void onJoyButtonUp(Uint8 inWhich, Uint8 inButton);

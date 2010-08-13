@@ -107,6 +107,14 @@ void Button::onMouseStateChange()
 
 void Button::updateMatrix()
 {
+    float w = mSize[0] / 2.0f;
+    float h = mSize[1] / 2.0f;
+    mObjectUL[0] = mPosition[0] - w;
+    mObjectUL[1] = mPosition[1] + h;
+    mObjectLR[0] = mPosition[0] + w;
+    mObjectLR[1] = mPosition[1] - h;
+    convertObjectToPixel();
+
     mMatrix.loadIdentity();
     mMatrix.translate(mPosition[0], mPosition[1], 0.0f);
     mMatrix.scale(mSize[0], mSize[1], 1.0f);
