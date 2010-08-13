@@ -38,9 +38,9 @@ int main(int argc, char** argv)
         m = new TextureModule;
         //m = new TestModule;
     }
-    catch (const Shader::Exception& se)
+    catch (const CoreException& ce)
     {
-        cerr << "shader exception -- " << se.reason << endl;
+        cerr << ce.type << " -- " << ce.reason << endl;
         m = NULL;
     }
     catch (...)

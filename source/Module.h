@@ -15,8 +15,10 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MODULE_H_
-#define _MODULE_H_
+#ifndef MODULE_H
+#define MODULE_H
+
+#include "CoreException.h"
 
 #include <SDL.h>
 #include <string>
@@ -25,12 +27,7 @@ class Module
 {
     public:
 
-        class Exception
-        {
-            public:
-                Exception(const std::string& inReason) : reason(inReason) {}
-                const std::string reason;
-        };
+        ADD_EXCEPTION_CLASS("module exception");
 
         Module();
         virtual ~Module();

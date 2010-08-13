@@ -74,14 +74,9 @@ void DisplayEngine::start(Module* inModule)
         {
             currentModule->onLoad();
         }
-        catch (const Module::Exception& me)
+        catch (const CoreException& ce)
         {
-            cerr << "module exception -- " << me.reason << endl;
-            currentModule = NULL;
-        }
-        catch (const Shader::Exception& se)
-        {
-            cerr << "shader exception -- " << se.reason << endl;
+            cerr << ce.type << " -- " << ce.reason << endl;
             currentModule = NULL;
         }
         catch (...)

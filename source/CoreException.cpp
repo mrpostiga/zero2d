@@ -15,28 +15,15 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUTTON_H
-#define BUTTON_H
+#include "CoreException.h"
 
-#include "Widget.h"
-#include "ShaderVBO.h"
+using namespace std;
 
-class Button : public Widget
+CoreException::CoreException(const string& inType, const string& inReason)
+    : type(inType), reason(inReason)
 {
-    public:
-        Button(const char* inFile, Point inPosition = Point(0.0f),
-            Point inSize = Point(0.0f));
-        virtual ~Button();
+}
 
-        virtual void display();
-        virtual void onMouseStateChange();
-
-    private:
-        void updateMatrix();
-
-        GLint mFirst;
-        GLuint mTexture;
-        ShaderVBO mVBO;
-};
-
-#endif
+CoreException::~CoreException()
+{
+}

@@ -35,25 +35,23 @@ Button::Button(const char* inFile, Point inPosition, Point inSize) : mFirst(0)
     DisplayEngine::loadTexture(s.c_str(), mTexture);
 
     GLfloat data[48];
-    float w = inSize[0] / 2.0f;
-    float h = inSize[1] / 2.0f;
     for (size_t i = 0; i < 4; ++i)
     {
         size_t j = i * 12;
-        data[j + 0] = w;
-        data[j + 1] = h;
+        data[j + 0] = 0.5f;
+        data[j + 1] = 0.5f;
         data[j + 2] = 0.0f;
 
-        data[j + 3] = w;
-        data[j + 4] = -h;
+        data[j + 3] = 0.5f;
+        data[j + 4] = -0.5f;
         data[j + 5] = 0.0f;
 
-        data[j + 6] = -w;
-        data[j + 7] = -h;
+        data[j + 6] = -0.5f;
+        data[j + 7] = -0.5f;
         data[j + 8] = 0.0f;
 
-        data[j + 9] = -w;
-        data[j + 10] = h;
+        data[j + 9] = -0.5f;
+        data[j + 10] = 0.5f;
         data[j + 11] = 0.0f;
     }
 
@@ -75,7 +73,7 @@ Button::Button(const char* inFile, Point inPosition, Point inSize) : mFirst(0)
 
     mVBO.loadVAA(SpriteProgram::TEXTURE, 2, 16, data);
 
-    mMatrix.translate(mPosition[0], mPosition[1], 0.0f);
+    updateMatrix();
 }
 
 Button::~Button()
@@ -105,4 +103,11 @@ void Button::onMouseStateChange()
             default: {}
         }
     }
+}
+
+void Button::updateMatrix()
+{
+    mMatrix.loadIdentity();
+    mMatrix.translate(mPosition[0], mPosition[1], 0.0f);
+    mMatrix.scale(mSize[0], mSize[1], 1.0f);
 }
