@@ -48,12 +48,16 @@
 			<Add library="boost_filesystem" />
 			<Add library="lua5.1" />
 		</Linker>
+		<Unit filename="../Button.cpp" />
+		<Unit filename="../Button.h" />
 		<Unit filename="../Camera.cpp" />
 		<Unit filename="../Camera.h" />
 		<Unit filename="../Config.cpp" />
 		<Unit filename="../Config.h" />
 		<Unit filename="../Control.cpp" />
 		<Unit filename="../Control.h" />
+		<Unit filename="../CoreException.cpp" />
+		<Unit filename="../CoreException.h" />
 		<Unit filename="../DisplayEngine.cpp" />
 		<Unit filename="../DisplayEngine.h" />
 		<Unit filename="../Entity.cpp" />
