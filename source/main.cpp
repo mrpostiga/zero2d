@@ -15,42 +15,10 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Config.h"
-#include "DisplayEngine.h"
-#include "SoundEngine.h"
-#include "TestModule.h"
-#include "TextureModule.h"
-
-#include <iostream>
-using namespace std;
+#include "GameEngine.h"
 
 int main(int argc, char** argv)
 {
-    Config::initialize(argc, argv);
-    DisplayEngine::initialize();
-    //SoundEngine::initialize();
-    //Config::outputSettings();
-
-    Module* m;
-
-    try
-    {
-        m = new TextureModule;
-        //m = new TestModule;
-    }
-    catch (const CoreException& ce)
-    {
-        cerr << ce.type << " -- " << ce.reason << endl;
-        m = NULL;
-    }
-    catch (...)
-    {
-        cerr << "unknown exception" << endl;
-        m = NULL;
-    }
-
-    if (m) DisplayEngine::start(m);
-    //SoundEngine::cleanup();
-    Config::finalize();
+    GameEngine::initialize(argc, argv);
     return 0;
 }

@@ -27,3 +27,9 @@ CoreException::CoreException(const string& inType, const string& inReason)
 CoreException::~CoreException()
 {
 }
+
+ostream& operator<<(ostream& inStream, const CoreException& inException)
+{
+    inStream << inException.type << " -- " << inException.reason;
+    return inStream;
+}

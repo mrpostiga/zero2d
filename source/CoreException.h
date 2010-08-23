@@ -19,6 +19,7 @@
 #define COREEXCEPTION_H
 
 #include <string>
+#include <iostream>
 
 #define ADD_EXCEPTION_CLASS(inType) class Exception : public CoreException \
     { \
@@ -37,5 +38,8 @@ class CoreException
         const std::string type;
         const std::string reason;
 };
+
+std::ostream& operator<<(std::ostream& inStream, const CoreException&
+    inException);
 
 #endif

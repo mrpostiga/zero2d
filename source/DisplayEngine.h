@@ -85,7 +85,7 @@ class DisplayEngine
             return mDisplaySize;
         }
 
-        static inline void render();
+        static inline void render() { SDL_GL_SwapBuffers(); }
 
     private:
         static void cleanup();
@@ -109,11 +109,6 @@ template<class T>
 T linearInterpolate(const T& inMin, const T& inMax, double inT)
 {
     return (inMin * (1.0 - inT)) + (inMax * inT);
-}
-
-inline void DisplayEngine::render()
-{
-    SDL_GL_SwapBuffers();
 }
 
 #endif

@@ -27,7 +27,7 @@
 #include "LoadScreen.h"
 #include "LuaMachine.h"
 #include "PlayerControl.h"
-#include "Config.h"
+#include "GameEngine.h"
 #include "OGL.h"
 #include "TextPic.h"
 #include "HUD.h"

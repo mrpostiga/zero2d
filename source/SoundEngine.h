@@ -18,7 +18,7 @@
 #ifndef SOUNDENGINE_H
 #define SOUNDENGINE_H
 
-#include "Config.h"
+#include "GameEngine.h"
 
 #include <SDL.h>
 #include <SDL_mixer.h>

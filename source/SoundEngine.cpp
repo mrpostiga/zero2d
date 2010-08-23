@@ -46,10 +46,10 @@ void SoundEngine::initialize()
 
     mBackgroundMusic = NULL;
 
-    mAudioRate = Config::get("audio rate", 22050);
-    mAudioFormat = Config::get("audio format", AUDIO_S16SYS);
-    mNumChannels = Config::get("audio channels", 2);
-    mAudioBufferSize = Config::get("audio buffer size", 1024);
+    mAudioRate = GameEngine::config.get("audio rate", 22050);
+    mAudioFormat = GameEngine::config.get("audio format", AUDIO_S16SYS);
+    mNumChannels = GameEngine::config.get("audio channels", 2);
+    mAudioBufferSize = GameEngine::config.get("audio buffer size", 1024);
 
 
 

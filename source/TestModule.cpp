@@ -16,7 +16,7 @@
  */
 
 #include "TestModule.h"
-#include "Config.h"
+#include "GameEngine.h"
 #include "DisplayEngine.h"
 
 #include <ctime>
@@ -34,9 +34,9 @@ TestModule::~TestModule()
 void TestModule::onLoad()
 {
     mTimer = 0;
-    mNet.openSocket(Config::get<Uint16>("connect port", 45678));
-    mNet.connect(Config::getRaw("connect ip"),
-        Config::get<Uint16>("connect port", 45678));
+    mNet.openSocket(GameEngine::config.get<Uint16>("connect port", 45678));
+    mNet.connect(GameEngine::config.getRaw("connect ip").c_str(),
+        GameEngine::config.get<Uint16>("connect port", 45678));
 }
 
 void TestModule::onUnload()
