@@ -18,8 +18,7 @@
 #ifndef GAMECONTROLLER_H
 #define GAMECONTROLLER_H
 
-#include <SDL.h>
-typedef SDL_Joystick* Joystick;
+#include "CoreSDL.h"
 
 #include <string>
 

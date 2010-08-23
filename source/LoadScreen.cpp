@@ -16,6 +16,7 @@
  */
 
 #include "LoadScreen.h"
+#include "DisplayEngine.h"
 
 #include <iostream>
 using namespace std;
@@ -38,10 +39,10 @@ void LoadScreen::update(int inPercent)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     mProgram.use();
-    glBindTexture(GL_TEXTURE_2D, mBackTexture);
+    mBackTexture.bind();
     mBackVBO.displayLinear(GL_QUADS, 0, 4);
 
-    glBindTexture(GL_TEXTURE_2D, mLoadTexture);
+    mLoadTexture.bind();
 
     glEnable(GL_SCISSOR_TEST);
     glScissor(mLoadScreenLocationX, mLoadScreenLocationY,
@@ -128,22 +129,18 @@ void LoadScreen::setup()
 
 void LoadScreen::setBackgroundImage(const char* inBackgroundImage)
 {
-    glGenTextures(1, &mBackTexture);
     std::string path = "data/images/";
     path += inBackgroundImage;
-    DisplayEngine::loadTexture(path.c_str(), mBackTexture);
+    mBackTexture.loadFile(path.c_str());
 }
 
 void LoadScreen::setLoadImage(const char* inLoadImage)
 {
-    glGenTextures(1, &mLoadTexture);
     std::string path = "data/images/";
     path += inLoadImage;
-    Surface load = DisplayEngine::loadImage(path.c_str());
-    mLoadWidth = load->w;
-    mLoadHeight = load->h;
-    //DisplayEngine::loadTexture(path.c_str(), mLoadTexture);
-    DisplayEngine::loadTexture(load, mLoadTexture);
+    Pixel size(mLoadTexture.loadFile(path.c_str()));
+    mLoadWidth = size[0];
+    mLoadHeight = size[1];
 }
 
 /**********************************************

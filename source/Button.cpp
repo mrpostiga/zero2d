@@ -28,11 +28,9 @@ Button::Button(const char* inFile, Point inPosition, Point inSize) : mFirst(0)
     mPosition = inPosition;
     mSize = inSize;
 
-    glGenTextures(1, &mTexture);
-
     string s("data/images/");
     s += inFile;
-    DisplayEngine::loadTexture(s.c_str(), mTexture);
+    mTexture.loadFile(s.c_str());
 
     GLfloat data[48];
     for (size_t i = 0; i < 4; ++i)
@@ -78,12 +76,11 @@ Button::Button(const char* inFile, Point inPosition, Point inSize) : mFirst(0)
 
 Button::~Button()
 {
-    glDeleteTextures(1, &mTexture);
 }
 
 void Button::display()
 {
-    glBindTexture(GL_TEXTURE_2D, mTexture);
+    mTexture.bind();
     mVBO.displayLinear(GL_QUADS, mFirst, 4);
 }
 

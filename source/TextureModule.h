@@ -24,7 +24,6 @@
 #include "SpriteProgram.h"
 #include "ParticleProgram.h"
 #include "Camera.h"
-#include "LoadScreen.h"
 #include "LuaMachine.h"
 #include "PlayerControl.h"
 #include "GameEngine.h"
@@ -32,6 +31,7 @@
 #include "TextPic.h"
 #include "HUD.h"
 #include "Button.h"
+#include "Texture.h"
 
 #include <sstream>
 #include <fstream>
@@ -107,7 +107,7 @@ class TextureModule : public Module
         ShaderVBO mParticleVBO;
         SpriteProgram mSpriteProgram;
         ShaderVBO mBackVBO;
-        GLuint mBackTexture;
+        Texture mBackTexture;
         SpriteInstance* mSpriteInstance;
         Uint32 mTickStart;
         Camera mCamera;
@@ -115,8 +115,6 @@ class TextureModule : public Module
         PlayerControl* mPlayerControl;
         TextPic mTextPic;
         HUD mHUD;
-
-        LoadScreen mLoadScreen;
 
         /// Lua interfacing
         static int luaTest(LuaState inState);

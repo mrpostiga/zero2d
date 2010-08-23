@@ -158,7 +158,8 @@ void DisplayEngine::initialize()
 
         if (is_directory(logsDir))
         {
-            for (directory_iterator itr(logsDir); itr != directory_iterator(); ++itr)
+            for (directory_iterator itr(logsDir); itr != directory_iterator();
+                ++itr)
             {
                 if (is_regular_file(itr->status()))
                 {
@@ -404,8 +405,6 @@ bool DisplayEngine::printErrors(const char* inMessage, ostream& inStream)
 
     error = glGetError();
 
-    //gluErrorString(error) ?
-
     if (error != GL_NO_ERROR)
     {
         inStream << inMessage;
@@ -420,15 +419,13 @@ bool DisplayEngine::printErrors(const char* inMessage, ostream& inStream)
     return isError;
 }
 
-bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
+Pixel DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
     bool inDelete)
 {
-
-    printErrors("Pre-texture errors:\n", mLogFile);
-
-    bool outSuccess = true;
-    if (inSurface == NULL)
+    Pixel outSize;
+    if (!inSurface)
     {
+        inDelete = true;
         Uint32 flags = SDL_SWSURFACE | SDL_ASYNCBLIT;
         int bits = 0;
 
@@ -437,8 +434,10 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
             mMask.blue, mMask.alpha);
         inSurface = SDL_DisplayFormat(t);
         SDL_FreeSurface(t);
-        outSuccess = false;
     }
+
+    outSize[0] = inSurface->w;
+    outSize[1] = inSurface->h;
 
     glBindTexture(GL_TEXTURE_2D, inTexture);
 
@@ -490,19 +489,14 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
 
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-    printErrors("Post-texture errors:\n", mLogFile);
-
-
-    if (!outSuccess || inDelete) SDL_FreeSurface(inSurface);
-    return outSuccess;
+    if (inDelete) SDL_FreeSurface(inSurface);
+    return outSize;
 }
 
-bool DisplayEngine::loadTexture(const char* inFile, GLuint inTexture)
+Pixel DisplayEngine::loadTexture(const char* inFile, GLuint inTexture)
 {
     Surface t = loadImage(inFile);
-    if (t == NULL) return false;
-    loadTexture(t, inTexture);
-    return true;
+    return loadTexture(t, inTexture);
 }
 
 void DisplayEngine::openGLDriverInfo(ostream& inStream)

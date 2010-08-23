@@ -20,6 +20,7 @@
 
 #include "Vector2D.h"
 #include "ShaderVBO.h"
+#include "Texture.h"
 #include "State.h"
 
 #include <string>
@@ -41,7 +42,7 @@ class Sprite
 
         struct Sheet
         {
-            GLuint texture;
+            Texture texture;
             Pixel size;
         };
 
