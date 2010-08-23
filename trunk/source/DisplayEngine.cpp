@@ -18,7 +18,7 @@
 #include "DisplayEngine.h"
 #include "Shader.h"
 #include "Module.h"
-#include "Config.h"
+#include "GameEngine.h"
 #include "GameController.h"
 
 #include "OGL.h"
@@ -153,7 +153,7 @@ void DisplayEngine::initialize()
         using namespace boost::filesystem;
 
         //delete any old log files
-        string logsDir(Config::getUserFolder());
+        string logsDir(GameEngine::getUserFolder());
         logsDir += "logs/";
 
         if (is_directory(logsDir))
@@ -235,7 +235,7 @@ void DisplayEngine::initialize()
     logStream << "setting SDL OpenGL settings (0 indicates success)" << endl
         << endl;
 
-    #define SET_SDL_SETTING(n) setting = Config::get<int>(#n, -1); \
+    #define SET_SDL_SETTING(n) setting = GameEngine::config.get<int>(#n, -1); \
         if (setting >= 0) { logStream << #n << " -- " \
             << SDL_GL_SetAttribute(n, setting) << endl; }
 
@@ -257,8 +257,8 @@ void DisplayEngine::initialize()
     SET_SDL_SETTING(SDL_GL_SWAP_CONTROL);
     SET_SDL_SETTING(SDL_GL_ACCELERATED_VISUAL);
 
-    int width = Config::get<int>("display width", 800);
-    int height = Config::get<int>("display height", 600);
+    int width = GameEngine::config.get<int>("display width", 800);
+    int height = GameEngine::config.get<int>("display height", 600);
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
     mMask.red   = 0xff000000;
@@ -275,11 +275,11 @@ void DisplayEngine::initialize()
 
     Uint32 flags = SDL_OPENGL;
 
-    if (Config::get<int>("full screen", 0) == 1) flags |= SDL_FULLSCREEN;
+    if (GameEngine::config.get<int>("full screen", 0) == 1) flags |= SDL_FULLSCREEN;
 
     SDL_WM_SetCaption("Zero2D - Development Build", "Zero2D");
     mDisplay = SDL_SetVideoMode(width, height,
-        Config::get<int>("bits per pixel", 24), flags);
+        GameEngine::config.get<int>("bits per pixel", 24), flags);
     mDisplaySize[0] = mDisplay->w;
     mDisplaySize[1] = mDisplay->h;
 
@@ -323,7 +323,7 @@ void DisplayEngine::initialize()
     }
 #endif
 
-    mMipmapping = Config::get<int>("mipmapping", 1);
+    mMipmapping = GameEngine::config.get<int>("mipmapping", 1);
     if (mMipmapping == 1)
     {
         if (GLEE_ARB_framebuffer_object || GLEE_EXT_framebuffer_object)
@@ -338,7 +338,7 @@ void DisplayEngine::initialize()
         }
     }
 
-    int shaderSetting = Config::get<int>("shader", 1);
+    int shaderSetting = GameEngine::config.get<int>("shader", 1);
     double shaderVersion;
     stringstream ss;
     ss << glGetString(GL_SHADING_LANGUAGE_VERSION);

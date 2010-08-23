@@ -16,7 +16,7 @@
  */
 
 #include "GameServer.h"
-#include "Config.h"
+#include "GameEngine.h"
 #include "NetworkStream.h"
 
 #include <SDL_net.h>
@@ -34,7 +34,7 @@ GameServer::~GameServer()
 void GameServer::run()
 {
     NetworkStream net;
-    net.openSocket(Config::get<Uint16>("server port", 9421));
+    net.openSocket(GameEngine::config.get<Uint16>("server port", 9421));
 
     Uint8 buffer[PACKET_SIZE];
 

@@ -16,7 +16,7 @@
  */
 
 #include "LogFile.h"
-#include "Config.h"
+#include "GameEngine.h"
 
 using namespace std;
 
@@ -34,7 +34,7 @@ void LogFile::start(const char* inTitle)
     tm* timeinfo = localtime(&rawtime);
     strftime(buffer, 15, "%Y%m%d%H%M%S", timeinfo);
 
-    string s(Config::getUserFolder());
+    string s(GameEngine::getUserFolder());
     s += "logs/";
     s += inTitle;
     s += '-';
