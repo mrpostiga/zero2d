@@ -21,10 +21,8 @@
 #include "Vector2D.h"
 #include "LogFile.h"
 
-#include <SDL.h>
-
+#include "CoreSDL.h"
 #include "OGL.h"
-typedef SDL_Surface* Surface;
 
 #include <iostream>
 
@@ -55,9 +53,9 @@ class DisplayEngine
         static void start(Module* inModule);
         static void initialize();
         static Surface loadImage(const char* inFile);
-        static bool loadTexture(Surface inSurface, GLuint inTexture,
+        static Pixel loadTexture(Surface inSurface, GLuint inTexture,
             bool inDelete = true);
-        static bool loadTexture(const char* inFile, GLuint inTexture);
+        static Pixel loadTexture(const char* inFile, GLuint inTexture);
         static void openGLDriverInfo(std::ostream& inStream);
 
         static int processKey(SDLKey inSym, SDLMod inMod);

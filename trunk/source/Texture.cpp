@@ -15,29 +15,25 @@
  *  along with Zero2D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUTTON_H
-#define BUTTON_H
-
-#include "Widget.h"
-#include "ShaderVBO.h"
 #include "Texture.h"
+#include "DisplayEngine.h"
 
-class Button : public Widget
+Texture::Texture()
 {
-    public:
-        Button(const char* inFile, Point inPosition = Point(0.0f),
-            Point inSize = Point(0.0f));
-        virtual ~Button();
+    glGenTextures(1, &mIndex);
+}
 
-        virtual void display();
-        virtual void onMouseStateChange();
+Texture::~Texture()
+{
+    glDeleteTextures(1, &mIndex);
+}
 
-    private:
-        void updateMatrix();
+Pixel Texture::loadFile(const char* inFile)
+{
+    return DisplayEngine::loadTexture(inFile, mIndex);
+}
 
-        GLint mFirst;
-        Texture mTexture;
-        ShaderVBO mVBO;
-};
-
-#endif
+void Texture::loadSurface(Surface inSurface)
+{
+    DisplayEngine::loadTexture(inSurface, mIndex);
+}

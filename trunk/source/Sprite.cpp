@@ -137,19 +137,7 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
     {
         stringstream ss;
         ss << path << "sheet-" << i << ".png";
-        glGenTextures(1, &mSheets[i].texture);
-        Surface s = DisplayEngine::loadImage(ss.str().c_str());
-
-        if (s == NULL)
-        {
-            cerr << "failed to load sprite sheet: " << ss.str() << endl;
-            exit(1);
-        }
-
-        mSheets[i].size[0] = s->w;
-        mSheets[i].size[1] = s->h;
-
-        DisplayEngine::loadTexture(s, mSheets[i].texture);
+        mSheets[i].size = mSheets[i].texture.loadFile(ss.str().c_str());
     }
 
     GLfloat* vertices = new GLfloat[mFrames.size() * 16];
@@ -226,7 +214,6 @@ Sprite::Sprite(const char* inKey) : mKey(inKey)
     delete [] coordinates;
     delete [] vertices;
 
-    //now build the state tree
     setupStateTree();
 }
 
@@ -239,24 +226,15 @@ void Sprite::setupStateTree()
 
 Sprite::~Sprite()
 {
-    for (size_t i = 0; i < mSheets.size(); ++i)
-    {
-        glDeleteTextures(1, &mSheets[i].texture);
-    }
-
     for (size_t i = 0; i < mStateTree.size(); ++i)
     {
         delete mStateTree[i];
     }
 }
 
-/*************************************
-*   Draw the passed in frame
-*
-**************************************/
 void Sprite::draw(size_t inIndex, bool inFacingRight)
 {
-    glBindTexture(GL_TEXTURE_2D, mSheets[mFrames[inIndex].sheet].texture);
+    mSheets[mFrames[inIndex].sheet].texture.bind();
     GLint target = inIndex * 8;
     if (inFacingRight) target += 4;
     mSVBO.displayLinear(GL_QUADS, target, 4);

@@ -16,7 +16,7 @@
  */
 
 #include "TextPic.h"
-#include "DisplayEngine.h"
+#include "CoreSDL.h"
 #include "SpriteProgram.h"
 
 #include <iostream>
@@ -29,8 +29,6 @@ TextPic::TextPic() : mFont(NULL), mScale(1.0f), mQuality(BLENDED)
     mColor.b = 255;
     mColor.unused = 255;
 
-    glGenTextures(1, &mTexture);
-
     GLfloat textureCoordinates[12] = {0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
         0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
     mVBO.loadVAA(SpriteProgram::VERTEX, 3, 4, textureCoordinates);
@@ -40,7 +38,6 @@ TextPic::TextPic() : mFont(NULL), mScale(1.0f), mQuality(BLENDED)
 TextPic::~TextPic()
 {
     if (mFont) TTF_CloseFont(mFont);
-    glDeleteTextures(1, &mTexture);
 }
 
 void TextPic::loadFont(const char* inFile, int inSize)
@@ -68,7 +65,7 @@ void TextPic::setText(const string& inText)
 
 void TextPic::display()
 {
-    glBindTexture(GL_TEXTURE_2D, mTexture);
+    mTexture.bind();
     mVBO.displayLinear(GL_QUADS, 0, 4);
 }
 
@@ -101,7 +98,7 @@ void TextPic::render()
     if (!textSurface)
     {
         cerr << "failed to render text" << endl;
-        DisplayEngine::loadTexture((Surface)NULL, mTexture);
+        mTexture.loadFile(NULL);
         return;
     }
 
@@ -138,7 +135,7 @@ void TextPic::render()
     mScales[0] = ratio / ratios[0];
     mScales[1] = 1.0f / ratios[1];
 
-    DisplayEngine::loadTexture(s, mTexture, true);
+    mTexture.loadSurface(s);
     updateVBO();
 }
 

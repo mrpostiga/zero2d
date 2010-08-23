@@ -18,9 +18,9 @@
 #ifndef LOADSCREEN_H
 #define LOADSCREEN_H
 
-#include "DisplayEngine.h"
 #include "SpriteProgram.h"
 #include "Matrix3D.h"
+#include "Texture.h"
 
 #include <cmath>
 #include <string>
@@ -51,8 +51,8 @@ class LoadScreen
 
         Matrix3D mProjection;
         Matrix3D mMVPM;
-        GLuint mBackTexture;
-        GLuint mLoadTexture;
+        Texture mBackTexture;
+        Texture mLoadTexture;
 
         ShaderVBO mLoadingBarVBO;
         SpriteProgram mProgram;

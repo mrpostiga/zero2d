@@ -21,6 +21,7 @@
 #include "ShaderVBO.h"
 #include "Vector3D.h"
 #include "Vector2D.h"
+#include "Texture.h"
 #include <SDL_ttf.h>
 #include <string>
 
@@ -47,7 +48,7 @@ class TextPic
         TTF_Font* mFont;
         SDL_Color mColor;
         std::string mText;
-        GLuint mTexture;
+        Texture mTexture;
         float mScale;
         Point mScales;
         Pixel mTextSize;

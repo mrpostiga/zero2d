@@ -16,6 +16,7 @@
  */
 
 #include "TextureModule.h"
+#include "LoadScreen.h"
 #include "DisplayEngine.h"
 
 #include <iostream>
@@ -39,12 +40,14 @@ TextureModule::~TextureModule()
 
 void TextureModule::onLoad()
 {
-    mLoadScreen.setBackgroundImage("dragon.png");
-    mLoadScreen.setLoadImage("loading.png");
-    mLoadScreen.setLoadLocation(0, -200);
-    mLoadScreen.setup();
+    LoadScreen loader;
 
-    mLoadScreen.update(0);
+    loader.setBackgroundImage("dragon.png");
+    loader.setLoadImage("loading.png");
+    loader.setLoadLocation(0, -200);
+    loader.setup();
+
+    loader.update(0);
 
 
     mLuaMachine.addFunction("zero2d_api_test", luaTest);
@@ -55,17 +58,16 @@ void TextureModule::onLoad()
     mTextPic.setText("TheBuzzSaw");
     mTextPic.setScale(20.0f);
 
-    mHUD.add(new Button("new_game.png", Point(0.0f), Point(32.0f, 8.0f)));
+    mHUD.add(new Button("new_game.png", Point(0.0f, 8.0f), Point(32.0f, 8.0f)));
 
-    glGenTextures(1, &mBackTexture);
-    DisplayEngine::loadTexture("data/images/dragon.png", mBackTexture);
-    mLoadScreen.update(50);
+    mBackTexture.loadFile("data/images/dragon.png");
+    loader.update(50);
 
     GLfloat* vertices = new GLfloat[NUM_PARTICLES * 3];
     GLfloat* colors = new GLfloat[NUM_PARTICLES * 3];
     GLfloat* velocities = new GLfloat[NUM_PARTICLES * 3];
     GLfloat* startTimes = new GLfloat[NUM_PARTICLES];
-    mLoadScreen.update(75);
+    loader.update(75);
 
     srand(time(NULL));
     for (size_t i = 0; i < NUM_PARTICLES; ++i)
@@ -87,7 +89,7 @@ void TextureModule::onLoad()
         startTimes[i] = RV() * 1.0f;
     }
 
-    mLoadScreen.update(80);
+    loader.update(80);
 
     mParticleVBO.loadVAA(ParticleProgram::VERTEX, 3, NUM_PARTICLES, vertices);
     mParticleVBO.loadVAA(ParticleProgram::COLOR, 3, NUM_PARTICLES, colors);
@@ -96,7 +98,7 @@ void TextureModule::onLoad()
     mParticleVBO.loadVAA(ParticleProgram::START_TIME, 1, NUM_PARTICLES,
         startTimes);
 
-    mLoadScreen.update(82);
+    loader.update(82);
 
     vertices[0] = 1024.0f;
     vertices[1] = 1024.0f;
@@ -118,7 +120,7 @@ void TextureModule::onLoad()
 
     mBackVBO.loadVAA(SpriteProgram::VERTEX, 2, 4, vertices);
     mBackVBO.loadVAA(SpriteProgram::TEXTURE, 2, 4, colors);
-    mLoadScreen.update(87);
+    loader.update(87);
 
     delete [] vertices;
     delete [] colors;
@@ -127,7 +129,7 @@ void TextureModule::onLoad()
 
     //mSpriteInstance = new SpriteInstance(new Sprite("pimple"));
     //mSpriteInstance = new SpriteInstance(new Sprite("pimple"));
-    mLoadScreen.update(90);
+    loader.update(90);
 
     mFade = 1.0f;
     mFading = false;
@@ -137,7 +139,7 @@ void TextureModule::onLoad()
 
     mSpriteProgram.use();
     mSpriteProgram.setFade(1.0f);
-    mLoadScreen.update(92);
+    loader.update(92);
 
     float ratio = DisplayEngine::getAspectRatio();
     mProjection.orthographic(360.0f, ratio);
@@ -149,7 +151,7 @@ void TextureModule::onLoad()
     setupInputs();
 
     mRotation = 0;
-    mLoadScreen.update(100);
+    loader.update(100);
 }
 
 void TextureModule::setupInputs()
@@ -341,7 +343,7 @@ void TextureModule::onLoop()
     glActiveTexture(GL_TEXTURE0);
 
     mSpriteProgram.setMatrix(mMVPM);
-    glBindTexture(GL_TEXTURE_2D, mBackTexture);
+    mBackTexture.bind();
     mBackVBO.displayLinear(GL_QUADS, 0, 4);
     mPlayerControl->getEntity()->display(mMVPM);
     mTextPic.display();
@@ -390,7 +392,6 @@ void TextureModule::onClose()
 void TextureModule::onUnload()
 {
     delete mSpriteInstance;
-    glDeleteTextures(1, &mBackTexture);
 }
 
 void TextureModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
