@@ -45,12 +45,15 @@
 			<Add library="boost_system" />
 			<Add library="boost_filesystem" />
 		</Linker>
+		<Unit filename="..\Button.cpp" />
+		<Unit filename="..\Button.h" />
 		<Unit filename="..\Camera.cpp" />
 		<Unit filename="..\Camera.h" />
-		<Unit filename="..\Config.cpp" />
-		<Unit filename="..\Config.h" />
 		<Unit filename="..\Control.cpp" />
 		<Unit filename="..\Control.h" />
+		<Unit filename="..\CoreException.cpp" />
+		<Unit filename="..\CoreException.h" />
+		<Unit filename="..\CoreSDL.h" />
 		<Unit filename="..\DisplayEngine.cpp" />
 		<Unit filename="..\DisplayEngine.h" />
 		<Unit filename="..\Entity.cpp" />
@@ -65,6 +68,8 @@
 		<Unit filename="..\GLee.h" />
 		<Unit filename="..\GameController.cpp" />
 		<Unit filename="..\GameController.h" />
+		<Unit filename="..\GameEngine.cpp" />
+		<Unit filename="..\GameEngine.h" />
 		<Unit filename="..\GameServer.cpp" />
 		<Unit filename="..\GameServer.h" />
 		<Unit filename="..\HUD.cpp" />
@@ -93,6 +98,8 @@
 		<Unit filename="..\ParticleProgram.h" />
 		<Unit filename="..\PlayerControl.cpp" />
 		<Unit filename="..\PlayerControl.h" />
+		<Unit filename="..\PropertyList.cpp" />
+		<Unit filename="..\PropertyList.h" />
 		<Unit filename="..\Shader.cpp" />
 		<Unit filename="..\Shader.h" />
 		<Unit filename="..\ShaderProgram.cpp" />
@@ -113,6 +120,8 @@
 		<Unit filename="..\TestModule.h" />
 		<Unit filename="..\TextPic.cpp" />
 		<Unit filename="..\TextPic.h" />
+		<Unit filename="..\Texture.cpp" />
+		<Unit filename="..\Texture.h" />
 		<Unit filename="..\TextureModule.cpp" />
 		<Unit filename="..\TextureModule.h" />
 		<Unit filename="..\Thread.cpp" />
