@@ -18,13 +18,8 @@
 #ifndef SOUNDENGINE_H
 #define SOUNDENGINE_H
 
-#include "GameEngine.h"
-
-#include <SDL.h>
+#include "CoreSDL.h"
 #include <SDL_mixer.h>
-#include <sstream>
-
-#include <iostream>
 
 typedef Mix_Chunk* SoundEffect;
 typedef Mix_Music* Music;
@@ -60,7 +55,6 @@ class SoundEngine
         static int mAudioBufferSize;
 
         static Music mBackgroundMusic;
-        static SoundEffect mTankFire;
         static int mChannel;
         static int mMusicVolume;
 };

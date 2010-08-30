@@ -30,7 +30,8 @@ Texture::~Texture()
 
 Pixel Texture::loadFile(const char* inFile)
 {
-    return DisplayEngine::loadTexture(inFile, mIndex);
+    Surface t = DisplayEngine::loadImage(inFile);
+    return DisplayEngine::loadTexture(t, mIndex);
 }
 
 void Texture::loadSurface(Surface inSurface)

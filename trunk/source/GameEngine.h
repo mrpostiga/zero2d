@@ -19,6 +19,7 @@
 #define GAMEENGINE_H
 
 #include "PropertyList.h"
+#include "CoreSDL.h"
 
 #include <cstdlib>
 #define UNIX_HOME_FOLDER getenv("HOME")
@@ -27,6 +28,7 @@ class GameEngine
 {
     public:
         static void initialize(int inArgc, char** inArgv);
+        static int processKey(SDLKey inSym, SDLMod inMod);
 
         static inline const std::string& getUserFolder()
         {

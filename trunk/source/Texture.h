@@ -32,9 +32,9 @@ class Texture
         void loadSurface(Surface inSurface);
 
         inline void bind() { glBindTexture(GL_TEXTURE_2D, mIndex); }
-        //inline GLuint index() { return mIndex; }
 
     private:
+        Texture(const Texture& inTexture) {}
         GLuint mIndex;
 };
 

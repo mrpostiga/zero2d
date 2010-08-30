@@ -122,6 +122,39 @@ void Matrix3D::scale(float inScale)
     multiply(transform);
 }
 
+void Matrix3D::scaleX(float inScale)
+{
+    Matrix3D transform;
+
+    transform[0] = inScale;
+    transform[5] = 1.0f;
+    transform[10] = 1.0f;
+
+    multiply(transform);
+}
+
+void Matrix3D::scaleY(float inScale)
+{
+    Matrix3D transform;
+
+    transform[0] = 1.0f;
+    transform[5] = inScale;
+    transform[10] = 1.0f;
+
+    multiply(transform);
+}
+
+void Matrix3D::scaleZ(float inScale)
+{
+    Matrix3D transform;
+
+    transform[0] = 1.0f;
+    transform[5] = 1.0f;
+    transform[10] = inScale;
+
+    multiply(transform);
+}
+
 void Matrix3D::scale(float inX, float inY, float inZ)
 {
     Matrix3D transform;
@@ -142,6 +175,15 @@ void Matrix3D::translate(float inX, float inY, float inZ)
     transform[14] = inZ;
 
     multiply(transform);
+}
+
+void Matrix3D::smartMove(float inRX, float inRY, float inRZ, float inTX,
+    float inTY, float inTZ)
+{
+    translate(inTX, inTY, inTZ);
+    rotateY(inRY);
+    rotateX(inRX);
+    rotateZ(inRZ);
 }
 
 void Matrix3D::frustrum(float inLeft, float inRight, float inBottom,
@@ -483,7 +525,7 @@ ostream& operator<<(ostream& inStream, const Matrix3D& inMatrix)
     inStream << setprecision(2);
     for (size_t i = 0; i < 4; ++i)
     {
-        if (i) inStream << endl;
+        if (i) inStream << '\n';
         for (size_t j = 0; j < 4; ++j)
         {
             inStream << setw(6) << inMatrix(i, j);
