@@ -31,13 +31,22 @@ class Matrix3D
         Matrix3D(const Matrix3D& inMatrix);
 
         void loadIdentity();
+
+        /// model view
         void rotate(float inDegrees, float inX, float inY, float inZ);
         void rotateX(float inDegrees);
         void rotateY(float inDegrees);
         void rotateZ(float inDegrees);
         void scale(float inScale);
+        void scaleX(float inScale);
+        void scaleY(float inScale);
+        void scaleZ(float inScale);
         void scale(float inX, float inY, float inZ);
         void translate(float inX, float inY, float inZ);
+        void smartMove(float inRX, float inRY, float inRZ, float inTX,
+            float inTY, float inTZ);
+
+        /// projection
         void frustrum(float inLeft, float inRight, float inBottom, float inTop,
             float inNear, float inFar);
         void perspective(float inFieldOfView, float inRatio, float inNear,

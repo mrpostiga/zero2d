@@ -16,7 +16,10 @@
  */
 
 #include "SoundEngine.h"
+#include "GameEngine.h"
 
+#include <sstream>
+#include <iostream>
 using namespace std;
 
 int SoundEngine::mAudioRate;
@@ -25,7 +28,6 @@ int SoundEngine::mNumChannels;
 int SoundEngine::mAudioBufferSize;
 
 Music SoundEngine::mBackgroundMusic;
-SoundEffect SoundEngine::mTankFire;
 int SoundEngine::mChannel = 1;
 int SoundEngine::mMusicVolume = 100;
 
@@ -35,7 +37,6 @@ void SoundEngine::initialize()
 #if SDL_MIXER_PATCHLEVEL > 15
     // SDL_mixer 1.2.10 introduced Mix_Init() and Mix_Quit()
     int flags = MIX_INIT_MP3 | MIX_INIT_OGG;
-
     int init = Mix_Init(flags);
 
     if ((init & flags) != flags)
@@ -51,8 +52,6 @@ void SoundEngine::initialize()
     mNumChannels = GameEngine::config.get("audio channels", 2);
     mAudioBufferSize = GameEngine::config.get("audio buffer size", 1024);
 
-
-
     if (Mix_OpenAudio(mAudioRate, mAudioFormat, mNumChannels, mAudioBufferSize) == -1)
     {
         cerr << "Audio Initialization failed." << endl;
@@ -60,10 +59,7 @@ void SoundEngine::initialize()
         exit(2);
     }
 
-
-
     Mix_AllocateChannels(NUM_CHANNELS);
-
 }
 
 
@@ -73,8 +69,6 @@ void SoundEngine::loadBackgroundMusic(const char* inFile)
     music << "data/audio/" << inFile;
     //music << Config::get<string>("background music", inFile);
 
-
-    /* Actually loads up the music */
     if ((mBackgroundMusic = Mix_LoadMUS(music.str().c_str())) == NULL)
     {
         cerr << Mix_GetError()  << " " << music.str() << endl;
@@ -104,7 +98,6 @@ void SoundEngine::playBackgroundMusic()
        provides us with a callback routine we can use to do
        exactly that */
     //Mix_HookMusicFinished(musicDone);
-
 }
 
 void SoundEngine::stopBackgroundMusic()

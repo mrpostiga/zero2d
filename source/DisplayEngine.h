@@ -32,11 +32,6 @@
 #define NEAR_CP 1.0
 #define FAR_CP 10000.0
 
-#define VERTEX_DATA 0
-#define INDEX_DATA 1
-#define NORMAL_DATA 2
-#define TEXTURE_DATA 3
-
 struct ColorMask
 {
     Uint32 red;
@@ -58,8 +53,6 @@ class DisplayEngine
         static Pixel loadTexture(const char* inFile, GLuint inTexture);
         static void openGLDriverInfo(std::ostream& inStream);
 
-        static int processKey(SDLKey inSym, SDLMod inMod);
-
         static bool printErrors(const char* inMessage,
             std::ostream& inStream = mLogFile);
 
@@ -68,21 +61,9 @@ class DisplayEngine
             return mShaderFolder;
         }
 
-        static inline float getAspectRatio()
-        {
-            return mAspectRatio;
-        }
-
-        static inline int getDisplayHeight()
-        {
-            return mDisplay->h;
-        }
-
-        static inline Pixel getDisplaySize()
-        {
-            return mDisplaySize;
-        }
-
+        static inline float getAspectRatio() { return mAspectRatio; }
+        static inline int getDisplayHeight() { return mDisplay->h; }
+        static inline Pixel getDisplaySize() { return mDisplaySize; }
         static inline void render() { SDL_GL_SwapBuffers(); }
 
     private:
