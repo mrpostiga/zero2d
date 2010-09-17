@@ -45,16 +45,14 @@ class Matrix4x4
         void scaleZ(T inScale);
         void scale(T inX, T inY, T inZ);
         void translate(T inX, T inY, T inZ);
-        void smartMove(T inRX, T inRY, T inRZ, T inTX,
-            T inTY, T inTZ);
+        void smartMove(T inRX, T inRY, T inRZ, T inTX, T inTY, T inTZ);
 
         /// projection
-        void frustrum(T inLeft, T inRight, T inBottom, T inTop,
-            T inNear, T inFar);
-        void perspective(T inFieldOfView, T inRatio, T inNear,
+        void frustrum(T inLeft, T inRight, T inBottom, T inTop, T inNear,
             T inFar);
-        void orthographic(T inLeft, T inRight, T inBottom,
-            T inTop, T inNear, T inFar);
+        void perspective(T inFieldOfView, T inRatio, T inNear, T inFar);
+        void orthographic(T inLeft, T inRight, T inBottom, T inTop, T inNear,
+            T inFar);
         void orthographic(T inRange, T inRatio);
 
         /// matrix operators
@@ -240,8 +238,8 @@ void Matrix4x4<T>::scaleX(T inScale)
     Matrix4x4<T> transform;
 
     transform[0] = inScale;
-    transform[5] = 1.0f;
-    transform[10] = 1.0f;
+    transform[5] = static_cast<T>(1);
+    transform[10] = static_cast<T>(1);
 
     multiply(transform);
 }
@@ -251,9 +249,9 @@ void Matrix4x4<T>::scaleY(T inScale)
 {
     Matrix4x4<T> transform;
 
-    transform[0] = 1.0f;
+    transform[0] = static_cast<T>(1);
     transform[5] = inScale;
-    transform[10] = 1.0f;
+    transform[10] = static_cast<T>(1);
 
     multiply(transform);
 }
@@ -263,8 +261,8 @@ void Matrix4x4<T>::scaleZ(T inScale)
 {
     Matrix4x4<T> transform;
 
-    transform[0] = 1.0f;
-    transform[5] = 1.0f;
+    transform[0] = static_cast<T>(1);
+    transform[5] = static_cast<T>(1);
     transform[10] = inScale;
 
     multiply(transform);
@@ -487,7 +485,7 @@ const Matrix4x4<T> Matrix4x4<T>::inversed() const
 template<typename T>
 void Matrix4x4<T>::copyInverseTo(Matrix4x4<T>& inMatrix) const
 {
-#define SWAP_ROWS(a, b) { T *_tmp = a; (a)=(b); (b)=_tmp; }
+#define SWAP_ROWS(a, b) { T* _tmp = a; (a)=(b); (b)=_tmp; }
 
         T wtmp[4][8];
         T m0, m1, m2, m3, s;
