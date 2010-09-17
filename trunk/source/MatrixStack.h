@@ -18,7 +18,7 @@
 #ifndef MATRIXSTACK_H
 #define MATRIXSTACK_H
 
-#include "Matrix3D.h"
+#include "Matrix4x4.h"
 
 class MatrixStack
 {
@@ -26,13 +26,14 @@ class MatrixStack
         MatrixStack(size_t inCapacity = 16);
         ~MatrixStack();
 
-        inline Matrix3D& matrix() { return mMatrices[mSize - 1]; }
+        inline Matrix3D& matrix() { return *mCurrentMatrix; }
         void push();
         void pop();
         void reset();
 
     private:
         Matrix3D* mMatrices;
+        Matrix3D* mCurrentMatrix;
         size_t mCapacity;
         size_t mSize;
 };
