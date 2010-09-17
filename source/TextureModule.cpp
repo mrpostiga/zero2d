@@ -152,6 +152,7 @@ void TextureModule::onLoad()
 
     mRotation = 0;
     loader.update(100);
+    //cout << mModelView.matrix() << endl;
 }
 
 void TextureModule::setupInputs()

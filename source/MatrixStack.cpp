@@ -21,6 +21,7 @@ MatrixStack::MatrixStack(size_t inCapacity) : mCapacity(inCapacity), mSize(1)
 {
     if (mCapacity < 2) mCapacity = 2;
     mMatrices = new Matrix3D[mCapacity];
+    mCurrentMatrix = mMatrices;
 }
 
 MatrixStack::~MatrixStack()
@@ -34,16 +35,22 @@ void MatrixStack::push()
     {
         mMatrices[mSize] = mMatrices[mSize - 1];
         ++mSize;
+        ++mCurrentMatrix;
     }
 }
 
 void MatrixStack::pop()
 {
-    if (mSize > 1) --mSize;
+    if (mSize > 1)
+    {
+        --mSize;
+        --mCurrentMatrix;
+    }
 }
 
 void MatrixStack::reset()
 {
     mSize = 1;
+    mCurrentMatrix = mMatrices;
     mMatrices[0].loadIdentity();
 }

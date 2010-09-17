@@ -85,8 +85,7 @@
 		<Unit filename="..\MathEngine.cpp" />
 		<Unit filename="..\MathEngine.h" />
 		<Unit filename="..\Matrix.h" />
-		<Unit filename="..\Matrix3D.cpp" />
-		<Unit filename="..\Matrix3D.h" />
+		<Unit filename="..\Matrix4x4.h" />
 		<Unit filename="..\MatrixStack.cpp" />
 		<Unit filename="..\MatrixStack.h" />
 		<Unit filename="..\Module.cpp" />
