@@ -12,4 +12,4 @@ This is to ensure that anyone can contribute to the fighter/stage rosters.
 * Zero2D will be open source. Programmers can contribute to the engine, while the rest of the community will help form characters and stages (no programming knowledge will be necessary).
 * Zero2D will pave the way for a truly competitive smash fighter. 
 By having absolute control over all aspects of the game, true balance can be attained! (Of course, people can also make insanely broken characters for their own leisure.)
-* Zero2D will offer superior online play. LAN play will also be an option. (Screw you, Blizzard!)
+* Zero2D will offer superior online play. LAN play will also be an option.
